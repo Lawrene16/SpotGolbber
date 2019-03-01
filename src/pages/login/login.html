@@ -1,0 +1,50 @@
+<ion-content padding style="background: #2f2f2f">
+  
+  <p align="center"><img style="zoom:40%;" src="../../assets/icon/Graphic.png"></p>
+
+<ion-list>  
+
+  <ion-item  class="itemclass">
+    <ion-label floating>E-mail</ion-label>
+    <ion-input [(ngModel)]="email"></ion-input>
+  </ion-item>
+
+
+  <ion-item  class="itemclass">
+      <ion-label floating>Password</ion-label>
+      <ion-input name="email" [(ngModel)]="password"></ion-input>
+  </ion-item>
+</ion-list>
+
+<div padding>
+    <button ion-button block outline color="teal" (click)="signin()">LOGIN</button>
+  <!-- <button block ion-button class="facebookbutton"><ion-icon class="icon ion-home custom-icon" name="logo-facebook" style="margin-right:20px"></ion-icon>Login with facebook</button>   -->
+</div>
+
+<div class="bottombuttonscontainer">
+
+    <ion-grid>
+      
+      <ion-row style="justify-content: center;" >
+
+          <div class="testclass">
+              <img style="zoom:10%;" src="../../assets/icon/twitter.svg">
+          </div>
+
+          <div class="testclass">
+                  <img style="zoom:10%;" src="../../assets/icon/google.svg">
+          </div>
+
+          <div class="testclass" (click)="openOptions(3)">
+              <img style="zoom:10%;" src="../../assets/icon/facebook.svg">
+          </div>
+
+        </ion-row>
+    </ion-grid>
+    
+</div>
+
+<div padding style="text-align:center;" (click)="createaccount()">
+    <ion-label style="color:white; font-size: 17px;" >Dont have an account? Sign Up</ion-label>
+</div>
+</ion-content>

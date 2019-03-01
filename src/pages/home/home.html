@@ -1,10 +1,35 @@
-<ion-header>
-  <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>SPOTGOLBBER</ion-title>
-  </ion-navbar>
+
+<ion-header >
+
+  <ion-navbar align-title="center" color="dark">
+      <button ion-button left menuToggle>
+        <ion-icon class="icon ion-home custom-icon" name="menu"></ion-icon>
+      </button>
+      <ion-title>ONXHUNT</ion-title>
+
+      <!-- Button for testing the login page -->
+      <ion-buttons end>
+          <button ion-button icon-only>
+            <ion-icon class="icon ion-home custom-icon" name="notifications"></ion-icon>
+          </button>
+      </ion-buttons>
+
+      <ion-buttons end>
+        <button ion-button icon-only (click)="openModal()">
+          <ion-icon name="options"></ion-icon>
+        </button>
+      </ion-buttons>
+      <!-- <ion-searchbar
+       *ngIf="toggled"
+       [(ngModel)]="someValue"
+       (ionInput)="searchThis($event)"
+       (ionCancel)="cancelSearch($event)"
+       (ionClear) = "cancelSearch($event)"
+       [showCancelButton]="true">
+    </ion-searchbar> -->
+
+    </ion-navbar>
+
 </ion-header>
 
 <ion-content>

@@ -107,15 +107,29 @@ export class HomePage {
         title: 'Hello World!'
       });
 
+      marker.addListener('click', function() {
+        map.setZoom(15);
+        map.setCenter(marker.getPosition());
+      });
+
+
       return marker;
   }
 
   addDefaultMarker(map, position){
-    return new google.maps.Marker({
+    var defmarker = new google.maps.Marker({
       position: position,
       map: map,
+      animation: google.maps.Animation.DROP,
       title: 'Hello World!'
     });
+
+    defmarker.addListener('click', function() {
+      map.setZoom(15);
+      map.setCenter(defmarker.getPosition());
+    });
+
+    return defmarker;
   }
 
 }
