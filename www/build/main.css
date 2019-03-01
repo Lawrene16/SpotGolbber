@@ -25695,3 +25695,8 @@ ion-navbar.toolbar {
 page-home #map {
   height: 100vh;
 }
+
+page-home .item-cover {
+  width: 0;
+  height: 0;
+}

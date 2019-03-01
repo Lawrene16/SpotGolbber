@@ -1,5 +1,6 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, Select } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
 declare var google: any;
 
@@ -10,47 +11,103 @@ declare var google: any;
 export class HomePage {
 
   @ViewChild('map') mapElement: ElementRef;
+  @ViewChild('mySelect') selectRef: Select;
   map: any;
+  showselect = false;
+  pinspotas;
+  colorofmarker;
+  
 
-  constructor(public navCtrl: NavController) {
 
+  constructor(public navCtrl: NavController,
+  public storage: Storage) {
+  
   }
 
   ionViewDidLoad(){
     this.loadMap();
-    console.log()
   }
 
   loadMap(){
     let latLng = new google.maps.LatLng(33.678, -116.243);
-
     let mapOptions = {
       center: latLng,
-      zoom: 15,
+      zoom: 13,
       disableDefaultUI: true,
       mapTypeId: 'hybrid'
     }
-
     this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
     this.addDefaultMarker(this.map, latLng);
 
+
     this.map.addListener('click', (e) => {
-      this.presentpopover();
-      this.addMarkerOnClick(this.map, e.latLng);
-    });
+      this.selectRef.open();
+      this.storage.set('position', e.latLng);
+
+    });    
   }
 
-  presentpopover(){
-    console.log('map clicked');
+  onChange(){
+  
+    this.storage.get('position').then((res) =>{
+      
+      switch(this.pinspotas){
+        case "Private":
+          this.addMarkerOnClick(this.map, res);
+           this.pinspotas = "d";
+        
+          break;
+  
+        case "Lease":
+          console.log("Lease");
+          this.addMarkerOnClick(this.map, res); 
+          this.pinspotas = "d";
+                   
+          break;
+  
+        case "Sale":
+          console.log("Sale");
+          this.addMarkerOnClick(this.map, res);          
+          break;
+  
+        case "Purchased":
+          console.log("Purchased");
+          this.addMarkerOnClick(this.map, res);          
+          break;  
+      }
+    });
+
   }
 
   addMarkerOnClick(map, position){
-    return new google.maps.Marker({
-      position: position,
-      draggable: true,      
-      map: map,
-      title: 'Hello World!'
-    });
+      var customicon;
+      switch(this.pinspotas){
+        case "Private":
+          customicon = '../../assets/icon/black.png';
+          break;
+  
+        case "Lease":
+           customicon = '../../assets/icon/yellow.png';
+          break;
+  
+        case "Sale":
+            customicon = '../../assets/icon/green.png'     ; 
+          break;
+  
+        case "Purchased":
+          customicon = '../../assets/icon/blue.png';
+          break;  
+      }
+      
+      var marker = new google.maps.Marker({
+        position: position,
+        icon: customicon,
+        draggable: true,      
+        map: map,
+        title: 'Hello World!'
+      });
+
+      return marker;
   }
 
   addDefaultMarker(map, position){
