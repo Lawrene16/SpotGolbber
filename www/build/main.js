@@ -8,7 +8,7 @@ webpackJsonp([1],{
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(56);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_storage__ = __webpack_require__(354);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_firebase__ = __webpack_require__(758);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_firebase__ = __webpack_require__(356);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_firebase__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -22,7 +22,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-// import { UploaderProvider } from '../../providers/uploader/uploader';
 
 var HomePage = /** @class */ (function () {
     function HomePage(navCtrl, loadingCtrl, actionSheetCtrl, storage) {
@@ -32,8 +31,94 @@ var HomePage = /** @class */ (function () {
         this.storage = storage;
         this.firedata = __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.database().ref('/allpins');
         this.showselect = false;
-        this.allpins = [];
     }
+    HomePage.prototype.fetchAllSpots = function (map) {
+        this.getdist();
+        var load = this.loadingCtrl.create({
+            content: 'Loading full map...',
+        });
+        load.present();
+        this.firedata.orderByChild('mjbmmn').once('value', function (snapshot) {
+            var result = snapshot.val();
+            var temparr = [];
+            for (var key in result) {
+                temparr.push(result[key]);
+            }
+            load.dismiss();
+            // Has gotten from firebase ready to load
+            temparr.forEach(function (feature) {
+                // Customize and pin all markers
+                var customicon;
+                switch (feature.pintype) {
+                    case "Private Spot":
+                        customicon = '../../assets/icon/black.png';
+                        break;
+                    case "Spot for Lease":
+                        customicon = '../../assets/icon/yellow.png';
+                        break;
+                    case "Spot for Sale":
+                        customicon = '../../assets/icon/green.png';
+                        break;
+                    case "Spot Purchased":
+                        customicon = '../../assets/icon/blue.png';
+                        break;
+                }
+                var marker = new google.maps.Marker({
+                    position: feature.latLng,
+                    icon: customicon,
+                    draggable: true,
+                    animation: google.maps.Animation.DROP,
+                    map: map
+                });
+                var loc1 = new google.maps.LatLng(33.678, -116.243);
+                var loc2 = marker.getPosition();
+                var dist = loc2.distanceFrom(loc1);
+                dist = dist / 1000;
+                var contentString = '<div id="content">' +
+                    '<div id="siteNotice">' +
+                    '</div>' +
+                    '<h1 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">' + feature.pintype + '</h1>' +
+                    '<div id="bodyContent">' +
+                    '<p ><h4>Locked | ' + dist + ' km away </h4>' +
+                    'Details of this location are locked ' +
+                    'purchase spot! to get the details ' +
+                    '<br><br><button onclick="myfunc" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f;" >Purchase Spot</button>' +
+                    '<br><br><br><br>' +
+                    '</div>' +
+                    '</div>';
+                marker.addListener('click', function () {
+                    if (map.getZoom() != 13 && map.getZoom() != 15) {
+                        map.setZoom(15);
+                        map.panTo(marker.getPosition());
+                    }
+                    else if (map.getZoom() == 15) {
+                        return new google.maps.InfoWindow({
+                            content: contentString
+                        }).open(map, marker);
+                    }
+                    else {
+                        map.setZoom(15);
+                        map.panTo(marker.getPosition());
+                    }
+                });
+            });
+        });
+    };
+    HomePage.prototype.getdist = function () {
+        google.maps.LatLng.prototype.distanceFrom = function (latlng) {
+            var lat = [this.lat(), latlng.lat()];
+            var lng = [this.lng(), latlng.lng()];
+            var R = 6378137;
+            var dLat = (lat[1] - lat[0]) * Math.PI / 180;
+            var dLng = (lng[1] - lng[0]) * Math.PI / 180;
+            var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat[0] * Math.PI / 180) * Math.cos(lat[1] * Math.PI / 180) *
+                    Math.sin(dLng / 2) * Math.sin(dLng / 2);
+            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            var d = R * c;
+            return Math.round(d);
+        };
+    };
     HomePage.prototype.ionViewDidLoad = function () {
         this.loadMap();
         // this.fetchAllSpots();
@@ -45,7 +130,7 @@ var HomePage = /** @class */ (function () {
             center: latLng,
             zoom: 13,
             disableDefaultUI: true,
-            mapTypeId: 'hybrid'
+            mapTypeId: 'satellite'
         };
         this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
         this.addDefaultMarker(this.map, latLng);
@@ -59,69 +144,21 @@ var HomePage = /** @class */ (function () {
         var _this = this;
         this.storage.get('position').then(function (res) {
             switch (_this.pinspotas) {
-                case "Private":
+                case "Private Spot":
                     _this.addMarkerOnClick(_this.map, res);
                     _this.pinspotas = "d";
                     break;
-                case "Lease":
-                    console.log("Lease");
+                case "Spot for Lease":
                     _this.addMarkerOnClick(_this.map, res);
                     _this.pinspotas = "d";
                     break;
-                case "Sale":
-                    console.log("Sale");
+                case "Spot for Sale":
                     _this.addMarkerOnClick(_this.map, res);
                     break;
-                case "Purchased":
-                    console.log("Purchased");
+                case "Spot Purchased":
                     _this.addMarkerOnClick(_this.map, res);
                     break;
             }
-        });
-    };
-    HomePage.prototype.fetchAllSpots = function (map) {
-        var load = this.loadingCtrl.create({
-            content: 'Loading full map...',
-        });
-        load.present();
-        this.firedata.orderByChild('mjbmmn').once('value', function (snapshot) {
-            var result = snapshot.val();
-            var temparr = [];
-            for (var key in result) {
-                temparr.push(result[key]);
-            }
-            console.log(temparr);
-            load.dismiss();
-            // Has gotten from firebase ready to load
-            temparr.forEach(function (feature) {
-                // Customize and pin all markers
-                var customicon;
-                switch (feature.pintype) {
-                    case "Private":
-                        customicon = '../../assets/icon/black.png';
-                        break;
-                    case "Lease":
-                        customicon = '../../assets/icon/yellow.png';
-                        break;
-                    case "Sale":
-                        customicon = '../../assets/icon/green.png';
-                        break;
-                    case "Purchased":
-                        customicon = '../../assets/icon/blue.png';
-                        break;
-                }
-                var marker = new google.maps.Marker({
-                    position: feature.latLng,
-                    icon: customicon,
-                    draggable: true,
-                    animation: google.maps.Animation.DROP,
-                    map: map
-                });
-                marker.addListener('click', function () {
-                    map.setZoom(15);
-                    map.setCenter(marker.getPosition());
-                });
-            });
         });
     };
     HomePage.prototype.uploadSpotLocation = function (position, pintype) {
@@ -140,16 +177,16 @@ var HomePage = /** @class */ (function () {
     HomePage.prototype.addMarkerOnClick = function (map, position) {
         var customicon;
         switch (this.pinspotas) {
-            case "Private":
+            case "Private Spot":
                 customicon = '../../assets/icon/black.png';
                 break;
-            case "Lease":
+            case "Spot for Lease":
                 customicon = '../../assets/icon/yellow.png';
                 break;
-            case "Sale":
+            case "Spot for Sale":
                 customicon = '../../assets/icon/green.png';
                 break;
-            case "Purchased":
+            case "Spot Purchased":
                 customicon = '../../assets/icon/blue.png';
                 break;
         }
@@ -161,9 +198,17 @@ var HomePage = /** @class */ (function () {
             animation: google.maps.Animation.DROP,
             title: 'Hello World!'
         });
+        // WHen marker is put newly
         marker.addListener('click', function () {
-            map.setZoom(15);
-            map.setCenter(marker.getPosition());
+            if (map.getZoom() == 13) {
+                console.log("13");
+                map.setZoom(15);
+                map.panTo(marker.getPosition());
+            }
+            else if (map.getZoom() == 15) {
+                console.log("15");
+                console.log(marker.distanceTo(position));
+            }
         });
         this.uploadSpotLocation(position, this.pinspotas);
         return marker;
@@ -215,7 +260,7 @@ var HomePage = /** @class */ (function () {
     ], HomePage.prototype, "selectRef", void 0);
     HomePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-home',template:/*ion-inline-start:"/home/lawrene/Desktop/spotgolbber/src/pages/home/home.html"*/'\n<ion-header >\n\n  <ion-navbar align-title="center" color="dark">\n      <button ion-button left menuToggle>\n        <ion-icon class="icon ion-home custom-icon" name="menu"></ion-icon>\n      </button>\n      <ion-title color="strange">SPOTSWOPPER</ion-title>\n\n      <!-- Button for testing the login page -->\n      <ion-buttons end>\n          <button ion-button icon-only>\n            <ion-icon class="icon ion-home custom-icon" name="notifications"></ion-icon>\n          </button>\n      </ion-buttons>\n\n      <ion-buttons end>\n        <button ion-button icon-only (click)="openModal()">\n          <ion-icon name="options"></ion-icon>\n        </button>\n      </ion-buttons>\n    </ion-navbar>\n\n</ion-header>\n\n<ion-content class="contentdiv">\n  <div  #map id="map"></div>\n\n  <ion-select (ionChange)="onChange()" [(ngModel)]="pinspotas" #mySelect>\n    <ion-option>Private</ion-option>\n    <ion-option>Lease</ion-option>\n    <ion-option>Sale</ion-option>\n    <ion-option>Purchased</ion-option>\n</ion-select>\n\n<div class="bottombuttonscontainer">\n\n    <ion-grid style="background-color: #222; ">\n      \n      <ion-row  style="justify-content: center;" >\n\n          <div class="testclass">\n              <img style="zoom:5%;" src="../../assets/icon/map-spot.svg"><br>My Spots\n          </div>\n\n          <div class="testclass">\n                  <img style="zoom:5%;" src="../../assets/icon/map.svg"><br>Map Layers\n          </div>\n\n          <div class="testclass" (click)="openOptions(3)">\n              <img style="zoom:5%;" src="../../assets/icon/world-wide-internet-signal.svg"><br>Off Grid\n          </div>\n\n          <div class="testclass" (click)="openOptions(4)">\n              <img style="zoom:5%;" src="../../assets/icon/search.svg"><br>Search Spots\n          </div>\n\n        </ion-row>\n\n\n\n        <!-- <ion-row>\n            <div class="wherebottomlie">\n                  <div *ngIf="showThree" class="offgridcontainer">\n                          <ion-grid>\n                              <ion-row style="text-align:center;">\n                      \n                                    <ion-col >\n                                      <button ion-button block color="redlike"                                 (click)="openSaveModal()">\n                                               Save New Map\n                                       </button>\n                                     </ion-col>\n              \n                                    <ion-col >\n                                         <button ion-button block color="greytwo">\n                                      <ion-icon name="pulse" color="light"></ion-icon>\n                  \n                                                     Go Offline</button>\n                                    </ion-col>\n                                    \n                          </ion-row>\n                       </ion-grid>\n                                      \n                      </div >\n            </div>\n\n        </ion-row> -->\n    </ion-grid>\n    \n</div>\n\n</ion-content>\n'/*ion-inline-end:"/home/lawrene/Desktop/spotgolbber/src/pages/home/home.html"*/
+            selector: 'page-home',template:/*ion-inline-start:"/home/lawrene/Desktop/spotgolbber/src/pages/home/home.html"*/'\n<ion-header >\n\n  <ion-navbar align-title="center" color="dark">\n      <button ion-button left menuToggle>\n        <ion-icon class="icon ion-home custom-icon" name="menu"></ion-icon>\n      </button>\n      <ion-title color="strange">SPOTSWOPPER</ion-title>\n\n      <!-- Button for testing the login page -->\n      <ion-buttons end>\n          <button ion-button icon-only>\n            <ion-icon class="icon ion-home custom-icon" name="notifications"></ion-icon>\n          </button>\n      </ion-buttons>\n\n      <ion-buttons end>\n        <button ion-button icon-only (click)="openModal()">\n          <ion-icon name="options"></ion-icon>\n        </button>\n      </ion-buttons>\n    </ion-navbar>\n\n</ion-header>\n\n<ion-content class="contentdiv">\n  <div  #map id="map"></div>\n\n  <ion-select (ngModelChange)="onChange()" [(ngModel)]="pinspotas" #mySelect>\n    <ion-option>Private Spot</ion-option>\n    <ion-option>Spot for Lease</ion-option>\n    <ion-option>Spot for Sale</ion-option>\n    <ion-option>Spot Purchased</ion-option>\n</ion-select>\n\n<div class="bottombuttonscontainer">\n\n    <ion-grid style="background-color: #222; ">\n      \n      <ion-row  style="justify-content: center;" >\n\n          <div class="testclass">\n              <img style="zoom:5%;" src="../../assets/icon/map-spot.svg"><br>My Spots\n          </div>\n\n          <div class="testclass">\n                  <img style="zoom:5%;" src="../../assets/icon/map.svg"><br>Map Layers\n          </div>\n\n          <div class="testclass" (click)="openOptions(3)">\n              <img style="zoom:5%;" src="../../assets/icon/world-wide-internet-signal.svg"><br>Off Grid\n          </div>\n\n          <div class="testclass" (click)="openOptions(4)">\n              <img style="zoom:5%;" src="../../assets/icon/search.svg"><br>Search Spots\n          </div>\n\n        </ion-row>\n\n\n\n        <!-- <ion-row>\n            <div class="wherebottomlie">\n                  <div *ngIf="showThree" class="offgridcontainer">\n                          <ion-grid>\n                              <ion-row style="text-align:center;">\n                      \n                                    <ion-col >\n                                      <button ion-button block color="redlike"                                 (click)="openSaveModal()">\n                                               Save New Map\n                                       </button>\n                                     </ion-col>\n              \n                                    <ion-col >\n                                         <button ion-button block color="greytwo">\n                                      <ion-icon name="pulse" color="light"></ion-icon>\n                  \n                                                     Go Offline</button>\n                                    </ion-col>\n                                    \n                          </ion-row>\n                       </ion-grid>\n                                      \n                      </div >\n            </div>\n\n        </ion-row> -->\n    </ion-grid>\n    \n</div>\n\n</ion-content>\n'/*ion-inline-end:"/home/lawrene/Desktop/spotgolbber/src/pages/home/home.html"*/
         }),
         __metadata("design:paramtypes", [typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* ActionSheetController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* ActionSheetController */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */]) === "function" && _f || Object])
     ], HomePage);
@@ -380,61 +425,6 @@ var AuthProvider = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 356:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UploaderProvider; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(757);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_firebase__ = __webpack_require__(758);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_firebase__);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-/*
-  Generated class for the UploaderProvider provider.
-
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
-var UploaderProvider = /** @class */ (function () {
-    function UploaderProvider(http) {
-        this.http = http;
-        this.firedata = __WEBPACK_IMPORTED_MODULE_2_firebase___default.a.database().ref('/allpins').child(__WEBPACK_IMPORTED_MODULE_2_firebase___default.a.auth().
-            currentUser.uid);
-        console.log('Hello UploaderProvider Provider');
-    }
-    UploaderProvider.prototype.uploadSpotLocation = function (position, pintype) {
-        this.firedata.child('o').set({
-            latLng: position,
-            pintype: pintype
-        }).then(function (res) {
-            console.log(res);
-        }).catch(function (err) {
-            console.log(err);
-        });
-    };
-    UploaderProvider = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Injectable */])(),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */]])
-    ], UploaderProvider);
-    return UploaderProvider;
-}());
-
-//# sourceMappingURL=uploader.js.map
-
-/***/ }),
-
 /***/ 401:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -458,10 +448,10 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(56);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_storage__ = __webpack_require__(354);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_component__ = __webpack_require__(782);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_component__ = __webpack_require__(780);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_home_home__ = __webpack_require__(165);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_list_list__ = __webpack_require__(786);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_angularfire2__ = __webpack_require__(787);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_list_list__ = __webpack_require__(784);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_angularfire2__ = __webpack_require__(785);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_angularfire2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_angularfire2__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_angularfire2_auth__ = __webpack_require__(245);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_angularfire2_auth___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_angularfire2_auth__);
@@ -469,7 +459,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ionic_native_splash_screen__ = __webpack_require__(400);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__pages_login_login__ = __webpack_require__(188);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__providers_auth_auth__ = __webpack_require__(244);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__providers_uploader_uploader__ = __webpack_require__(356);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__providers_uploader_uploader__ = __webpack_require__(786);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -544,7 +534,7 @@ var AppModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 782:
+/***/ 780:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -619,7 +609,7 @@ var MyApp = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 786:
+/***/ 784:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -673,6 +663,61 @@ var ListPage = /** @class */ (function () {
 }());
 
 //# sourceMappingURL=list.js.map
+
+/***/ }),
+
+/***/ 786:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UploaderProvider; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(787);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_firebase__ = __webpack_require__(356);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_firebase__);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+/*
+  Generated class for the UploaderProvider provider.
+
+  See https://angular.io/guide/dependency-injection for more info on providers
+  and Angular DI.
+*/
+var UploaderProvider = /** @class */ (function () {
+    function UploaderProvider(http) {
+        this.http = http;
+        this.firedata = __WEBPACK_IMPORTED_MODULE_2_firebase___default.a.database().ref('/allpins').child(__WEBPACK_IMPORTED_MODULE_2_firebase___default.a.auth().
+            currentUser.uid);
+        console.log('Hello UploaderProvider Provider');
+    }
+    UploaderProvider.prototype.uploadSpotLocation = function (position, pintype) {
+        this.firedata.child('o').set({
+            latLng: position,
+            pintype: pintype
+        }).then(function (res) {
+            console.log(res);
+        }).catch(function (err) {
+            console.log(err);
+        });
+    };
+    UploaderProvider = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Injectable */])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */]])
+    ], UploaderProvider);
+    return UploaderProvider;
+}());
+
+//# sourceMappingURL=uploader.js.map
 
 /***/ })
 

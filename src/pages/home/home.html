@@ -26,11 +26,11 @@
 <ion-content class="contentdiv">
   <div  #map id="map"></div>
 
-  <ion-select (ionChange)="onChange()" [(ngModel)]="pinspotas" #mySelect>
-    <ion-option>Private</ion-option>
-    <ion-option>Lease</ion-option>
-    <ion-option>Sale</ion-option>
-    <ion-option>Purchased</ion-option>
+  <ion-select (ngModelChange)="onChange()" [(ngModel)]="pinspotas" #mySelect>
+    <ion-option>Private Spot</ion-option>
+    <ion-option>Spot for Lease</ion-option>
+    <ion-option>Spot for Sale</ion-option>
+    <ion-option>Spot Purchased</ion-option>
 </ion-select>
 
 <div class="bottombuttonscontainer">
