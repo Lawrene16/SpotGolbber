@@ -40,9 +40,40 @@ page-home {
         z-index: 5;
     }
 
-
+    input[type=text] {
+        border: 2px solid #ae6c2f;
+        border-radius: 4px;
+    }
 
     ion-grid {
         height: 100%;
     }
+
+    .taone {
+        margin-top: 10px;
+        width: 95%;
+        height: 6vh;
+        padding-top: 5px;
+        box-sizing: border-box;
+        text-align: center;
+        border: 2px solid #ccc;
+        border-radius: 4px;
+        background-color: #f8f8f8;
+        font-size: 20px;
+        resize: none;
+      }
+
+      .tatwo {
+        margin-top: 10px;
+        width: 95%;
+        height: auto;
+        padding: 12px;
+        box-sizing: border-box;
+        border: 2px solid #ccc;
+        text-align: center;
+        border-radius: 4px;
+        background-color: #f8f8f8;
+        font-size: 16px;
+        resize: none;
+      }
 }

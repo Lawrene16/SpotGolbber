@@ -28056,8 +28056,43 @@ page-home .bottombuttonscontainer {
   z-index: 5;
 }
 
+page-home input[type=text] {
+  border: 2px solid #ae6c2f;
+  border-radius: 4px;
+}
+
 page-home ion-grid {
   height: 100%;
+}
+
+page-home .taone {
+  margin-top: 10px;
+  width: 95%;
+  height: 6vh;
+  padding-top: 5px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  text-align: center;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 20px;
+  resize: none;
+}
+
+page-home .tatwo {
+  margin-top: 10px;
+  width: 95%;
+  height: auto;
+  padding: 12px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  text-align: center;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 16px;
+  resize: none;
 }
 
 page-login .loginbtns {
