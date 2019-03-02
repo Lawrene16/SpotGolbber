@@ -25,16 +25,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 // import { UploaderProvider } from '../../providers/uploader/uploader';
 
 var HomePage = /** @class */ (function () {
-    function HomePage(navCtrl, 
+    function HomePage(navCtrl, loadingCtrl, 
         // private uploader: UploaderProvider,
         storage) {
         this.navCtrl = navCtrl;
+        this.loadingCtrl = loadingCtrl;
         this.storage = storage;
-        this.firedata = __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.database().ref('/allpins').child(__WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid);
+        this.firedata = __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.database().ref('/allpins');
         this.showselect = false;
+        this.allpins = [];
     }
     HomePage.prototype.ionViewDidLoad = function () {
         this.loadMap();
+        // this.fetchAllSpots();
     };
     HomePage.prototype.loadMap = function () {
         var _this = this;
@@ -47,6 +50,7 @@ var HomePage = /** @class */ (function () {
         };
         this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
         this.addDefaultMarker(this.map, latLng);
+        this.fetchAllSpots(this.map);
         this.map.addListener('click', function (e) {
             _this.selectRef.open();
             _this.storage.set('position', e.latLng);
@@ -74,6 +78,51 @@ var HomePage = /** @class */ (function () {
                     _this.addMarkerOnClick(_this.map, res);
                     break;
             }
+        });
+    };
+    HomePage.prototype.fetchAllSpots = function (map) {
+        var load = this.loadingCtrl.create({
+            content: 'Loading full map...',
+        });
+        load.present();
+        this.firedata.orderByChild('mjbmmn').once('value', function (snapshot) {
+            var result = snapshot.val();
+            var temparr = [];
+            for (var key in result) {
+                temparr.push(result[key]);
+            }
+            console.log(temparr);
+            load.dismiss();
+            // Has gotten from firebase ready to load
+            temparr.forEach(function (feature) {
+                // Customize and pin all markers
+                var customicon;
+                switch (feature.pintype) {
+                    case "Private":
+                        customicon = '../../assets/icon/black.png';
+                        break;
+                    case "Lease":
+                        customicon = '../../assets/icon/yellow.png';
+                        break;
+                    case "Sale":
+                        customicon = '../../assets/icon/green.png';
+                        break;
+                    case "Purchased":
+                        customicon = '../../assets/icon/blue.png';
+                        break;
+                }
+                var marker = new google.maps.Marker({
+                    position: feature.latLng,
+                    icon: customicon,
+                    draggable: true,
+                    animation: google.maps.Animation.DROP,
+                    map: map
+                });
+                marker.addListener('click', function () {
+                    map.setZoom(15);
+                    map.setCenter(marker.getPosition());
+                });
+            });
         });
     };
     HomePage.prototype.uploadSpotLocation = function (position, pintype) {
@@ -139,16 +188,16 @@ var HomePage = /** @class */ (function () {
     ], HomePage.prototype, "mapElement", void 0);
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* ViewChild */])('mySelect'),
-        __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* Select */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* Select */]) === "function" && _b || Object)
+        __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* Select */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* Select */]) === "function" && _b || Object)
     ], HomePage.prototype, "selectRef", void 0);
     HomePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-home',template:/*ion-inline-start:"/home/lawrene/Desktop/spotgolbber/src/pages/home/home.html"*/'\n<ion-header >\n\n  <ion-navbar align-title="center" color="dark">\n      <button ion-button left menuToggle>\n        <ion-icon class="icon ion-home custom-icon" name="menu"></ion-icon>\n      </button>\n      <ion-title>ONXHUNT</ion-title>\n\n      <!-- Button for testing the login page -->\n      <ion-buttons end>\n          <button ion-button icon-only>\n            <ion-icon class="icon ion-home custom-icon" name="notifications"></ion-icon>\n          </button>\n      </ion-buttons>\n\n      <ion-buttons end>\n        <button ion-button icon-only (click)="openModal()">\n          <ion-icon name="options"></ion-icon>\n        </button>\n      </ion-buttons>\n      <!-- <ion-searchbar\n       *ngIf="toggled"\n       [(ngModel)]="someValue"\n       (ionInput)="searchThis($event)"\n       (ionCancel)="cancelSearch($event)"\n       (ionClear) = "cancelSearch($event)"\n       [showCancelButton]="true">\n    </ion-searchbar> -->\n\n    </ion-navbar>\n\n</ion-header>\n\n<ion-content>\n  <div  #map id="map"></div>\n\n  <ion-select (ionChange)="onChange()" [(ngModel)]="pinspotas" #mySelect>\n    <ion-option>Private</ion-option>\n    <ion-option>Lease</ion-option>\n    <ion-option>Sale</ion-option>\n    <ion-option>Purchased</ion-option>\n</ion-select>\n\n</ion-content>\n'/*ion-inline-end:"/home/lawrene/Desktop/spotgolbber/src/pages/home/home.html"*/
+            selector: 'page-home',template:/*ion-inline-start:"/home/lawrene/Desktop/spotgolbber/src/pages/home/home.html"*/'\n<ion-header >\n\n  <ion-navbar align-title="center" color="dark">\n      <button ion-button left menuToggle>\n        <ion-icon class="icon ion-home custom-icon" name="menu"></ion-icon>\n      </button>\n      <ion-title color="strange">ONXHUNT</ion-title>\n\n      <!-- Button for testing the login page -->\n      <ion-buttons end>\n          <button ion-button icon-only>\n            <ion-icon class="icon ion-home custom-icon" name="notifications"></ion-icon>\n          </button>\n      </ion-buttons>\n\n      <ion-buttons end>\n        <button ion-button icon-only (click)="openModal()">\n          <ion-icon name="options"></ion-icon>\n        </button>\n      </ion-buttons>\n      <!-- <ion-searchbar\n       *ngIf="toggled"\n       [(ngModel)]="someValue"\n       (ionInput)="searchThis($event)"\n       (ionCancel)="cancelSearch($event)"\n       (ionClear) = "cancelSearch($event)"\n       [showCancelButton]="true">\n    </ion-searchbar> -->\n\n    </ion-navbar>\n\n</ion-header>\n\n<ion-content>\n  <div  #map id="map"></div>\n\n  <ion-select (ionChange)="onChange()" [(ngModel)]="pinspotas" #mySelect>\n    <ion-option>Private</ion-option>\n    <ion-option>Lease</ion-option>\n    <ion-option>Sale</ion-option>\n    <ion-option>Purchased</ion-option>\n</ion-select>\n\n</ion-content>\n'/*ion-inline-end:"/home/lawrene/Desktop/spotgolbber/src/pages/home/home.html"*/
         }),
-        __metadata("design:paramtypes", [typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */]) === "function" && _d || Object])
+        __metadata("design:paramtypes", [typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* LoadingController */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */]) === "function" && _e || Object])
     ], HomePage);
     return HomePage;
-    var _a, _b, _c, _d;
+    var _a, _b, _c, _d, _e;
 }());
 
 //# sourceMappingURL=home.js.map
@@ -207,9 +256,9 @@ var LoginPage = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-login',template:/*ion-inline-start:"/home/lawrene/Desktop/spotgolbber/src/pages/login/login.html"*/'<ion-content padding style="background: #2f2f2f">\n  \n  <p align="center"><img style="zoom:45%;" src="../../assets/icon/spotgobel.png"></p>\n\n  <br>\n  <br>\n  \n<ion-list>  \n\n  <ion-item  class="itemclass">\n    <ion-label floating>E-mail</ion-label>\n    <ion-input [(ngModel)]="email"></ion-input>\n  </ion-item>\n\n\n  <ion-item  class="itemclass">\n      <ion-label floating>Password</ion-label>\n      <ion-input name="email" [(ngModel)]="password"></ion-input>\n  </ion-item>\n</ion-list>\n\n<div padding>\n    <button ion-button block outline color="strange" (click)="signin()">LOGIN</button>\n  <!-- <button block ion-button class="facebookbutton"><ion-icon class="icon ion-home custom-icon" name="logo-facebook" style="margin-right:20px"></ion-icon>Login with facebook</button>   -->\n</div>\n\n<div class="bottombuttonscontainer">\n\n    <ion-grid>\n      \n      <ion-row style="justify-content: center;" >\n\n          <div class="testclass">\n              <img style="zoom:10%;" src="../../assets/icon/twitter.svg">\n          </div>\n\n          <div class="testclass">\n                  <img style="zoom:10%;" src="../../assets/icon/google.svg">\n          </div>\n\n          <div class="testclass" (click)="openOptions(3)">\n              <img style="zoom:10%;" src="../../assets/icon/facebook.svg">\n          </div>\n\n        </ion-row>\n    </ion-grid>\n    \n</div>\n\n<div padding style="text-align:center;" (click)="createaccount()">\n    <ion-label style="color:white; font-size: 17px;" >Dont have an account? Sign Up</ion-label>\n</div>\n</ion-content>'/*ion-inline-end:"/home/lawrene/Desktop/spotgolbber/src/pages/login/login.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */],
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_2__providers_auth_auth__["a" /* AuthProvider */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */]])
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */]])
     ], LoginPage);
     return LoginPage;
 }());
@@ -532,13 +581,13 @@ var MyApp = /** @class */ (function () {
         this.nav.setRoot(page.component);
     };
     __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* ViewChild */])(__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* Nav */]),
-        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* Nav */])
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* ViewChild */])(__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* Nav */]),
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* Nav */])
     ], MyApp.prototype, "nav", void 0);
     MyApp = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({template:/*ion-inline-start:"/home/lawrene/Desktop/spotgolbber/src/app/app.html"*/'<ion-menu persistent="true" [content]="content" type="overlay">\n    <ion-header no-border>\n      <ion-toolbar>\n            <!-- <ion-title> -->\n                <div class="container" (click)="openprofile()">\n                    <img class="userimage" src="../../assets/icon/user.svg">\n                    <div class="user-name">Edung Divinefavour</div>\n                    <div class="user-mail">lawrenedickson49@gmail.com</div>\n                </div>\n            <!-- </ion-title> -->\n\n      </ion-toolbar>\n    </ion-header>\n    \n    <ion-content>\n\n        <ion-list>\n          <button ion-item menuClose *ngFor="let p of pages" (click)="openPage(p)">\n              <ion-icon item-start [name]="p.icon"></ion-icon>\n              <!-- <ion-icon item-start [name]="p.icon" [color]="isActive(p)"></ion-icon> -->\n\n              {{ p.title }}\n            </button>\n        </ion-list>\n      </ion-content>\n</ion-menu>\n      \n<ion-nav id="nav" [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>'/*ion-inline-end:"/home/lawrene/Desktop/spotgolbber/src/app/app.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* Platform */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* Platform */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */]])
     ], MyApp);
     return MyApp;
 }());
@@ -594,7 +643,7 @@ var ListPage = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-list',template:/*ion-inline-start:"/home/lawrene/Desktop/spotgolbber/src/pages/list/list.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>List</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content>\n  <ion-list>\n    <button ion-item *ngFor="let item of items" (click)="itemTapped($event, item)">\n      <ion-icon [name]="item.icon" item-start></ion-icon>\n      {{item.title}}\n      <div class="item-note" item-end>\n        {{item.note}}\n      </div>\n    </button>\n  </ion-list>\n  <div *ngIf="selectedItem" padding>\n    You navigated here from <b>{{selectedItem.title}}</b>\n  </div>\n</ion-content>\n'/*ion-inline-end:"/home/lawrene/Desktop/spotgolbber/src/pages/list/list.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */]])
     ], ListPage);
     return ListPage;
     var ListPage_1;
