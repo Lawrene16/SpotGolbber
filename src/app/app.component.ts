@@ -15,15 +15,23 @@ export class MyApp {
 
   rootPage: any = LoginPage;
 
-  pages: Array<{title: string, component: any}>;
+  pages: Array<{title: string, icon:string,component: any, pageName:string, index:any}>;
+
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
-    this.pages = [
-      { title: 'Home', component: HomePage },
-      { title: 'List', component: ListPage }
+        this.pages = [
+      { title: 'My Account', icon : 'ios-home', component: HomePage, pageName: 'GotopremiumPage', index: 0 },
+      { title: 'Join Now!', icon : 'ios-alert',  component: HomePage, pageName: 'GotopremiumPage', index: 1 },
+      { title: 'Map Settings', icon : 'ios-settings',  component: HomePage, pageName: 'GotopremiumPage', index: 2 },      
+      { title: 'Get Help', icon : 'ios-people',  component: HomePage, pageName: 'GotopremiumPage', index: 3 },
+      { title: 'Share', icon : 'ios-share',  component: HomePage, pageName: 'GotopremiumPage', index: 4 },
+      { title: 'Inbox', icon : 'ios-chatbubbles',  component: HomePage, pageName: 'GotopremiumPage', index: 5 },
+      { title: 'Go Premium', icon : 'ios-flash',  component: HomePage, pageName: 'GotopremiumPage', index: 6 },                  
+      { title: 'Logout', icon : 'ios-log-out',  component: HomePage, pageName: 'GotopremiumPage', index: 7 },
+
     ];
 
   }

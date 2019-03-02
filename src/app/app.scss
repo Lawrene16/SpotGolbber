@@ -14,3 +14,40 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  display: none;
+}
+
+// .scroll-content{overflow-y: hidden;}
+
+.container {
+//   position: relative;
+  text-align: center;
+  color: white;
+  background: color($colors, dark);
+  padding: 0px;
+}
+
+.user-name {
+font-size: 15px;
+  position: absolute;
+  bottom: 25px;
+  right: 16px;
+}
+
+.userimage{
+  width:90px;
+  height:90px;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+  margin: 50px;
+}
+
+
+.user-mail {
+font-size: 12px;
+  position: absolute;
+  bottom: 8px;
+  right: 16px;
+}

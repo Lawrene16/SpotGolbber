@@ -11,6 +11,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { LoginPage } from '../pages/login/login';
 import { AuthProvider } from '../providers/auth/auth';
+import { UploaderProvider } from '../providers/uploader/uploader';
 
 var firebaseconfig = {
   apiKey: "AIzaSyDxNm3T6n3CPB5u28aVRIIzggSV9HChpsw",
@@ -45,9 +46,11 @@ var firebaseconfig = {
   providers: [
     StatusBar,
     SplashScreen,
+    UploaderProvider,
     AngularFireAuth,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    AuthProvider
+    AuthProvider,
+    UploaderProvider
   ]
 })
 export class AppModule {}

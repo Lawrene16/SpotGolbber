@@ -1,6 +1,8 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { NavController, Select } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
+// import { UploaderProvider } from '../../providers/uploader/uploader';
+import firebase from 'firebase';
 
 declare var google: any;
 
@@ -13,6 +15,8 @@ export class HomePage {
   @ViewChild('map') mapElement: ElementRef;
   @ViewChild('mySelect') selectRef: Select;
   map: any;
+  firedata = firebase.database().ref('/allpins').child(firebase.auth().currentUser.uid);
+  pinuid;
   showselect = false;
   pinspotas;
   colorofmarker;
@@ -20,6 +24,7 @@ export class HomePage {
 
 
   constructor(public navCtrl: NavController,
+  // private uploader: UploaderProvider,
   public storage: Storage) {
   
   }
@@ -79,6 +84,20 @@ export class HomePage {
 
   }
 
+  uploadSpotLocation(position, pintype){
+    this.pinuid = this.firedata.push().key;
+    // console.log(this.pinuid);
+    this.firedata.child(this.pinuid).set({
+      pinowner: firebase.auth().currentUser.uid,
+      latLng: position,
+      pintype: pintype
+    }).then((res) =>{
+      console.log(res);
+    }).catch((err) =>{
+      console.log(err);
+    });
+  }
+
   addMarkerOnClick(map, position){
       var customicon;
       switch(this.pinspotas){
@@ -104,6 +123,7 @@ export class HomePage {
         icon: customicon,
         draggable: true,      
         map: map,
+        animation: google.maps.Animation.DROP,        
         title: 'Hello World!'
       });
 
@@ -113,6 +133,8 @@ export class HomePage {
       });
 
 
+      this.uploadSpotLocation(position, this.pinspotas);
+
       return marker;
   }
 
@@ -120,7 +142,7 @@ export class HomePage {
     var defmarker = new google.maps.Marker({
       position: position,
       map: map,
-      animation: google.maps.Animation.DROP,
+      animation: google.maps.Animation.BOUNCE,
       title: 'Hello World!'
     });
 
