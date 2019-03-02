@@ -5,7 +5,7 @@
       <button ion-button left menuToggle>
         <ion-icon class="icon ion-home custom-icon" name="menu"></ion-icon>
       </button>
-      <ion-title color="strange">ONXHUNT</ion-title>
+      <ion-title color="strange">SPOTSWOPPER</ion-title>
 
       <!-- Button for testing the login page -->
       <ion-buttons end>
@@ -19,20 +19,11 @@
           <ion-icon name="options"></ion-icon>
         </button>
       </ion-buttons>
-      <!-- <ion-searchbar
-       *ngIf="toggled"
-       [(ngModel)]="someValue"
-       (ionInput)="searchThis($event)"
-       (ionCancel)="cancelSearch($event)"
-       (ionClear) = "cancelSearch($event)"
-       [showCancelButton]="true">
-    </ion-searchbar> -->
-
     </ion-navbar>
 
 </ion-header>
 
-<ion-content>
+<ion-content class="contentdiv">
   <div  #map id="map"></div>
 
   <ion-select (ionChange)="onChange()" [(ngModel)]="pinspotas" #mySelect>
@@ -41,5 +32,61 @@
     <ion-option>Sale</ion-option>
     <ion-option>Purchased</ion-option>
 </ion-select>
+
+<div class="bottombuttonscontainer">
+
+    <ion-grid style="background-color: #222; ">
+      
+      <ion-row  style="justify-content: center;" >
+
+          <div class="testclass">
+              <img style="zoom:5%;" src="../../assets/icon/map-spot.svg"><br>My Spots
+          </div>
+
+          <div class="testclass">
+                  <img style="zoom:5%;" src="../../assets/icon/map.svg"><br>Map Layers
+          </div>
+
+          <div class="testclass" (click)="openOptions(3)">
+              <img style="zoom:5%;" src="../../assets/icon/world-wide-internet-signal.svg"><br>Off Grid
+          </div>
+
+          <div class="testclass" (click)="openOptions(4)">
+              <img style="zoom:5%;" src="../../assets/icon/search.svg"><br>Search Spots
+          </div>
+
+        </ion-row>
+
+
+
+        <!-- <ion-row>
+            <div class="wherebottomlie">
+                  <div *ngIf="showThree" class="offgridcontainer">
+                          <ion-grid>
+                              <ion-row style="text-align:center;">
+                      
+                                    <ion-col >
+                                      <button ion-button block color="redlike"                                 (click)="openSaveModal()">
+                                               Save New Map
+                                       </button>
+                                     </ion-col>
+              
+                                    <ion-col >
+                                         <button ion-button block color="greytwo">
+                                      <ion-icon name="pulse" color="light"></ion-icon>
+                  
+                                                     Go Offline</button>
+                                    </ion-col>
+                                    
+                          </ion-row>
+                       </ion-grid>
+                                      
+                      </div >
+            </div>
+
+        </ion-row> -->
+    </ion-grid>
+    
+</div>
 
 </ion-content>

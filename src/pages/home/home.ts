@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { NavController, LoadingController, Select } from 'ionic-angular';
+import { NavController, LoadingController, Select, ActionSheetController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 // import { UploaderProvider } from '../../providers/uploader/uploader';
 import firebase from 'firebase';
@@ -26,7 +26,7 @@ export class HomePage {
 
   constructor(public navCtrl: NavController,
     public loadingCtrl: LoadingController,
-  // private uploader: UploaderProvider,
+  private actionSheetCtrl: ActionSheetController,
   public storage: Storage) {
     
   }
@@ -217,7 +217,31 @@ export class HomePage {
     return defmarker;
   }
 
-  
+  openModal(){
+    let actionSheet = this.actionSheetCtrl.create({
+      title: 'Are you sure you want to logout',
+      buttons: [
+        {
+          text: 'Logout',
+          role: 'destructive',
+          handler: () => {
+            // this.logoutFacebook();
+            // this.logoutEmail();
+            // this.logoutTwitter();
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }
+      ]
+    });
+ 
+    actionSheet.present();
+  }
 
 
 }
