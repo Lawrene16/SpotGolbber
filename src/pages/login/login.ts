@@ -6,6 +6,7 @@ import { HomePage } from '../home/home';
 /**
  * Generated class for the LoginPage page.
  *
+ * 
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
@@ -27,7 +28,6 @@ export class LoginPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');
-    this.signin();
   }
 
   signin(){
@@ -36,7 +36,6 @@ export class LoginPage {
     }).catch((err) =>{
       console.log(err);
     });
-
   }
 
 }

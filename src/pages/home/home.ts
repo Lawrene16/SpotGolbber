@@ -24,8 +24,9 @@ export class HomePage {
   pinspotas;
   colorofmarker;
   addmarkerInfoWindow;
-  dollarprice = '30';
-  spotdesc = '300* North of Konga Lands Opposite the waterfall';
+  dollarprice:any;
+  spotdesc:any;
+  pinnedmarker;
   
 
   constructor(public navCtrl: NavController,
@@ -90,19 +91,40 @@ export class HomePage {
             var dist = loc2.distanceFrom(loc1);
             dist = dist/1000;
 
-        var contentString = '<div id="content">'+
+        var othersContentString = '<div id="content">'+
         '<div id="siteNotice">'+
         '</div>'+
         '<h1 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">'+feature.pintype+'</h1>'+
         '<div id="bodyContent">'+
-        '<p ><h4>Locked | ' +dist+ ' km away </h4>' +
+        '<p ><h4>Rating - 4.82/5.0 (139)</h4>' +  
+        '<p ><h4>Price - $' +feature.price+ '</h4>' +                      
+        '<p ><h4>Details - Locked | ' +dist+ ' km away </h4>' +
         'Details of this location are locked '+
         'purchase spot! to get the details '+
-        '<br><br><button onclick="myfunc" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f;" >Purchase Spot</button>'+
+        '<br><br><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.purchaseSpot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f;" >Purchase Spot</button>'+
         '<br><br><br><br>'+
         '</div>'+
         '</div>';
 
+        var ownerContentString = '<div id="content">'+
+        '<div id="siteNotice">'+
+        '</div>'+
+        '<h1 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">You Pinned This Spot As A '+feature.pintype+'</h1>'+
+        '<div id="bodyContent">'+
+        // '<p ><h4 style="color: #ae6c2f;">This spot belongs to you</h4>' +          
+        '<p ><h4>Rating - 4.82/5.0 (139)</h4>' +  
+        '<p ><h4>Price - $' +feature.price+ '</h4>' +                      
+        '<p ><h4>Details - ' +feature.description+ '</h4>' +
+        '<br><br><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.purchaseSpot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f;" >Remove Spot</button>'+
+        '<br><br><br><br>'+
+        '</div>'+
+        '</div>';
+
+
+        var othersinfowindow = new google.maps.InfoWindow({
+          content: othersContentString
+        });
+      
         marker.addListener('click', function() {
             if(map.getZoom() != 13 && map.getZoom() != 15){
                 map.setZoom(15);
@@ -110,10 +132,15 @@ export class HomePage {
             }
             else if(map.getZoom() == 15){
 
-            return new google.maps.InfoWindow({
-              content: contentString
-            }).open(map, marker);
-
+              if(feature.pinowner == firebase.auth().currentUser.uid){
+                othersinfowindow.setContent(ownerContentString);
+                othersinfowindow.open(map, marker);
+              }
+              else{
+                othersinfowindow.setContent(othersContentString);
+                othersinfowindow.open(map, marker);
+              }
+              
           }
 
           else{
@@ -142,7 +169,7 @@ export class HomePage {
         customicon = '../../assets/icon/blue.png';
         break;  
     }
-    var marker = new google.maps.Marker({
+    this.pinnedmarker = new google.maps.Marker({
       position: position,
       icon: customicon,
       draggable: true,  
@@ -151,7 +178,7 @@ export class HomePage {
     });
 
     var loc1 = new google.maps.LatLng(33.678, -116.243);
-        var loc2 = marker.getPosition();
+        var loc2 = this.pinnedmarker.getPosition();
         var dist = loc2.distanceFrom(loc1);
         dist = dist/1000;
 
@@ -161,8 +188,8 @@ export class HomePage {
         '<h1 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">'+this.pinspotas+'</h1>'+
         '<div id="bodyContent">'+
         '<p ><h4>This spot is ' +dist+ ' km away from your current location </h4>' +
-        '<br><textarea id="price" class="taone" maxlength="5" placeholder="Price in USD">0.00</textarea>'+
-        '<br><textarea class="tatwo" placeholder="Describe Spot Here"></textarea>'+
+        '<br><textarea id="price" class="taone" maxlength="5" placeholder="Price in $">0</textarea>'+
+        '<br><textarea id="desc" class="tatwo" placeholder="Describe Spot Here">Here you can describe this spot more for other users of the app</textarea>'+
         '<br><br><p align="center"><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.listspot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f; margin-right:20px;" >List as '+this.pinspotas+'</button></p>'+
         '<br>><br>'+
         '</div>'+
@@ -172,36 +199,59 @@ export class HomePage {
       content: contentString
     });
     map.setZoom(15);
-    map.panTo(marker.getPosition());
-    this.addmarkerInfoWindow.open(map, marker);
+    map.panTo(this.pinnedmarker.getPosition());
+    this.addmarkerInfoWindow.open(map, this.pinnedmarker);
 
-    marker.addListener('click', function() {
+
+
+    this.pinnedmarker.addListener('click', function() {
         if(map.getZoom() != 13 && map.getZoom() != 15){
           map.setZoom(15);
-          map.panTo(marker.getPosition());
+          map.panTo(this.pinnedmarker.getPosition());
         }
         else if(map.getZoom() == 15){
           
         }
         else{
           map.setZoom(15);
-          map.panTo(marker.getPosition());
+          map.panTo(this.pinnedmarker.getPosition());
         }
       });
 
       this.addmarkerInfoWindow.addListener('closeclick', (e) =>{
         console.log('it has been closed');
-        marker.setMap(null);
+        this.pinnedmarker.setMap(null);
       });
-    return marker;
-}
-
+    return this.pinnedmarker;
+  }
 
   listspot(){
+
+    this.dollarprice = document.getElementById("price");
+    this.spotdesc = document.getElementById("desc");
     
     this.storage.get('position').then((res) =>{
       console.log(this.pinspotas);
-      this.uploadSpotLocation(res, this.pinspotas);
+      console.log(this.dollarprice.value);    
+      
+
+      this.pinuid = this.firedata.push().key;
+      this.firedata.child(this.pinuid).set({
+        pinowner: firebase.auth().currentUser.uid,
+        price: this.dollarprice.value,
+        description: this.spotdesc.value,
+        latLng: res,
+        pintype: this.pinspotas
+      }).then((res) =>{
+        this.addmarkerInfoWindow.close();
+        this.presentToast('Spot pinned as ' + this.pinspotas + ' at $' + this.dollarprice.value );
+        console.log(res);
+      }).catch((err) =>{
+        console.log(err);
+      });
+
+
+
     });
   }
 
@@ -239,9 +289,15 @@ export class HomePage {
     this.fetchAllSpots(this.map);
 
     this.map.addListener('click', (e) => {
-      this.selectRef.open();
       this.storage.set('position', e.latLng);
 
+      if(this.addmarkerInfoWindow == undefined){
+        console.log('no need to call close');
+        this.selectRef.open();
+        
+      }else{
+        // this.addmarkerInfoWindow.close();
+      }
     });    
   }
 
@@ -251,22 +307,8 @@ export class HomePage {
     });
   }
   
-  uploadSpotLocation(position, pintype){
-    this.pinuid = this.firedata.push().key;
-    // console.log(this.pinuid);
-    this.firedata.child(this.pinuid).set({
-      pinowner: firebase.auth().currentUser.uid,
-      price: this.dollarprice,
-      description: this.spotdesc,
-      latLng: position,
-      pintype: pintype
-    }).then((res) =>{
-      this.addmarkerInfoWindow.close();
-      this.presentToast('Spot pinned as ' + pintype + ' at $' + this.dollarprice );
-      console.log(res);
-    }).catch((err) =>{
-      console.log(err);
-    });
+  purchaseSpot(){
+    console.log('Purchase Spot');
   }
 
   addDefaultMarker(map, position){

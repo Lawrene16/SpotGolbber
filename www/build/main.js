@@ -33,8 +33,6 @@ var HomePage = /** @class */ (function () {
         this.storage = storage;
         this.firedata = __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.database().ref('/allpins');
         this.showselect = false;
-        this.dollarprice = '30';
-        this.spotdesc = '300* North of Konga Lands Opposite the waterfall';
         window.ionicPageRef = {
             zone: this.ngZone,
             component: this
@@ -82,27 +80,50 @@ var HomePage = /** @class */ (function () {
                 var loc2 = marker.getPosition();
                 var dist = loc2.distanceFrom(loc1);
                 dist = dist / 1000;
-                var contentString = '<div id="content">' +
+                var othersContentString = '<div id="content">' +
                     '<div id="siteNotice">' +
                     '</div>' +
                     '<h1 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">' + feature.pintype + '</h1>' +
                     '<div id="bodyContent">' +
-                    '<p ><h4>Locked | ' + dist + ' km away </h4>' +
+                    '<p ><h4>Rating - 4.82/5.0 (139)</h4>' +
+                    '<p ><h4>Price - $' + feature.price + '</h4>' +
+                    '<p ><h4>Details - Locked | ' + dist + ' km away </h4>' +
                     'Details of this location are locked ' +
                     'purchase spot! to get the details ' +
-                    '<br><br><button onclick="myfunc" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f;" >Purchase Spot</button>' +
+                    '<br><br><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.purchaseSpot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f;" >Purchase Spot</button>' +
                     '<br><br><br><br>' +
                     '</div>' +
                     '</div>';
+                var ownerContentString = '<div id="content">' +
+                    '<div id="siteNotice">' +
+                    '</div>' +
+                    '<h1 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">You Pinned This Spot As A ' + feature.pintype + '</h1>' +
+                    '<div id="bodyContent">' +
+                    // '<p ><h4 style="color: #ae6c2f;">This spot belongs to you</h4>' +          
+                    '<p ><h4>Rating - 4.82/5.0 (139)</h4>' +
+                    '<p ><h4>Price - $' + feature.price + '</h4>' +
+                    '<p ><h4>Details - ' + feature.description + '</h4>' +
+                    '<br><br><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.purchaseSpot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f;" >Remove Spot</button>' +
+                    '<br><br><br><br>' +
+                    '</div>' +
+                    '</div>';
+                var othersinfowindow = new google.maps.InfoWindow({
+                    content: othersContentString
+                });
                 marker.addListener('click', function () {
                     if (map.getZoom() != 13 && map.getZoom() != 15) {
                         map.setZoom(15);
                         map.panTo(marker.getPosition());
                     }
                     else if (map.getZoom() == 15) {
-                        return new google.maps.InfoWindow({
-                            content: contentString
-                        }).open(map, marker);
+                        if (feature.pinowner == __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid) {
+                            othersinfowindow.setContent(ownerContentString);
+                            othersinfowindow.open(map, marker);
+                        }
+                        else {
+                            othersinfowindow.setContent(othersContentString);
+                            othersinfowindow.open(map, marker);
+                        }
                     }
                     else {
                         map.setZoom(15);
@@ -113,6 +134,7 @@ var HomePage = /** @class */ (function () {
         });
     };
     HomePage.prototype.addMarkerOnClick = function (map, position) {
+        var _this = this;
         var customicon;
         // console.log(this.pinspotas);
         switch (this.pinspotas) {
@@ -129,7 +151,7 @@ var HomePage = /** @class */ (function () {
                 customicon = '../../assets/icon/blue.png';
                 break;
         }
-        var marker = new google.maps.Marker({
+        this.pinnedmarker = new google.maps.Marker({
             position: position,
             icon: customicon,
             draggable: true,
@@ -137,7 +159,7 @@ var HomePage = /** @class */ (function () {
             map: map
         });
         var loc1 = new google.maps.LatLng(33.678, -116.243);
-        var loc2 = marker.getPosition();
+        var loc2 = this.pinnedmarker.getPosition();
         var dist = loc2.distanceFrom(loc1);
         dist = dist / 1000;
         var contentString = '<div id="content">' +
@@ -146,8 +168,8 @@ var HomePage = /** @class */ (function () {
             '<h1 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">' + this.pinspotas + '</h1>' +
             '<div id="bodyContent">' +
             '<p ><h4>This spot is ' + dist + ' km away from your current location </h4>' +
-            '<br><textarea id="price" class="taone" maxlength="5" placeholder="Price in USD">0.00</textarea>' +
-            '<br><textarea class="tatwo" placeholder="Describe Spot Here"></textarea>' +
+            '<br><textarea id="price" class="taone" maxlength="5" placeholder="Price in $">0</textarea>' +
+            '<br><textarea id="desc" class="tatwo" placeholder="Describe Spot Here">Here you can describe this spot more for other users of the app</textarea>' +
             '<br><br><p align="center"><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.listspot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f; margin-right:20px;" >List as ' + this.pinspotas + '</button></p>' +
             '<br>><br>' +
             '</div>' +
@@ -156,31 +178,47 @@ var HomePage = /** @class */ (function () {
             content: contentString
         });
         map.setZoom(15);
-        map.panTo(marker.getPosition());
-        this.addmarkerInfoWindow.open(map, marker);
-        marker.addListener('click', function () {
+        map.panTo(this.pinnedmarker.getPosition());
+        this.addmarkerInfoWindow.open(map, this.pinnedmarker);
+        this.pinnedmarker.addListener('click', function () {
             if (map.getZoom() != 13 && map.getZoom() != 15) {
                 map.setZoom(15);
-                map.panTo(marker.getPosition());
+                map.panTo(this.pinnedmarker.getPosition());
             }
             else if (map.getZoom() == 15) {
             }
             else {
                 map.setZoom(15);
-                map.panTo(marker.getPosition());
+                map.panTo(this.pinnedmarker.getPosition());
             }
         });
         this.addmarkerInfoWindow.addListener('closeclick', function (e) {
             console.log('it has been closed');
-            marker.setMap(null);
+            _this.pinnedmarker.setMap(null);
         });
-        return marker;
+        return this.pinnedmarker;
     };
     HomePage.prototype.listspot = function () {
         var _this = this;
+        this.dollarprice = document.getElementById("price");
+        this.spotdesc = document.getElementById("desc");
         this.storage.get('position').then(function (res) {
             console.log(_this.pinspotas);
-            _this.uploadSpotLocation(res, _this.pinspotas);
+            console.log(_this.dollarprice.value);
+            _this.pinuid = _this.firedata.push().key;
+            _this.firedata.child(_this.pinuid).set({
+                pinowner: __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid,
+                price: _this.dollarprice.value,
+                description: _this.spotdesc.value,
+                latLng: res,
+                pintype: _this.pinspotas
+            }).then(function (res) {
+                _this.addmarkerInfoWindow.close();
+                _this.presentToast('Spot pinned as ' + _this.pinspotas + ' at $' + _this.dollarprice.value);
+                console.log(res);
+            }).catch(function (err) {
+                console.log(err);
+            });
         });
     };
     HomePage.prototype.getdist = function () {
@@ -215,8 +253,14 @@ var HomePage = /** @class */ (function () {
         this.addDefaultMarker(this.map, latLng);
         this.fetchAllSpots(this.map);
         this.map.addListener('click', function (e) {
-            _this.selectRef.open();
             _this.storage.set('position', e.latLng);
+            if (_this.addmarkerInfoWindow == undefined) {
+                console.log('no need to call close');
+                _this.selectRef.open();
+            }
+            else {
+                // this.addmarkerInfoWindow.close();
+            }
         });
     };
     HomePage.prototype.onChange = function () {
@@ -225,23 +269,8 @@ var HomePage = /** @class */ (function () {
             _this.addMarkerOnClick(_this.map, res);
         });
     };
-    HomePage.prototype.uploadSpotLocation = function (position, pintype) {
-        var _this = this;
-        this.pinuid = this.firedata.push().key;
-        // console.log(this.pinuid);
-        this.firedata.child(this.pinuid).set({
-            pinowner: __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid,
-            price: this.dollarprice,
-            description: this.spotdesc,
-            latLng: position,
-            pintype: pintype
-        }).then(function (res) {
-            _this.addmarkerInfoWindow.close();
-            _this.presentToast('Spot pinned as ' + pintype + ' at $' + _this.dollarprice);
-            console.log(res);
-        }).catch(function (err) {
-            console.log(err);
-        });
+    HomePage.prototype.purchaseSpot = function () {
+        console.log('Purchase Spot');
     };
     HomePage.prototype.addDefaultMarker = function (map, position) {
         var defmarker = new google.maps.Marker({
@@ -338,6 +367,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Generated class for the LoginPage page.
  *
+ *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
@@ -351,7 +381,6 @@ var LoginPage = /** @class */ (function () {
     }
     LoginPage.prototype.ionViewDidLoad = function () {
         console.log('ionViewDidLoad LoginPage');
-        this.signin();
     };
     LoginPage.prototype.signin = function () {
         var _this = this;
