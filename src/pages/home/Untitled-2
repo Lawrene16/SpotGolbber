@@ -1,9 +1,5 @@
 import { Component, ViewChild, ElementRef, NgZone } from '@angular/core';
-import { NavController,
-   LoadingController,
-    Select,
-    ToastController,
-     ActionSheetController } from 'ionic-angular';
+import { NavController, LoadingController, Select, ActionSheetController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import firebase from 'firebase';
 
@@ -23,14 +19,12 @@ export class HomePage {
   showselect = false;
   pinspotas;
   colorofmarker;
-  addmarkerInfoWindow;
   dollarprice = '30';
   spotdesc = '300* North of Konga Lands Opposite the waterfall';
   
 
   constructor(public navCtrl: NavController,
     public loadingCtrl: LoadingController,
-    public toastCtrl: ToastController,
     public ngZone: NgZone,
   private actionSheetCtrl: ActionSheetController,
   public storage: Storage) {
@@ -80,7 +74,7 @@ export class HomePage {
         var marker = new google.maps.Marker({
           position: feature.latLng,
           icon: customicon,
-          // draggable: true,  
+          draggable: true,  
           animation: google.maps.Animation.DROP,              
           map: map
         });
@@ -102,25 +96,32 @@ export class HomePage {
         '<br><br><br><br>'+
         '</div>'+
         '</div>';
+        
+        // var infowindow = new google.maps.InfoWindow({
+        //   content: contentString
+        // });
 
         marker.addListener('click', function() {
-            if(map.getZoom() != 13 && map.getZoom() != 15){
-                map.setZoom(15);
-                map.panTo(marker.getPosition());
-            }
-            else if(map.getZoom() == 15){
-
-            return new google.maps.InfoWindow({
-              content: contentString
-            }).open(map, marker);
-
+          if(map.getZoom() != 13 && map.getZoom() != 15){
+              map.setZoom(15);
+              map.panTo(marker.getPosition());
           }
+          else if(map.getZoom() == 15){
 
-          else{
-            map.setZoom(15);
-            map.panTo(marker.getPosition());
-          }
-        });
+          return new google.maps.InfoWindow({
+            content: contentString
+          }).open(map, marker);
+
+        }
+
+        else{
+          map.setZoom(15);
+          map.panTo(marker.getPosition());
+        }
+      });
+  
+
+
       });
     });
   }
@@ -168,12 +169,12 @@ export class HomePage {
         '</div>'+
         '</div>';
     
-    this.addmarkerInfoWindow = new google.maps.InfoWindow({
+    var infowindow = new google.maps.InfoWindow({
       content: contentString
     });
     map.setZoom(15);
     map.panTo(marker.getPosition());
-    this.addmarkerInfoWindow.open(map, marker);
+    infowindow.open(map, marker);
 
     marker.addListener('click', function() {
         if(map.getZoom() != 13 && map.getZoom() != 15){
@@ -181,7 +182,7 @@ export class HomePage {
           map.panTo(marker.getPosition());
         }
         else if(map.getZoom() == 15){
-          
+
         }
         else{
           map.setZoom(15);
@@ -189,10 +190,14 @@ export class HomePage {
         }
       });
 
-      this.addmarkerInfoWindow.addListener('closeclick', (e) =>{
+
+
+      infowindow.addListener('closeclick', (e) =>{
         console.log('it has been closed');
         marker.setMap(null);
       });
+  
+    // this.uploadSpotLocation(position, this.pinspotas);
     return marker;
 }
 
@@ -261,8 +266,6 @@ export class HomePage {
       latLng: position,
       pintype: pintype
     }).then((res) =>{
-      this.addmarkerInfoWindow.close();
-      this.presentToast('Spot pinned as ' + pintype + ' at $' + this.dollarprice );
       console.log(res);
     }).catch((err) =>{
       console.log(err);
@@ -311,19 +314,4 @@ export class HomePage {
  
     actionSheet.present();
   }
-
-  presentToast(message){
-    let toast = this.toastCtrl.create({
-      message: message,
-      duration: 3000,
-      position: 'top'
-    });
-  
-    toast.onDidDismiss(() => {
-      console.log('Dismissed toast');
-    });
-  
-    toast.present();
-  }
-  
 }

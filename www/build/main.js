@@ -24,14 +24,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var HomePage = /** @class */ (function () {
-    function HomePage(navCtrl, loadingCtrl, ngZone, actionSheetCtrl, storage) {
+    function HomePage(navCtrl, loadingCtrl, toastCtrl, ngZone, actionSheetCtrl, storage) {
         this.navCtrl = navCtrl;
         this.loadingCtrl = loadingCtrl;
+        this.toastCtrl = toastCtrl;
         this.ngZone = ngZone;
         this.actionSheetCtrl = actionSheetCtrl;
         this.storage = storage;
         this.firedata = __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.database().ref('/allpins');
         this.showselect = false;
+        this.dollarprice = '30';
+        this.spotdesc = '300* North of Konga Lands Opposite the waterfall';
         window.ionicPageRef = {
             zone: this.ngZone,
             component: this
@@ -71,7 +74,7 @@ var HomePage = /** @class */ (function () {
                 var marker = new google.maps.Marker({
                     position: feature.latLng,
                     icon: customicon,
-                    draggable: true,
+                    // draggable: true,  
                     animation: google.maps.Animation.DROP,
                     map: map
                 });
@@ -91,9 +94,6 @@ var HomePage = /** @class */ (function () {
                     '<br><br><br><br>' +
                     '</div>' +
                     '</div>';
-                // var infowindow = new google.maps.InfoWindow({
-                //   content: contentString
-                // });
                 marker.addListener('click', function () {
                     if (map.getZoom() != 13 && map.getZoom() != 15) {
                         map.setZoom(15);
@@ -114,6 +114,7 @@ var HomePage = /** @class */ (function () {
     };
     HomePage.prototype.addMarkerOnClick = function (map, position) {
         var customicon;
+        // console.log(this.pinspotas);
         switch (this.pinspotas) {
             case "Private Spot":
                 customicon = '../../assets/icon/black.png';
@@ -151,16 +152,12 @@ var HomePage = /** @class */ (function () {
             '<br>><br>' +
             '</div>' +
             '</div>';
-        var infowindow = new google.maps.InfoWindow({
+        this.addmarkerInfoWindow = new google.maps.InfoWindow({
             content: contentString
         });
         map.setZoom(15);
         map.panTo(marker.getPosition());
-        infowindow.open(map, marker);
-        infowindow.addListener('closeclick', function (e) {
-            console.log('it has been closed');
-            marker.setMap(null);
-        });
+        this.addmarkerInfoWindow.open(map, marker);
         marker.addListener('click', function () {
             if (map.getZoom() != 13 && map.getZoom() != 15) {
                 map.setZoom(15);
@@ -173,11 +170,18 @@ var HomePage = /** @class */ (function () {
                 map.panTo(marker.getPosition());
             }
         });
-        // this.uploadSpotLocation(position, this.pinspotas);
+        this.addmarkerInfoWindow.addListener('closeclick', function (e) {
+            console.log('it has been closed');
+            marker.setMap(null);
+        });
         return marker;
     };
     HomePage.prototype.listspot = function () {
-        console.log("d,fjnkjsdf");
+        var _this = this;
+        this.storage.get('position').then(function (res) {
+            console.log(_this.pinspotas);
+            _this.uploadSpotLocation(res, _this.pinspotas);
+        });
     };
     HomePage.prototype.getdist = function () {
         google.maps.LatLng.prototype.distanceFrom = function (latlng) {
@@ -218,32 +222,22 @@ var HomePage = /** @class */ (function () {
     HomePage.prototype.onChange = function () {
         var _this = this;
         this.storage.get('position').then(function (res) {
-            switch (_this.pinspotas) {
-                case "Private Spot":
-                    _this.addMarkerOnClick(_this.map, res);
-                    _this.pinspotas = "d";
-                    break;
-                case "Spot for Lease":
-                    _this.addMarkerOnClick(_this.map, res);
-                    _this.pinspotas = "d";
-                    break;
-                case "Spot for Sale":
-                    _this.addMarkerOnClick(_this.map, res);
-                    break;
-                case "Spot Purchased":
-                    _this.addMarkerOnClick(_this.map, res);
-                    break;
-            }
+            _this.addMarkerOnClick(_this.map, res);
         });
     };
     HomePage.prototype.uploadSpotLocation = function (position, pintype) {
+        var _this = this;
         this.pinuid = this.firedata.push().key;
         // console.log(this.pinuid);
         this.firedata.child(this.pinuid).set({
             pinowner: __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid,
+            price: this.dollarprice,
+            description: this.spotdesc,
             latLng: position,
             pintype: pintype
         }).then(function (res) {
+            _this.addmarkerInfoWindow.close();
+            _this.presentToast('Spot pinned as ' + pintype + ' at $' + _this.dollarprice);
             console.log(res);
         }).catch(function (err) {
             console.log(err);
@@ -286,6 +280,17 @@ var HomePage = /** @class */ (function () {
         });
         actionSheet.present();
     };
+    HomePage.prototype.presentToast = function (message) {
+        var toast = this.toastCtrl.create({
+            message: message,
+            duration: 3000,
+            position: 'top'
+        });
+        toast.onDidDismiss(function () {
+            console.log('Dismissed toast');
+        });
+        toast.present();
+    };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* ViewChild */])('map'),
         __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* ElementRef */]) === "function" && _a || Object)
@@ -298,10 +303,10 @@ var HomePage = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-home',template:/*ion-inline-start:"/home/lawrene/SpotGolbber/src/pages/home/home.html"*/'\n<ion-header >\n\n  <ion-navbar align-title="center" color="dark">\n      <button ion-button left menuToggle>\n        <ion-icon class="icon ion-home custom-icon" name="menu"></ion-icon>\n      </button>\n      <ion-title color="strange">SPOTSWOPPER</ion-title>\n\n      <!-- Button for testing the login page -->\n      <ion-buttons end>\n          <button ion-button icon-only>\n            <ion-icon class="icon ion-home custom-icon" name="notifications"></ion-icon>\n          </button>\n      </ion-buttons>\n\n      <ion-buttons end>\n        <button ion-button icon-only (click)="openModal()">\n          <ion-icon name="options"></ion-icon>\n        </button>\n      </ion-buttons>\n    </ion-navbar>\n\n</ion-header>\n\n<ion-content class="contentdiv">\n  <div  #map id="map"></div>\n\n  <ion-select (ngModelChange)="onChange()" [(ngModel)]="pinspotas" #mySelect>\n    <ion-option>Private Spot</ion-option>\n    <ion-option>Spot for Lease</ion-option>\n    <ion-option>Spot for Sale</ion-option>\n    <ion-option>Spot Purchased</ion-option>\n</ion-select>\n\n<div class="bottombuttonscontainer">\n\n    <ion-grid style="background-color: #222; ">\n      \n      <ion-row  style="justify-content: center;" >\n\n          <div class="testclass">\n              <img style="zoom:5%;" src="../../assets/icon/map-spot.svg"><br>My Spots\n          </div>\n\n          <div class="testclass">\n                  <img style="zoom:5%;" src="../../assets/icon/map.svg"><br>Map Layers\n          </div>\n\n          <div class="testclass" (click)="openOptions(3)">\n              <img style="zoom:5%;" src="../../assets/icon/world-wide-internet-signal.svg"><br>Off Grid\n          </div>\n\n          <div class="testclass" (click)="openOptions(4)">\n              <img style="zoom:5%;" src="../../assets/icon/search.svg"><br>Search Spots\n          </div>\n\n        </ion-row>\n\n\n\n        <!-- <ion-row>\n            <div class="wherebottomlie">\n                  <div *ngIf="showThree" class="offgridcontainer">\n                          <ion-grid>\n                              <ion-row style="text-align:center;">\n                      \n                                    <ion-col >\n                                      <button ion-button block color="redlike"                                 (click)="openSaveModal()">\n                                               Save New Map\n                                       </button>\n                                     </ion-col>\n              \n                                    <ion-col >\n                                         <button ion-button block color="greytwo">\n                                      <ion-icon name="pulse" color="light"></ion-icon>\n                  \n                                                     Go Offline</button>\n                                    </ion-col>\n                                    \n                          </ion-row>\n                       </ion-grid>\n                                      \n                      </div >\n            </div>\n\n        </ion-row> -->\n    </ion-grid>\n    \n</div>\n\n</ion-content>\n'/*ion-inline-end:"/home/lawrene/SpotGolbber/src/pages/home/home.html"*/
         }),
-        __metadata("design:paramtypes", [typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgZone */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgZone */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* ActionSheetController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* ActionSheetController */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */]) === "function" && _g || Object])
+        __metadata("design:paramtypes", [typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* ToastController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* ToastController */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgZone */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgZone */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* ActionSheetController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* ActionSheetController */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */]) === "function" && _h || Object])
     ], HomePage);
     return HomePage;
-    var _a, _b, _c, _d, _e, _f, _g;
+    var _a, _b, _c, _d, _e, _f, _g, _h;
 }());
 
 //# sourceMappingURL=home.js.map
