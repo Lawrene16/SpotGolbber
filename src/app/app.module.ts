@@ -12,6 +12,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { LoginPage } from '../pages/login/login';
 import { AuthProvider } from '../providers/auth/auth';
 import { UploaderProvider } from '../providers/uploader/uploader';
+import { PaymentPage } from '../pages/payment/payment';
 
 var firebaseconfig = {
   apiKey: "AIzaSyDxNm3T6n3CPB5u28aVRIIzggSV9HChpsw",
@@ -27,6 +28,7 @@ var firebaseconfig = {
   declarations: [
     MyApp,
     HomePage,
+    PaymentPage,
     LoginPage,
     ListPage
   ],
@@ -40,6 +42,7 @@ var firebaseconfig = {
   entryComponents: [
     MyApp,
     HomePage,
+    PaymentPage,
     LoginPage,
     ListPage
   ],

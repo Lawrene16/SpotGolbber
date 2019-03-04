@@ -6,6 +6,7 @@ import { NavController,
      ActionSheetController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import firebase from 'firebase';
+import { PaymentPage } from '../payment/payment';
 
 declare var google: any;
 
@@ -308,6 +309,7 @@ export class HomePage {
   
   purchaseSpot(){
     console.log('Purchase Spot');
+    this.navCtrl.setRoot(PaymentPage);
   }
 
   addDefaultMarker(map, position){
