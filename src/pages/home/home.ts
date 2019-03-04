@@ -139,8 +139,7 @@ export class HomePage {
               else{
                 othersinfowindow.setContent(othersContentString);
                 othersinfowindow.open(map, marker);
-              }
-              
+              }  
           }
 
           else{
@@ -172,7 +171,7 @@ export class HomePage {
     this.pinnedmarker = new google.maps.Marker({
       position: position,
       icon: customicon,
-      draggable: true,  
+      // draggable: true,  
       animation: google.maps.Animation.DROP,              
       map: map
     });

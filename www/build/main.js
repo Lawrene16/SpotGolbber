@@ -154,7 +154,7 @@ var HomePage = /** @class */ (function () {
         this.pinnedmarker = new google.maps.Marker({
             position: position,
             icon: customicon,
-            draggable: true,
+            // draggable: true,  
             animation: google.maps.Animation.DROP,
             map: map
         });
