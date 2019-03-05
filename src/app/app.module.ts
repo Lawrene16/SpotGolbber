@@ -5,6 +5,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
+import { HttpClientModule } from '@angular/common/http';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -35,6 +36,7 @@ var firebaseconfig = {
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
+    HttpClientModule,    
     AngularFireModule.initializeApp(firebaseconfig),
     IonicStorageModule.forRoot()
   ],
@@ -49,11 +51,11 @@ var firebaseconfig = {
   providers: [
     StatusBar,
     SplashScreen,
-    UploaderProvider,
+    // UploaderProvider,
     AngularFireAuth,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthProvider,
-    UploaderProvider
+    // UploaderProvider
   ]
 })
 export class AppModule {}
