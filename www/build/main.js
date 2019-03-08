@@ -6,11 +6,10 @@ webpackJsonp([2],{
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HomePage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_storage__ = __webpack_require__(355);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_firebase__ = __webpack_require__(758);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_storage__ = __webpack_require__(354);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_firebase__ = __webpack_require__(759);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_firebase__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__payment_payment__ = __webpack_require__(189);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -24,29 +23,114 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-
 var HomePage = /** @class */ (function () {
     function HomePage(navCtrl, loadingCtrl, toastCtrl, ngZone, actionSheetCtrl, storage) {
+        var _this = this;
         this.navCtrl = navCtrl;
         this.loadingCtrl = loadingCtrl;
         this.toastCtrl = toastCtrl;
         this.ngZone = ngZone;
         this.actionSheetCtrl = actionSheetCtrl;
         this.storage = storage;
-        this.firedata = __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.database().ref('/allpins');
+        this.firedata = __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.database();
         this.showselect = false;
-        window.ionicPageRef = {
-            zone: this.ngZone,
-            component: this
-        };
+        // showOne = false;
+        // showTwo = false;
+        this.showThree = false;
+        // showFour = false;
+        this.showOne = true;
+        this.showTwo = true;
+        // showThree = true;
+        this.showFour = true;
+        window.ionicPageRef = { zone: this.ngZone, component: this };
+        this.firedata.ref('/allpins').on('value', function (countryList) {
+            var countries = [];
+            countryList.forEach(function (country) {
+                countries.push(country.val());
+                // console.log(countries);
+                return false;
+            });
+            _this.spotList = countries;
+            _this.loadedSpotList = countries;
+        });
     }
+    HomePage.prototype.goToSpot = function (item) {
+        this.map.setZoom(15);
+        console.log(item);
+        this.map.panTo(item.latLng);
+    };
+    HomePage.prototype.onInput = function (searchbar) {
+        // Reset items back to all of the items
+        this.initializeItems();
+        // set q to the value of the searchbar
+        var q = searchbar.srcElement.value;
+        // if the value is an empty string don't filter the items
+        if (!q) {
+            return;
+        }
+        this.spotList = this.spotList.sort(function (a, b) {
+            if (a.dist < b.dist)
+                return -1;
+            if (a.dist > b.dist)
+                return 1;
+            return 0;
+        });
+        this.spotList = this.spotList.filter(function (v) {
+            if (v.pintype && q) {
+                if (v.pintype.toLowerCase().indexOf(q.toLowerCase()) > -1) {
+                    return true;
+                }
+                return false;
+            }
+        });
+        console.log(q, this.spotList.length);
+    };
+    HomePage.prototype.initializeItems = function () {
+        this.spotList = this.loadedSpotList;
+    };
+    HomePage.prototype.openOptions = function (index) {
+        switch (index) {
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                if (this.showThree == false) {
+                    this.showThree = true;
+                    this.showOne = false;
+                    this.showTwo = false;
+                    this.showFour = false;
+                    console.log("3 pressed" + this.showThree);
+                    // this.pagebody.scrollToBottom();  
+                }
+                else {
+                    // this.pagebody.scrollToTop(); 
+                    this.showThree = false;
+                    console.log("3 pressed" + this.showThree);
+                }
+                break;
+            case 4:
+                if (this.showFour == false) {
+                    this.showFour = true;
+                    this.showOne = false;
+                    this.showTwo = false;
+                    this.showThree = false;
+                    console.log("4 pressed");
+                    // this.pagebody.scrollToBottom();  
+                }
+                else {
+                    // this.pagebody.scrollToTop(); 
+                    this.showFour = false;
+                }
+                break;
+        }
+    };
     HomePage.prototype.fetchAllSpots = function (map) {
-        this.getdist();
         var load = this.loadingCtrl.create({
             content: 'Loading full map...',
         });
         load.present();
-        this.firedata.orderByChild('mjbmmn').once('value', function (snapshot) {
+        this.firedata.ref('/allpins').orderByChild('mjbmmn').once('value', function (snapshot) {
             var result = snapshot.val();
             var temparr = [];
             for (var key in result) {
@@ -54,10 +138,11 @@ var HomePage = /** @class */ (function () {
             }
             load.dismiss();
             // Has gotten from firebase ready to load
-            temparr.forEach(function (feature) {
+            temparr.forEach(function (firebaseSpot) {
+                var _this = this;
                 // Customize and pin all markers
                 var customicon;
-                switch (feature.pintype) {
+                switch (firebaseSpot.pintype) {
                     case "Private Spot":
                         customicon = '../../assets/icon/black.png';
                         break;
@@ -72,24 +157,20 @@ var HomePage = /** @class */ (function () {
                         break;
                 }
                 var marker = new google.maps.Marker({
-                    position: feature.latLng,
+                    position: firebaseSpot.latLng,
                     icon: customicon,
                     // draggable: true,  
                     animation: google.maps.Animation.DROP,
                     map: map
                 });
-                var loc1 = new google.maps.LatLng(33.678, -116.243);
-                var loc2 = marker.getPosition();
-                var dist = loc2.distanceFrom(loc1);
-                dist = dist / 1000;
                 var othersContentString = '<div id="content">' +
                     '<div id="siteNotice">' +
                     '</div>' +
-                    '<h1 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">' + feature.pintype + '</h1>' +
+                    '<h1 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">' + firebaseSpot.pintype + '</h1>' +
                     '<div id="bodyContent">' +
                     '<p ><h4>Rating - 4.82/5.0 (139)</h4>' +
-                    '<p ><h4>Price - $' + feature.price + '</h4>' +
-                    '<p ><h4>Details - Locked | ' + dist + ' km away </h4>' +
+                    '<p ><h4>Price - $' + firebaseSpot.price + '</h4>' +
+                    '<p ><h4>Details - Locked | ' + firebaseSpot.dist + ' km away </h4>' +
                     'Details of this location are locked ' +
                     'purchase spot! to get the details ' +
                     '<br><br><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.purchaseSpot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f;" >Purchase Spot</button>' +
@@ -99,12 +180,26 @@ var HomePage = /** @class */ (function () {
                 var ownerContentString = '<div id="content">' +
                     '<div id="siteNotice">' +
                     '</div>' +
-                    '<h1 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">You Pinned This Spot As A ' + feature.pintype + '</h1>' +
+                    '<h1 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">You Pinned This Spot As A ' + firebaseSpot.pintype + '</h1>' +
                     '<div id="bodyContent">' +
                     // '<p ><h4 style="color: #ae6c2f;">This spot belongs to you</h4>' +          
                     '<p ><h4>Rating - 4.82/5.0 (139)</h4>' +
-                    '<p ><h4>Price - $' + feature.price + '</h4>' +
-                    '<p ><h4>Details - ' + feature.description + '</h4>' +
+                    '<p ><h4>Price - $' + firebaseSpot.price + '</h4>' +
+                    '<p ><h4>Details - ' + firebaseSpot.description + '</h4>' +
+                    '<br><br><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.purchaseSpot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f;" >Remove Spot</button>' +
+                    '<br><br><br><br>' +
+                    '</div>' +
+                    '</div>';
+                var buyerContentString = '<div id="content">' +
+                    '<div id="siteNotice">' +
+                    '</div>' +
+                    '<h1 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">This spot now belongs to you</h1>' +
+                    '<div id="bodyContent">' +
+                    // '<p ><h4 style="color: #ae6c2f;">This spot belongs to you</h4>' +          
+                    '<p ><h4>Rating - 4.82/5.0 (139)</h4>' +
+                    '<p ><h4>Price - $' + firebaseSpot.price + '</h4>' +
+                    '<p ><h4>Details - ' + firebaseSpot.description + '</h4>' +
+                    '<p ><h4>Location - ' + firebaseSpot.dist + 'km away</h4>' +
                     '<br><br><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.purchaseSpot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f;" >Remove Spot</button>' +
                     '<br><br><br><br>' +
                     '</div>' +
@@ -112,19 +207,57 @@ var HomePage = /** @class */ (function () {
                 var othersinfowindow = new google.maps.InfoWindow({
                     content: othersContentString
                 });
-                marker.addListener('click', function () {
+                var directionsService = new google.maps.DirectionsService();
+                var directionsDisplay = new google.maps.DirectionsRenderer();
+                marker.addListener('click', function (event) {
                     if (map.getZoom() != 13 && map.getZoom() != 15) {
                         map.setZoom(15);
                         map.panTo(marker.getPosition());
                     }
                     else if (map.getZoom() == 15) {
-                        if (feature.pinowner == __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid) {
+                        if (firebaseSpot.pinowner == __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid) {
                             othersinfowindow.setContent(ownerContentString);
                             othersinfowindow.open(map, marker);
                         }
-                        else {
+                        else if (firebaseSpot.pinowner != __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid &&
+                            firebaseSpot.buyer != __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid) {
                             othersinfowindow.setContent(othersContentString);
                             othersinfowindow.open(map, marker);
+                            var firedata = __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.database();
+                            firedata.ref('/tempstore').set({
+                                clickedLat: event.latLng.lat(),
+                                clickedLng: event.latLng.lng(),
+                                clickeduid: firebaseSpot.pinuid
+                            }).then(function (res) {
+                                console.log(res);
+                                _this.presentToast("You have purchased this spot. Please wait for a minimum of 3 hours to confirm purchase");
+                                othersinfowindow.close();
+                            }).catch(function (err) {
+                                console.log(err);
+                            });
+                        }
+                        else if (firebaseSpot.buyer == __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid) {
+                            othersinfowindow.setContent(buyerContentString);
+                            othersinfowindow.open(map, marker);
+                            var end = new google.maps.LatLng(33.678, -116.243);
+                            var request = {
+                                origin: marker.getPosition(),
+                                destination: end,
+                                travelMode: google.maps.TravelMode.DRIVING
+                            };
+                            directionsService.route(request, function (response, status) {
+                                if (status == google.maps.DirectionsStatus.OK) {
+                                    directionsDisplay.setDirections(response);
+                                    directionsDisplay.setMap(map);
+                                }
+                                else {
+                                    // alert("Directions Request from " + start.toUrlValue(6) + " to " + end.toUrlValue(6) + " failed: " + status);
+                                }
+                            });
+                            othersinfowindow.addListener('closeclick', function (e) {
+                                console.log('it has been closed');
+                                directionsDisplay.setMap(null);
+                            });
                         }
                     }
                     else {
@@ -135,8 +268,18 @@ var HomePage = /** @class */ (function () {
             });
         });
     };
+    HomePage.prototype.purchaseSpot = function () {
+        var _this = this;
+        // this.navCtrl.setRoot(PaymentPage);
+        this.firedata.ref('/tempstore').once('value').then(function (res) {
+            console.log(res.val());
+            _this.firedata.ref('/allpins').child(res.val().clickeduid).
+                child('buyer').set(__WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid);
+        });
+    };
     HomePage.prototype.addMarkerOnClick = function (map, position) {
         var _this = this;
+        this.getdist();
         var customicon;
         // console.log(this.pinspotas);
         switch (this.pinspotas) {
@@ -153,7 +296,7 @@ var HomePage = /** @class */ (function () {
                 customicon = '../../assets/icon/blue.png';
                 break;
         }
-        this.pinnedmarker = new google.maps.Marker({
+        var pinnedmarker = new google.maps.Marker({
             position: position,
             icon: customicon,
             // draggable: true,  
@@ -161,44 +304,61 @@ var HomePage = /** @class */ (function () {
             map: map
         });
         var loc1 = new google.maps.LatLng(33.678, -116.243);
-        var loc2 = this.pinnedmarker.getPosition();
+        var loc2 = pinnedmarker.getPosition();
         var dist = loc2.distanceFrom(loc1);
         dist = dist / 1000;
+        this.storage.set('dist', dist);
         var contentString = '<div id="content">' +
             '<div id="siteNotice">' +
             '</div>' +
             '<h1 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">' + this.pinspotas + '</h1>' +
             '<div id="bodyContent">' +
             '<p ><h4>This spot is ' + dist + ' km away from your current location </h4>' +
-            '<br><textarea id="price" class="taone" maxlength="5" placeholder="Price in $">0</textarea>' +
-            '<br><textarea id="desc" class="tatwo" placeholder="Describe Spot Here">Here you can describe this spot more for other users of the app</textarea>' +
+            '<br><textarea id="price" class="taone" maxlength="5" placeholder="Price in $"></textarea>' +
+            '<br><textarea id="desc" class="tatwo" placeholder="Describe Spot Here"></textarea>' +
             '<br><br><p align="center"><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.listspot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f; margin-right:20px;" >List as ' + this.pinspotas + '</button></p>' +
             '<br>><br>' +
+            '</div>' +
+            '</div>';
+        var ownerContentString = '<div id="content">' +
+            '<div id="siteNotice">' +
+            '</div>' +
+            '<h1 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">You Pinned This Spot As A ' + this.pinspotas + '</h1>' +
+            '<div id="bodyContent">' +
+            // '<p ><h4 style="color: #ae6c2f;">This spot belongs to you</h4>' +          
+            '<p ><h4>Rating - 4.82/5.0 (139)</h4>' +
+            '<p ><h4>Price - $' + document.getElementById("price") + '</h4>' +
+            '<p ><h4>Details - ' + document.getElementById("desc") + '</h4>' +
+            '<br><br><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.purchaseSpot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f;" >Remove Spot</button>' +
+            '<br><br><br><br>' +
             '</div>' +
             '</div>';
         this.addmarkerInfoWindow = new google.maps.InfoWindow({
             content: contentString
         });
         map.setZoom(15);
-        map.panTo(this.pinnedmarker.getPosition());
-        this.addmarkerInfoWindow.open(map, this.pinnedmarker);
-        this.pinnedmarker.addListener('click', function () {
+        map.panTo(pinnedmarker.getPosition());
+        this.addmarkerInfoWindow.open(map, pinnedmarker);
+        pinnedmarker.addListener('click', function (event) {
             if (map.getZoom() != 13 && map.getZoom() != 15) {
                 map.setZoom(15);
-                map.panTo(this.pinnedmarker.getPosition());
+                map.panTo(pinnedmarker.getPosition());
             }
             else if (map.getZoom() == 15) {
+                // this.addmarkerInfoWindow.setContent(ownerContentString);
+                // this.addmarkerInfoWindow.open(map, pinnedmarker);
+                _this.presentToast("We are taking time to verify this spot, Please wait for a few hours and try again");
             }
             else {
                 map.setZoom(15);
-                map.panTo(this.pinnedmarker.getPosition());
+                map.panTo(pinnedmarker.getPosition());
             }
         });
         this.addmarkerInfoWindow.addListener('closeclick', function (e) {
             console.log('it has been closed');
-            _this.pinnedmarker.setMap(null);
+            pinnedmarker.setMap(null);
         });
-        return this.pinnedmarker;
+        return pinnedmarker;
     };
     HomePage.prototype.listspot = function () {
         var _this = this;
@@ -207,19 +367,24 @@ var HomePage = /** @class */ (function () {
         this.storage.get('position').then(function (res) {
             console.log(_this.pinspotas);
             console.log(_this.dollarprice.value);
-            _this.pinuid = _this.firedata.push().key;
-            _this.firedata.child(_this.pinuid).set({
-                pinowner: __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid,
-                price: _this.dollarprice.value,
-                description: _this.spotdesc.value,
-                latLng: res,
-                pintype: _this.pinspotas
-            }).then(function (res) {
-                _this.addmarkerInfoWindow.close();
-                _this.presentToast('Spot pinned as ' + _this.pinspotas + ' at $' + _this.dollarprice.value);
-                console.log(res);
-            }).catch(function (err) {
-                console.log(err);
+            _this.storage.get('dist').then(function (distance) {
+                _this.pinuid = _this.firedata.ref('/allpins').push().key;
+                _this.firedata.ref('/allpins').child(_this.pinuid).set({
+                    pinowner: __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid,
+                    price: _this.dollarprice.value,
+                    pinuid: _this.pinuid,
+                    dist: distance,
+                    buyer: 'a',
+                    description: _this.spotdesc.value,
+                    latLng: res,
+                    pintype: _this.pinspotas
+                }).then(function (res) {
+                    _this.addmarkerInfoWindow.close();
+                    _this.presentToast('Spot pinned as ' + _this.pinspotas + ' at $' + _this.dollarprice.value);
+                    console.log(res);
+                }).catch(function (err) {
+                    console.log(err);
+                });
             });
         });
     };
@@ -269,11 +434,8 @@ var HomePage = /** @class */ (function () {
         var _this = this;
         this.storage.get('position').then(function (res) {
             _this.addMarkerOnClick(_this.map, res);
+            console.log(res);
         });
-    };
-    HomePage.prototype.purchaseSpot = function () {
-        console.log('Purchase Spot');
-        this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_4__payment_payment__["a" /* PaymentPage */]);
     };
     HomePage.prototype.addDefaultMarker = function (map, position) {
         var defmarker = new google.maps.Marker({
@@ -323,26 +485,50 @@ var HomePage = /** @class */ (function () {
         });
         toast.present();
     };
+    HomePage.prototype.showMySpots = function () {
+        this.data = [
+            {
+                title: 'Private Spots',
+                details: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                icon: 'ios-add-circle-outline',
+                showDetails: false
+            },
+            {
+                title: 'Spots for Sale',
+                details: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                icon: 'ios-add-circle-outline',
+                showDetails: false
+            },
+            {
+                title: 'Spots for Lease',
+                details: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                icon: 'ios-add-circle-outline',
+                showDetails: false
+            },
+            {
+                title: 'Spots Purchased',
+                details: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                icon: 'ios-add-circle-outline',
+                showDetails: false
+            },
+        ];
+    };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* ViewChild */])('map'),
-        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* ElementRef */])
+        __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* ElementRef */]) === "function" && _a || Object)
     ], HomePage.prototype, "mapElement", void 0);
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* ViewChild */])('mySelect'),
-        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* Select */])
+        __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* Select */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* Select */]) === "function" && _b || Object)
     ], HomePage.prototype, "selectRef", void 0);
     HomePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-home',template:/*ion-inline-start:"/home/lawrene/SpotGolbber/src/pages/home/home.html"*/'\n<ion-header >\n\n  <ion-navbar align-title="center" color="dark">\n      <button ion-button left menuToggle>\n        <ion-icon class="icon ion-home custom-icon" name="menu"></ion-icon>\n      </button>\n      <ion-title color="strange">SPOTSWOPPER</ion-title>\n\n      <!-- Button for testing the login page -->\n      <ion-buttons end>\n          <button ion-button icon-only>\n            <ion-icon class="icon ion-home custom-icon" name="notifications"></ion-icon>\n          </button>\n      </ion-buttons>\n\n      <ion-buttons end>\n        <button ion-button icon-only (click)="openModal()">\n          <ion-icon name="options"></ion-icon>\n        </button>\n      </ion-buttons>\n    </ion-navbar>\n\n</ion-header>\n\n<ion-content class="contentdiv">\n  <div  #map id="map"></div>\n\n  <ion-select (ngModelChange)="onChange()" [(ngModel)]="pinspotas" #mySelect>\n    <ion-option>Private Spot</ion-option>\n    <ion-option>Spot for Lease</ion-option>\n    <ion-option>Spot for Sale</ion-option>\n    <ion-option>Spot Purchased</ion-option>\n</ion-select>\n\n<div class="bottombuttonscontainer">\n\n    <ion-grid style="background-color: #222; ">\n      \n      <ion-row  style="justify-content: center;" >\n\n          <div class="testclass">\n              <img style="zoom:5%;" src="../../assets/icon/map-spot.svg"><br>My Spots\n          </div>\n\n          <div class="testclass">\n                  <img style="zoom:5%;" src="../../assets/icon/map.svg"><br>Map Layers\n          </div>\n\n          <div class="testclass" (click)="openOptions(3)">\n              <img style="zoom:5%;" src="../../assets/icon/world-wide-internet-signal.svg"><br>Off Grid\n          </div>\n\n          <div class="testclass" (click)="openOptions(4)">\n              <img style="zoom:5%;" src="../../assets/icon/search.svg"><br>Search Spots\n          </div>\n\n        </ion-row>\n\n\n\n        <!-- <ion-row>\n            <div class="wherebottomlie">\n                  <div *ngIf="showThree" class="offgridcontainer">\n                          <ion-grid>\n                              <ion-row style="text-align:center;">\n                      \n                                    <ion-col >\n                                      <button ion-button block color="redlike"                                 (click)="openSaveModal()">\n                                               Save New Map\n                                       </button>\n                                     </ion-col>\n              \n                                    <ion-col >\n                                         <button ion-button block color="greytwo">\n                                      <ion-icon name="pulse" color="light"></ion-icon>\n                  \n                                                     Go Offline</button>\n                                    </ion-col>\n                                    \n                          </ion-row>\n                       </ion-grid>\n                                      \n                      </div >\n            </div>\n\n        </ion-row> -->\n    </ion-grid>\n    \n</div>\n\n</ion-content>\n'/*ion-inline-end:"/home/lawrene/SpotGolbber/src/pages/home/home.html"*/
+            selector: 'page-home',template:/*ion-inline-start:"/home/lawrene/SpotGolbber/src/pages/home/home.html"*/'\n<ion-header >\n\n  <ion-navbar  align-title="center" color="dark">\n      <button ion-button left menuToggle>\n        <ion-icon class="icon ion-home custom-icon" name="menu"></ion-icon>\n      </button>\n      <ion-title color="strange">SPOTSWOPPER</ion-title>\n\n      <!-- Button for testing the login page -->\n      <ion-buttons end>\n          <button ion-button icon-only>\n            <ion-icon class="icon ion-home custom-icon" name="notifications"></ion-icon>\n          </button>\n      </ion-buttons>\n\n      <ion-buttons end>\n        <button ion-button icon-only (click)="openModal()">\n          <ion-icon name="options"></ion-icon>\n        </button>\n      </ion-buttons>\n    </ion-navbar>\n\n</ion-header>\n\n<ion-content #content class="contentdiv">\n  <div  #map id="map">\n      \n  </div>\n\n\n<div class="bottombuttonscontainer">\n\n    <ion-grid style="background-color: #222; ">\n      \n        <ion-row  style="justify-content: center;" >\n\n            <div class="testclass">\n                <img style="zoom:5%;" src="../../assets/icon/map-spot.svg"><br>My Spots\n            </div>\n\n            <div class="testclass">\n                    <img style="zoom:5%;" src="../../assets/icon/map.svg"><br>Map Layers\n            </div>\n\n            <div class="testclass" (click)="openOptions(3)">\n                <img style="zoom:5%;" src="../../assets/icon/world-wide-internet-signal.svg"><br>Off Grid\n            </div>\n\n            <div class="testclass" (click)="openOptions(4)">\n                <img style="zoom:5%;" src="../../assets/icon/search.svg"><br>Search Spots\n            </div>\n\n        </ion-row>\n\n\n\n\n\n\n        <!-- <ion-row>\n                <div class="layersbelow">\n                    <br>\n                    <br>\n                    \n                        <ion-list>\n                                <ion-card class="spotcard" *ngFor="let d of data" (click)="toggleDetails(d)"><ion-icon color="primary" item-right [name]="d.icon"></ion-icon>\n                                    {{d.title}}\n                                    <div *ngIf="d.showDetails">{{d.details}}</div>\n                                  </ion-card>\n                        </ion-list>\n                                   \n                        <br>\n                        <br>\n                        \n                </div >\n\n      </ion-row> -->\n\n            <ion-row class="layersbelow" *ngIf="showThree">\n                <div >\n                    <br>\n                        <ion-grid style="width: 97vw;">\n                            <br>\n                            <ion-row style="text-align:center;">\n                            \n                                <ion-col >\n                                    <button ion-button block color="redlike"                                 (click)="openSaveModal()">\n                                            Save New Map\n                                     </button>\n                                </ion-col>\n                    \n                                 <ion-col >\n                                    <button ion-button block color="greytwo">\n                                        <img src="../../assets/icon/heartbeat.png">                                                       Go Offline</button>\n                                        </ion-col>     \n                            </ion-row>\n                        </ion-grid>\n\n                        \n                                            \n                </div >\n\n            </ion-row>\n\n            <ion-row class="layersbelow" *ngIf="showFour">\n                <div >\n                    <br>\n                    <br>\n                    \n                        <ion-searchbar animated=true\n                        placeholder="Search all Spots"\n                        [(ngModel)]="myInput"\n                        [showCancelButton]="shouldShowCancel"\n                        (ionInput)="onInput($event)"\n                        (ionCancel)="onCancel($event)">\n                    </ion-searchbar>\n                <ion-list>\n                        <ion-item *ngFor="let spot of spotList" (click)="goToSpot(spot, i)">\n                                <h2> {{ spot.pintype }} </h2>\n                                <h3> Distance away: <strong>{{ spot.dist }} km away</strong> </h3>\n                        </ion-item>\n                </ion-list>\n                </div >\n\n            </ion-row>\n    </ion-grid>\n    \n</div>\n\n<ion-select (ngModelChange)="onChange()" [(ngModel)]="pinspotas" #mySelect>\n        <ion-option>Private Spot</ion-option>\n        <ion-option>Spot for Lease</ion-option>\n        <ion-option>Spot for Sale</ion-option>\n        <ion-option>Spot Purchased</ion-option>\n        <!-- <ion-option>Not for Sale</ion-option> -->\n        \n    </ion-select>\n    \n</ion-content>\n'/*ion-inline-end:"/home/lawrene/SpotGolbber/src/pages/home/home.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* ToastController */],
-            __WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgZone */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* ActionSheetController */],
-            __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */]])
+        __metadata("design:paramtypes", [typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* ToastController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* ToastController */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgZone */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgZone */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* ActionSheetController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* ActionSheetController */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */]) === "function" && _h || Object])
     ], HomePage);
     return HomePage;
+    var _a, _b, _c, _d, _e, _f, _g, _h;
 }());
 
 //# sourceMappingURL=home.js.map
@@ -355,8 +541,8 @@ var HomePage = /** @class */ (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LoginPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_auth_auth__ = __webpack_require__(245);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_auth_auth__ = __webpack_require__(244);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__home_home__ = __webpack_require__(165);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -413,14 +599,108 @@ var LoginPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 189:
+/***/ 199:
+/***/ (function(module, exports) {
+
+function webpackEmptyAsyncContext(req) {
+	// Here Promise.resolve().then() is used instead of new Promise() to prevent
+	// uncatched exception popping up in devtools
+	return Promise.resolve().then(function() {
+		throw new Error("Cannot find module '" + req + "'.");
+	});
+}
+webpackEmptyAsyncContext.keys = function() { return []; };
+webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
+module.exports = webpackEmptyAsyncContext;
+webpackEmptyAsyncContext.id = 199;
+
+/***/ }),
+
+/***/ 243:
+/***/ (function(module, exports, __webpack_require__) {
+
+var map = {
+	"../pages/login/login.module": [
+		789,
+		1
+	],
+	"../pages/payment/payment.module": [
+		790,
+		0
+	]
+};
+function webpackAsyncContext(req) {
+	var ids = map[req];
+	if(!ids)
+		return Promise.reject(new Error("Cannot find module '" + req + "'."));
+	return __webpack_require__.e(ids[1]).then(function() {
+		return __webpack_require__(ids[0]);
+	});
+};
+webpackAsyncContext.keys = function webpackAsyncContextKeys() {
+	return Object.keys(map);
+};
+webpackAsyncContext.id = 243;
+module.exports = webpackAsyncContext;
+
+/***/ }),
+
+/***/ 244:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AuthProvider; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angularfire2_auth__ = __webpack_require__(245);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angularfire2_auth___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_angularfire2_auth__);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+// import AuthProvider = firebase.auth.AuthProvider;
+/*
+  Generated class for the AuthProvider provider.
+
+  See https://angular.io/guide/dependency-injection for more info on providers
+  and Angular DI.
+*/
+var AuthProvider = /** @class */ (function () {
+    function AuthProvider(afAuth) {
+        var _this = this;
+        this.afAuth = afAuth;
+        afAuth.authState.subscribe(function (user) {
+            _this.user = user;
+        });
+    }
+    AuthProvider.prototype.signInWithEmail = function (newEmail, newPassword) {
+        return this.afAuth.auth.signInWithEmailAndPassword(newEmail, newPassword);
+    };
+    AuthProvider = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_angularfire2_auth__["AngularFireAuth"]])
+    ], AuthProvider);
+    return AuthProvider;
+}());
+
+//# sourceMappingURL=auth.js.map
+
+/***/ }),
+
+/***/ 402:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PaymentPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common_http__ = __webpack_require__(358);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common_http__ = __webpack_require__(357);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -486,9 +766,10 @@ var PaymentPage = /** @class */ (function () {
                 else {
                     _this.stripe.createToken(_this.card).
                         then(function (res) {
-                        // console.log(res.token);
+                        console.log(res.token.id);
                         // console.log(res.token.id);            
-                        _this.makePost(res.token);
+                        // this.makePost(res.token.id);
+                        _this.post('100000', res.token.id);
                     }).catch(function (err) {
                         console.log(err);
                     });
@@ -503,134 +784,86 @@ var PaymentPage = /** @class */ (function () {
         });
     };
     PaymentPage.prototype.makePost = function (cardtoken) {
-        this.http
-            .put('http://caurix.net/stripeApi/stripe-php-6.30.4/spotgolbber.php', {
-            params: new __WEBPACK_IMPORTED_MODULE_2__angular_common_http__["c" /* HttpParams */]().set('stripeToken', cardtoken),
-        }).retry(3)
+        // this.http
+        //   .put(this.baseUrl, {params: new HttpParams().set('stripeToken', cardtoken),
+        //     // headers: new HttpHeaders().set('Authorization', 'some-token')
+        //   }).retry(3)
+        //   .subscribe(
+        //   res => {
+        //     console.log(res);
+        //   },
+        //   (err: HttpErrorResponse) => {
+        //     console.log(err.error);
+        //     console.log(err.name);
+        //     console.log(err.message);
+        //     console.log(err.status);
+        //   }
+        // );
+        var params = { amount: 10000, currency: 'USD', description: 'Test', token: cardtoken };
+        this.http.post(this.baseUrl, JSON.stringify(params), { responseType: 'text' })
             .subscribe(function (res) {
             console.log(res);
-        }, function (err) {
-            console.log(err.error);
-            console.log(err.name);
-            console.log(err.message);
-            console.log(err.status);
         });
+        //   pay(token){
+        //         var headers = new Headers();
+        //         headers.append('Content-Type', 'application/json');
+        //         var myData = JSON.stringify({stripetoken: token});
+        //         this.http.post(this.baseUrl, token)
+        //         .subscribe( (data) =>{
+        //             if(data){
+        //                 console.log(data);
+        //             }
+        //         },(err: HttpErrorResponse) => {
+        //           console.log(err.error);
+        //           console.log(err.name);
+        //           console.log(err.message);
+        //           console.log(err.status);
+        //         });
+        // }
+    };
+    PaymentPage.prototype.post = function (amount, tokenid) {
+        var headers = new Headers({
+            'Content-Type': 'application/x-www-form-urlencoded'
+        });
+        // let options = new RequestOptions({
+        //   headers: headers
+        // });
+        // TODO: Encode the values using encodeURIComponent().
+        var body = 'amount=' + amount + '&token=' + tokenid;
+        return this.http.post(this.baseUrl, body)
+            .toPromise()
+            .then(function (res) {
+            console.log(res);
+        }).catch(function (err) {
+            console.log(err);
+        });
+    };
+    PaymentPage.prototype.handleError = function (error) {
+        console.log(error);
+        return error.json().message || 'Server error, please try again later';
     };
     PaymentPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-payment',template:/*ion-inline-start:"/home/lawrene/SpotGolbber/src/pages/payment/payment.html"*/'<!--\n  Generated template for the PaymentPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <ion-title>payment</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n  <form action="/" method="post" id="payment-form">\n  \n    <div class="form-row">\n      <div id="card-element">\n        <!-- a Stripe Element will be inserted here. -->\n      </div>\n\n      <!-- Used to display Element errors -->\n      <div id="card-errors" role="alert"></div>\n    </div>\n\n  <button ion-button block large>Add Card</button>\n    \n  </form>\n\n</ion-content>\n'/*ion-inline-end:"/home/lawrene/SpotGolbber/src/pages/payment/payment.html"*/,
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_common_http__["a" /* HttpClient */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_common_http__["a" /* HttpClient */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]) === "function" && _c || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */],
+            __WEBPACK_IMPORTED_MODULE_2__angular_common_http__["a" /* HttpClient */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]])
     ], PaymentPage);
     return PaymentPage;
-    var _a, _b, _c;
 }());
 
 //# sourceMappingURL=payment.js.map
 
 /***/ }),
 
-/***/ 200:
-/***/ (function(module, exports) {
-
-function webpackEmptyAsyncContext(req) {
-	// Here Promise.resolve().then() is used instead of new Promise() to prevent
-	// uncatched exception popping up in devtools
-	return Promise.resolve().then(function() {
-		throw new Error("Cannot find module '" + req + "'.");
-	});
-}
-webpackEmptyAsyncContext.keys = function() { return []; };
-webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
-module.exports = webpackEmptyAsyncContext;
-webpackEmptyAsyncContext.id = 200;
-
-/***/ }),
-
-/***/ 244:
-/***/ (function(module, exports, __webpack_require__) {
-
-var map = {
-	"../pages/login/login.module": [
-		788,
-		1
-	],
-	"../pages/payment/payment.module": [
-		789,
-		0
-	]
-};
-function webpackAsyncContext(req) {
-	var ids = map[req];
-	if(!ids)
-		return Promise.reject(new Error("Cannot find module '" + req + "'."));
-	return __webpack_require__.e(ids[1]).then(function() {
-		return __webpack_require__(ids[0]);
-	});
-};
-webpackAsyncContext.keys = function webpackAsyncContextKeys() {
-	return Object.keys(map);
-};
-webpackAsyncContext.id = 244;
-module.exports = webpackAsyncContext;
-
-/***/ }),
-
-/***/ 245:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AuthProvider; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angularfire2_auth__ = __webpack_require__(246);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angularfire2_auth___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_angularfire2_auth__);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-// import AuthProvider = firebase.auth.AuthProvider;
-/*
-  Generated class for the AuthProvider provider.
-
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
-var AuthProvider = /** @class */ (function () {
-    function AuthProvider(afAuth) {
-        var _this = this;
-        this.afAuth = afAuth;
-        afAuth.authState.subscribe(function (user) {
-            _this.user = user;
-        });
-    }
-    AuthProvider.prototype.signInWithEmail = function (newEmail, newPassword) {
-        return this.afAuth.auth.signInWithEmailAndPassword(newEmail, newPassword);
-    };
-    AuthProvider = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])(),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_angularfire2_auth__["AngularFireAuth"]])
-    ], AuthProvider);
-    return AuthProvider;
-}());
-
-//# sourceMappingURL=auth.js.map
-
-/***/ }),
-
-/***/ 402:
+/***/ 403:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(403);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_module__ = __webpack_require__(407);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(404);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_module__ = __webpack_require__(408);
 
 
 Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* platformBrowserDynamic */])().bootstrapModule(__WEBPACK_IMPORTED_MODULE_1__app_module__["a" /* AppModule */]);
@@ -638,34 +871,38 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 
 /***/ }),
 
-/***/ 407:
+/***/ 408:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__(52);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_storage__ = __webpack_require__(355);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_component__ = __webpack_require__(782);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_home_home__ = __webpack_require__(165);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_list_list__ = __webpack_require__(786);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__angular_common_http__ = __webpack_require__(358);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_angularfire2__ = __webpack_require__(787);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_angularfire2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_angularfire2__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_angularfire2_auth__ = __webpack_require__(246);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_angularfire2_auth___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_angularfire2_auth__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ionic_native_status_bar__ = __webpack_require__(398);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ionic_native_splash_screen__ = __webpack_require__(401);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__pages_login_login__ = __webpack_require__(188);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__providers_auth_auth__ = __webpack_require__(245);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__pages_payment_payment__ = __webpack_require__(189);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_forms__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mobiscroll_angular__ = __webpack_require__(401);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ionic_angular__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_storage__ = __webpack_require__(354);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__app_component__ = __webpack_require__(783);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_home_home__ = __webpack_require__(165);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_list_list__ = __webpack_require__(787);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__angular_common_http__ = __webpack_require__(357);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_angularfire2__ = __webpack_require__(788);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_angularfire2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_angularfire2__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_angularfire2_auth__ = __webpack_require__(245);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_angularfire2_auth___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11_angularfire2_auth__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__ionic_native_status_bar__ = __webpack_require__(397);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__ionic_native_splash_screen__ = __webpack_require__(400);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__pages_login_login__ = __webpack_require__(188);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__providers_auth_auth__ = __webpack_require__(244);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__pages_payment_payment__ = __webpack_require__(402);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
 
 
 
@@ -693,41 +930,43 @@ var AppModule = /** @class */ (function () {
     function AppModule() {
     }
     AppModule = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["I" /* NgModule */])({
+        Object(__WEBPACK_IMPORTED_MODULE_3__angular_core__["I" /* NgModule */])({
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_4__app_component__["a" /* MyApp */],
-                __WEBPACK_IMPORTED_MODULE_5__pages_home_home__["a" /* HomePage */],
-                __WEBPACK_IMPORTED_MODULE_14__pages_payment_payment__["a" /* PaymentPage */],
-                __WEBPACK_IMPORTED_MODULE_12__pages_login_login__["a" /* LoginPage */],
-                __WEBPACK_IMPORTED_MODULE_6__pages_list_list__["a" /* ListPage */]
+                __WEBPACK_IMPORTED_MODULE_6__app_component__["a" /* MyApp */],
+                __WEBPACK_IMPORTED_MODULE_7__pages_home_home__["a" /* HomePage */],
+                __WEBPACK_IMPORTED_MODULE_16__pages_payment_payment__["a" /* PaymentPage */],
+                __WEBPACK_IMPORTED_MODULE_14__pages_login_login__["a" /* LoginPage */],
+                __WEBPACK_IMPORTED_MODULE_8__pages_list_list__["a" /* ListPage */]
             ],
             imports: [
-                __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
-                __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["d" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_4__app_component__["a" /* MyApp */], {}, {
+                __WEBPACK_IMPORTED_MODULE_0__angular_forms__["a" /* FormsModule */],
+                __WEBPACK_IMPORTED_MODULE_1__mobiscroll_angular__["a" /* MbscModule */],
+                __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__["a" /* BrowserModule */],
+                __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["d" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_6__app_component__["a" /* MyApp */], {}, {
                     links: [
                         { loadChildren: '../pages/login/login.module#LoginPageModule', name: 'LoginPage', segment: 'login', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/payment/payment.module#PaymentPageModule', name: 'PaymentPage', segment: 'payment', priority: 'low', defaultHistory: [] }
                     ]
                 }),
-                __WEBPACK_IMPORTED_MODULE_7__angular_common_http__["b" /* HttpClientModule */],
-                __WEBPACK_IMPORTED_MODULE_8_angularfire2__["AngularFireModule"].initializeApp(firebaseconfig),
-                __WEBPACK_IMPORTED_MODULE_3__ionic_storage__["a" /* IonicStorageModule */].forRoot()
+                __WEBPACK_IMPORTED_MODULE_9__angular_common_http__["b" /* HttpClientModule */],
+                __WEBPACK_IMPORTED_MODULE_10_angularfire2__["AngularFireModule"].initializeApp(firebaseconfig),
+                __WEBPACK_IMPORTED_MODULE_5__ionic_storage__["a" /* IonicStorageModule */].forRoot()
             ],
-            bootstrap: [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["b" /* IonicApp */]],
+            bootstrap: [__WEBPACK_IMPORTED_MODULE_4_ionic_angular__["b" /* IonicApp */]],
             entryComponents: [
-                __WEBPACK_IMPORTED_MODULE_4__app_component__["a" /* MyApp */],
-                __WEBPACK_IMPORTED_MODULE_5__pages_home_home__["a" /* HomePage */],
-                __WEBPACK_IMPORTED_MODULE_14__pages_payment_payment__["a" /* PaymentPage */],
-                __WEBPACK_IMPORTED_MODULE_12__pages_login_login__["a" /* LoginPage */],
-                __WEBPACK_IMPORTED_MODULE_6__pages_list_list__["a" /* ListPage */]
+                __WEBPACK_IMPORTED_MODULE_6__app_component__["a" /* MyApp */],
+                __WEBPACK_IMPORTED_MODULE_7__pages_home_home__["a" /* HomePage */],
+                __WEBPACK_IMPORTED_MODULE_16__pages_payment_payment__["a" /* PaymentPage */],
+                __WEBPACK_IMPORTED_MODULE_14__pages_login_login__["a" /* LoginPage */],
+                __WEBPACK_IMPORTED_MODULE_8__pages_list_list__["a" /* ListPage */]
             ],
             providers: [
-                __WEBPACK_IMPORTED_MODULE_10__ionic_native_status_bar__["a" /* StatusBar */],
-                __WEBPACK_IMPORTED_MODULE_11__ionic_native_splash_screen__["a" /* SplashScreen */],
+                __WEBPACK_IMPORTED_MODULE_12__ionic_native_status_bar__["a" /* StatusBar */],
+                __WEBPACK_IMPORTED_MODULE_13__ionic_native_splash_screen__["a" /* SplashScreen */],
                 // UploaderProvider,
-                __WEBPACK_IMPORTED_MODULE_9_angularfire2_auth__["AngularFireAuth"],
-                { provide: __WEBPACK_IMPORTED_MODULE_1__angular_core__["u" /* ErrorHandler */], useClass: __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["c" /* IonicErrorHandler */] },
-                __WEBPACK_IMPORTED_MODULE_13__providers_auth_auth__["a" /* AuthProvider */],
+                __WEBPACK_IMPORTED_MODULE_11_angularfire2_auth__["AngularFireAuth"],
+                { provide: __WEBPACK_IMPORTED_MODULE_3__angular_core__["u" /* ErrorHandler */], useClass: __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["c" /* IonicErrorHandler */] },
+                __WEBPACK_IMPORTED_MODULE_15__providers_auth_auth__["a" /* AuthProvider */],
             ]
         })
     ], AppModule);
@@ -738,17 +977,17 @@ var AppModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 782:
+/***/ 783:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MyApp; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(398);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(401);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(397);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(400);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_home_home__ = __webpack_require__(165);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_payment_payment__ = __webpack_require__(189);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_login_login__ = __webpack_require__(188);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -769,7 +1008,7 @@ var MyApp = /** @class */ (function () {
         this.platform = platform;
         this.statusBar = statusBar;
         this.splashScreen = splashScreen;
-        this.rootPage = __WEBPACK_IMPORTED_MODULE_5__pages_payment_payment__["a" /* PaymentPage */];
+        this.rootPage = __WEBPACK_IMPORTED_MODULE_5__pages_login_login__["a" /* LoginPage */];
         this.initializeApp();
         // used for an example of ngFor and navigation
         this.pages = [
@@ -799,28 +1038,27 @@ var MyApp = /** @class */ (function () {
     };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* ViewChild */])(__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* Nav */]),
-        __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* Nav */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* Nav */]) === "function" && _a || Object)
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* Nav */])
     ], MyApp.prototype, "nav", void 0);
     MyApp = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({template:/*ion-inline-start:"/home/lawrene/SpotGolbber/src/app/app.html"*/'<ion-menu persistent="true" [content]="content" type="overlay">\n    <ion-header no-border>\n      <ion-toolbar>\n            <!-- <ion-title> -->\n                <div class="container" (click)="openprofile()">\n                    <img class="userimage" src="../../assets/icon/user.svg">\n                    <div class="user-name">Edung Divinefavour</div>\n                    <div class="user-mail">lawrenedickson49@gmail.com</div>\n                </div>\n            <!-- </ion-title> -->\n\n      </ion-toolbar>\n    </ion-header>\n    \n    <ion-content>\n\n        <ion-list>\n          <button ion-item menuClose *ngFor="let p of pages" (click)="openPage(p)">\n              <ion-icon item-start [name]="p.icon"></ion-icon>\n              <!-- <ion-icon item-start [name]="p.icon" [color]="isActive(p)"></ion-icon> -->\n\n              {{ p.title }}\n            </button>\n        </ion-list>\n      </ion-content>\n</ion-menu>\n      \n<ion-nav id="nav" [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>'/*ion-inline-end:"/home/lawrene/SpotGolbber/src/app/app.html"*/
         }),
-        __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* Platform */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* Platform */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */]) === "function" && _d || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* Platform */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */]])
     ], MyApp);
     return MyApp;
-    var _a, _b, _c, _d;
 }());
 
 //# sourceMappingURL=app.component.js.map
 
 /***/ }),
 
-/***/ 786:
+/***/ 787:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ListPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(51);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -871,5 +1109,5 @@ var ListPage = /** @class */ (function () {
 
 /***/ })
 
-},[402]);
+},[403]);
 //# sourceMappingURL=main.js.map

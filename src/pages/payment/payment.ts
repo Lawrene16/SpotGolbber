@@ -71,9 +71,10 @@ export class PaymentPage {
 
             this.stripe.createToken(this.card).
             then((res) =>{
-            // console.log(res.token);
+            console.log(res.token.id);
             // console.log(res.token.id);            
-            this.makePost(res.token);
+            // this.makePost(res.token.id);
+            this.post('100000', res.token.id);
 
           }).catch((err) =>{
               console.log(err);
@@ -91,23 +92,29 @@ export class PaymentPage {
   }
 
   makePost(cardtoken){
-    this.http
-      .put('http://caurix.net/stripeApi/stripe-php-6.30.4/spotgolbber.php', {
-        params: new HttpParams().set('stripeToken', cardtoken),
-        // headers: new HttpHeaders().set('Authorization', 'some-token')
-      }).retry(3)
-      .subscribe(
-      res => {
+    // this.http
+    //   .put(this.baseUrl, {params: new HttpParams().set('stripeToken', cardtoken),
+    //     // headers: new HttpHeaders().set('Authorization', 'some-token')
+    //   }).retry(3)
+    //   .subscribe(
+    //   res => {
+    //     console.log(res);
+    //   },
+    //   (err: HttpErrorResponse) => {
+    //     console.log(err.error);
+    //     console.log(err.name);
+    //     console.log(err.message);
+    //     console.log(err.status);
+    //   }
+    // );
+
+    let params={amount:10000, currency:'USD',description:'Test', token:cardtoken};
+    
+    this.http.post(this.baseUrl, JSON.stringify(params),{responseType: 'text'})
+        .subscribe(res => {
         console.log(res);
-      },
-      (err: HttpErrorResponse) => {
-        console.log(err.error);
-        console.log(err.name);
-        console.log(err.message);
-        console.log(err.status);
-      }
-    );
-  }
+          });
+            
 
 //   pay(token){
 //         var headers = new Headers();
@@ -127,25 +134,33 @@ export class PaymentPage {
 // }
 
 
+        }
 
 
 
-  // sendPostToken(cardtoken){
-  //   var headers = new Headers();
-  //   var params = new HttpParams();
+        post(amount, tokenid) {
+          let headers = new Headers({
+            'Content-Type': 'application/x-www-form-urlencoded'
+          });
+          // let options = new RequestOptions({
+          //   headers: headers
+          // });
+          // TODO: Encode the values using encodeURIComponent().
+          let body = 'amount=' + amount + '&token=' + tokenid;
 
-  //   params.append('stripeToken', cardtoken);
-  // //   headers.append("Accept", 'application/json');
-  // //   headers.append('Content-Type', 'application/json' );
-  //   const requestOptions = new RequestOptions({ params: params });
+          return this.http.post(this.baseUrl, body)
+            .toPromise()
+            .then((res) => {
+              console.log(res);
+            }).catch((err) => {
+              console.log(err);
+            })
+        }
+      
+        handleError(error) {
+          console.log(error);
+          return error.json().message || 'Server error, please try again later';
+        }
+        
 
-
-  //   this.http.post("http://127.0.0.1:3000/customers", cardtoken, requestOptions)
-  //     .subscribe(data => {
-  //       console.log(data['_body']);
-  //      }, error => {
-  //       console.log(error);
-  //     });
-  // }
-  
 }

@@ -1,8 +1,7 @@
 page-home {
 
     #map{
-        height: 100vh;
-        // width: 100vh;
+        height: 45vh
     }
 
     .item-cover {
@@ -22,19 +21,16 @@ page-home {
         text-align: center;
         padding-left: 5vw;
         color: #fff;
-        // background-color: #000;
     }
 
     .bottomTextclass{
         text-align: center;
-        // padding-left: 22px;
     }
 
     .bottombuttonscontainer{
         text-align: center;
         position: absolute;
         width: 100vw;
-        bottom: 0vh;
         background-color: #212121;
         left: 0vw;
         z-index: 5;
@@ -47,6 +43,7 @@ page-home {
 
     ion-grid {
         height: 100%;
+        width: 100%;
     }
 
     .taone {
@@ -75,5 +72,14 @@ page-home {
         background-color: #f8f8f8;
         font-size: 16px;
         resize: none;
+      }
+
+      ion-searchbar{
+        background: cadetblue;
+        width: 97vw;
+      }
+
+      .layersbelow{
+        height: 40vh;
       }
 }
