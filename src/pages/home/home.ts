@@ -7,6 +7,8 @@ import { NavController,
 import { Storage } from '@ionic/storage';
 import firebase from 'firebase';
 import { PaymentPage } from '../payment/payment';
+import { MbscModule, MbscFormOptions } from '@mobiscroll/angular';
+import { FormsModule } from '@angular/forms';
 
 declare var google: any;
 
@@ -29,16 +31,29 @@ export class HomePage {
   dollarprice:any;
   spotdesc:any;
   // showOne = false;
-  // showTwo = false;
+  showTwo = false;
   showThree = false;
-  // showFour = false;
+  showFour = false;
   showOne = true;
-  showTwo = true;
+  // showTwo = true;
   // showThree = true;
-  showFour = true;
+  // showFour = true;
   spotList:Array<any>;
   loadedSpotList:Array<any>;
-  
+  privateSpotList:Array<any> = [];  
+  leaseSpotList:Array<any> = []; 
+  saleSpotList:Array<any> = [];  
+  purchasedSpotList:Array<any> = []; 
+
+  formSettings: MbscFormOptions = {
+      lang: 'fr',
+      theme: 'ios'
+  }
+  listviewSettings: any = {
+      swipe: false,
+      enhance: true
+  }
+
 
   constructor(public navCtrl: NavController,
     public loadingCtrl: LoadingController,
@@ -51,22 +66,61 @@ export class HomePage {
 
     this.firedata.ref('/allpins').on('value', countryList => {
       let countries = [];
+      
       countryList.forEach( country => {
         countries.push(country.val());
-
-        // console.log(countries);
         return false;
       });
-    
       this.spotList = countries;
       this.loadedSpotList = countries;
+
+
+      this.spotList.forEach(spot =>{
+        // Load my private spots
+        if(
+          (spot.pintype == "Private Spot" && spot.pinowner == firebase.auth().currentUser.uid) ||
+          (spot.pintype == "Private Spot" && spot.buyer == firebase.auth().currentUser.uid)
+        ){
+            this.privateSpotList.push(spot);
+            console.log(this.privateSpotList);
+        }
+
+        // Load lease spots
+        if(
+          (spot.pintype == "Spot for Lease" && spot.pinowner == firebase.auth().currentUser.uid) ||
+          (spot.pintype == "Spot for Lease" && spot.buyer == firebase.auth().currentUser.uid)
+        ){
+            this.leaseSpotList.push(spot);
+            console.log(this.leaseSpotList);
+        }
+
+        // Load spots for sale
+        if(
+          (spot.pintype == "Spot for Sale" && spot.pinowner == firebase.auth().currentUser.uid) ||
+          (spot.pintype == "Spot for Sale" && spot.buyer == firebase.auth().currentUser.uid)
+        ){
+            this.saleSpotList.push(spot);
+            console.log(this.saleSpotList);
+        }
+
+        // Load spots purchased
+        if(
+          (spot.pintype == "Spot Purchased" && spot.pinowner == firebase.auth().currentUser.uid) ||
+          (spot.pintype == "Spot Purchased" && spot.buyer == firebase.auth().currentUser.uid)
+        ){
+            this.purchasedSpotList.push(spot);
+            console.log(this.purchasedSpotList);
+        }
+
+
+      });
     });
 
   }
 
   goToSpot(item){
     this.map.setZoom(15);
-    console.log(item);
+    // console.log(item);
     this.map.panTo(item.latLng);
   }
   
@@ -116,16 +170,16 @@ export class HomePage {
 
         case 3:
           if(this.showThree == false){
-            this.showThree = true; 
-            this.showOne = false; 
-            this.showTwo = false;
-            this.showFour = false;
+            // this.showThree = true; 
+            // this.showOne = false; 
+            // this.showTwo = false;
+            // this.showFour = false;
             console.log("3 pressed" + this.showThree);
             // this.pagebody.scrollToBottom();  
             
           }else{
             // this.pagebody.scrollToTop(); 
-            this.showThree = false;
+            // this.showThree = false;
             console.log("3 pressed" + this.showThree);
             
           }
@@ -133,16 +187,16 @@ export class HomePage {
 
         case 4:
             if(this.showFour == false){
-              this.showFour = true;
-              this.showOne = false; 
-              this.showTwo = false;
-              this.showThree = false;
+              // this.showFour = true;
+              // this.showOne = false; 
+              // this.showTwo = false;
+              // this.showThree = false;
               console.log("4 pressed");
               
               // this.pagebody.scrollToBottom();  
             }else{
               // this.pagebody.scrollToTop(); 
-              this.showFour = false;
+              // this.showFour = false;
             }
           break;
 
@@ -229,7 +283,6 @@ export class HomePage {
         '<div id="bodyContent">'+
         // '<p ><h4 style="color: #ae6c2f;">This spot belongs to you</h4>' +          
         '<p ><h4>Rating - 4.82/5.0 (139)</h4>' +  
-        '<p ><h4>Price - $' +firebaseSpot.price+ '</h4>' +                      
         '<p ><h4>Details - ' +firebaseSpot.description+ '</h4>' +
         '<p ><h4>Location - ' +firebaseSpot.dist+ 'km away</h4>' + 
         '<br><br><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.purchaseSpot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f;" >Remove Spot</button>'+

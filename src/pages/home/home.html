@@ -1,4 +1,3 @@
-
 <ion-header >
 
   <ion-navbar  align-title="center" color="dark">
@@ -77,6 +76,67 @@
 
       </ion-row> -->
 
+      
+        <ion-row class="layersbelow" *ngIf="showOne">                                
+            <mbsc-accordion> 
+                <mbsc-card collapsible>
+                    <mbsc-card-header style="background: #222;">
+                    <mbsc-avatar src="../../assets/icon/lock.svg" style="zoom:80%;"></mbsc-avatar>                                
+                    <mbsc-card-title style="color:white">Private Spots</mbsc-card-title>
+                    </mbsc-card-header>
+                    <mbsc-card-content>
+                        <mbsc-listview [options]="listviewSettings">
+                            <mbsc-listview-item *ngFor="let spot of privateSpotList">
+                                <h3>{{spot.dist}}km away</h3>
+                            </mbsc-listview-item>
+                        </mbsc-listview>
+                    </mbsc-card-content>
+                </mbsc-card>
+
+                <mbsc-card collapsible>
+                        <mbsc-card-header style="background: #222;">
+                        <mbsc-avatar src="../../assets/icon/give-money.svg" style="zoom:80%;"></mbsc-avatar>                                
+                        <mbsc-card-title style="color:white">Spots for Lease</mbsc-card-title>
+                        </mbsc-card-header>
+                        <mbsc-card-content>
+                            <mbsc-listview [options]="listviewSettings">
+                                <mbsc-listview-item *ngFor="let spot of leaseSpotList">
+                                    <h3>{{spot.dist}}km away</h3>
+                                </mbsc-listview-item>
+                            </mbsc-listview>
+                        </mbsc-card-content>
+                </mbsc-card>
+
+                <mbsc-card collapsible>
+                        <mbsc-card-header style="background: #222;">
+                        <mbsc-avatar src="../../assets/icon/tag.svg" style="zoom:80%;"></mbsc-avatar>                                
+                        <mbsc-card-title style="color:white">Spots for Sale</mbsc-card-title>
+                        </mbsc-card-header>
+                        <mbsc-card-content>
+                            <mbsc-listview [options]="listviewSettings">
+                                <mbsc-listview-item *ngFor="let spot of saleSpotList">
+                                    <h3>{{spot.dist}}km away</h3>
+                                </mbsc-listview-item>
+                            </mbsc-listview>
+                        </mbsc-card-content>
+                </mbsc-card>
+
+                <mbsc-card collapsible>
+                        <mbsc-card-header style="background: #222;">
+                        <mbsc-avatar src="../../assets/icon/cart.svg" style="zoom:80%;"></mbsc-avatar>                                
+                        <mbsc-card-title style="color:white">Spots for Sale</mbsc-card-title>
+                        </mbsc-card-header>
+                        <mbsc-card-content>
+                            <mbsc-listview [options]="listviewSettings">
+                                <mbsc-listview-item *ngFor="let spot of purchasedSpotList">
+                                    <h3>{{spot.dist}}km away</h3>
+                                </mbsc-listview-item>
+                            </mbsc-listview>
+                        </mbsc-card-content>
+                </mbsc-card>
+            </mbsc-accordion>
+        </ion-row>
+                
             <ion-row class="layersbelow" *ngIf="showThree">
                 <div >
                     <br>

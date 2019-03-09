@@ -36565,6 +36565,10 @@ page-home .layersbelow {
   height: 40vh;
 }
 
+page-home mbsc-accordion {
+  width: 97vw;
+}
+
 page-login .loginbtns {
   height: 40px;
   color: white;

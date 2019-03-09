@@ -1,5 +1,5 @@
-import { FormsModule } from '@angular/forms';
 import { MbscModule } from '@mobiscroll/angular';
+import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
@@ -16,6 +16,8 @@ import { LoginPage } from '../pages/login/login';
 import { AuthProvider } from '../providers/auth/auth';
 import { UploaderProvider } from '../providers/uploader/uploader';
 import { PaymentPage } from '../pages/payment/payment';
+// import { AccordionListComponent } from '../components/accordion-list/accordion-list';
+// import { ExpandableComponent } from '../components/expandable/expandable';
 
 var firebaseconfig = {
   apiKey: "AIzaSyDxNm3T6n3CPB5u28aVRIIzggSV9HChpsw",
@@ -32,12 +34,13 @@ var firebaseconfig = {
     MyApp,
     HomePage,
     PaymentPage,
+    // AccordionListComponent,
     LoginPage,
     ListPage
   ],
   imports: [ 
+    MbscModule, 
     FormsModule, 
-    MbscModule,
     BrowserModule,
     IonicModule.forRoot(MyApp),
     HttpClientModule,    
