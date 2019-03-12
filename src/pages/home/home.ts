@@ -367,14 +367,14 @@ export class HomePage {
   }
 
   purchaseSpot(){
-    // this.navCtrl.setRoot(PaymentPage);
-    this.firedata.ref('/tempstore').once('value').then((res) =>{
-      console.log(res.val());
+    this.navCtrl.setRoot(PaymentPage);
+    // this.firedata.ref('/tempstore').once('value').then((res) =>{
+    //   console.log(res.val());
 
 
-      this.firedata.ref('/allpins').child(res.val().clickeduid).
-      child('buyer').set(firebase.auth().currentUser.uid);
-    });
+    //   this.firedata.ref('/allpins').child(res.val().clickeduid).
+    //   child('buyer').set(firebase.auth().currentUser.uid);
+    // });
 
   }
 

@@ -74,93 +74,50 @@ export class PaymentPage {
             console.log(res.token.id);
             // console.log(res.token.id);            
             // this.makePost(res.token.id);
-            this.post('100000', res.token.id);
+            this.makePost(res.token.id);
 
           }).catch((err) =>{
               console.log(err);
           })
-
-          // const ress = JSON.stringify(result);
-          // console.log(JSON.parse(ress));
-          // this.makePost(ress);
-          // console.log(ress);
-          // console.log(result);
-          // alert(result);
         }
       });
     });
   }
 
+
+
   makePost(cardtoken){
-    // this.http
-    //   .put(this.baseUrl, {params: new HttpParams().set('stripeToken', cardtoken),
-    //     // headers: new HttpHeaders().set('Authorization', 'some-token')
-    //   }).retry(3)
-    //   .subscribe(
-    //   res => {
-    //     console.log(res);
-    //   },
-    //   (err: HttpErrorResponse) => {
-    //     console.log(err.error);
-    //     console.log(err.name);
-    //     console.log(err.message);
-    //     console.log(err.status);
-    //   }
-    // );
-
-    let params={amount:10000, currency:'USD',description:'Test', token:cardtoken};
-    
-    this.http.post(this.baseUrl, JSON.stringify(params),{responseType: 'text'})
-        .subscribe(res => {
-        console.log(res);
-          });
-            
-
-//   pay(token){
-//         var headers = new Headers();
-//         headers.append('Content-Type', 'application/json');
-//         var myData = JSON.stringify({stripetoken: token});
-//         this.http.post(this.baseUrl, token)
-//         .subscribe( (data) =>{
-//             if(data){
-//                 console.log(data);
-//             }
-//         },(err: HttpErrorResponse) => {
-//           console.log(err.error);
-//           console.log(err.name);
-//           console.log(err.message);
-//           console.log(err.status);
-//         });
-// }
+    var url = this.baseUrl;
+    let postData = new FormData();
+    postData.append('stripeToken', cardtoken);
 
 
-        }
+    this.http.post(url, postData).subscribe((data) =>{
+      console.log(data);
+    });
+  }
 
 
-
-        post(amount, tokenid) {
-          let headers = new Headers({
-            'Content-Type': 'application/x-www-form-urlencoded'
-          });
-          // let options = new RequestOptions({
-          //   headers: headers
-          // });
-          // TODO: Encode the values using encodeURIComponent().
-          let body = 'amount=' + amount + '&token=' + tokenid;
-
-          return this.http.post(this.baseUrl, body)
-            .toPromise()
-            .then((res) => {
-              console.log(res);
-            }).catch((err) => {
-              console.log(err);
-            })
-        }
-      
-        handleError(error) {
-          console.log(error);
-          return error.json().message || 'Server error, please try again later';
-        }
-        
-
+  //   pay(amount){
+  //     this.stripe.setPublishableKey('[mytoken]');
+  //     this.stripe.createCardToken(this.cardinfo).then((token) => {
+  //       var headers = new Headers();
+  //       headers.append('Content-Type', 'application/json');
+  //       var body = {
+  //         stripetoken: token
+  //       };
+ 
+  //       var myData = JSON.stringify({stripetoken: token});
+ 
+  //       var url = 'http://192.168.1.2/service/pago.php';
+  //       this.http.post(url, body, {headers: headers})
+  //       .subscribe( (data) =>{
+  //         if(data){
+  //           console.log(data);
+  //         }
+  //       });
+  //     })
+  //   }
+  // }
+   
 }
