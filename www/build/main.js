@@ -67,25 +67,25 @@ var HomePage = /** @class */ (function () {
                 if ((spot.pintype == "Private Spot" && spot.pinowner == __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid) ||
                     (spot.pintype == "Private Spot" && spot.buyer == __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid)) {
                     _this.privateSpotList.push(spot);
-                    console.log(_this.privateSpotList);
+                    // console.log(this.privateSpotList);
                 }
                 // Load lease spots
                 if ((spot.pintype == "Spot for Lease" && spot.pinowner == __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid) ||
                     (spot.pintype == "Spot for Lease" && spot.buyer == __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid)) {
                     _this.leaseSpotList.push(spot);
-                    console.log(_this.leaseSpotList);
+                    // console.log(this.leaseSpotList);
                 }
                 // Load spots for sale
                 if ((spot.pintype == "Spot for Sale" && spot.pinowner == __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid) ||
                     (spot.pintype == "Spot for Sale" && spot.buyer == __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid)) {
                     _this.saleSpotList.push(spot);
-                    console.log(_this.saleSpotList);
+                    // console.log(this.saleSpotList);
                 }
                 // Load spots purchased
                 if ((spot.pintype == "Spot Purchased" && spot.pinowner == __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid) ||
                     (spot.pintype == "Spot Purchased" && spot.buyer == __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid)) {
                     _this.purchasedSpotList.push(spot);
-                    console.log(_this.purchasedSpotList);
+                    // console.log(this.purchasedSpotList);
                 }
             });
         });
@@ -262,9 +262,10 @@ var HomePage = /** @class */ (function () {
                             firedata.ref('/tempstore').set({
                                 clickedLat: event.latLng.lat(),
                                 clickedLng: event.latLng.lng(),
-                                clickeduid: firebaseSpot.pinuid
+                                clickeduid: firebaseSpot.pinuid,
+                                clickedprice: firebaseSpot.price
                             }).then(function (res) {
-                                console.log(res);
+                                // console.log(res);
                                 _this.presentToast("You have purchased this spot. Please wait for a minimum of 3 hours to confirm purchase");
                                 othersinfowindow.close();
                             }).catch(function (err) {
@@ -304,12 +305,15 @@ var HomePage = /** @class */ (function () {
         });
     };
     HomePage.prototype.purchaseSpot = function () {
-        this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_4__payment_payment__["a" /* PaymentPage */]);
-        // this.firedata.ref('/tempstore').once('value').then((res) =>{
-        //   console.log(res.val());
-        //   this.firedata.ref('/allpins').child(res.val().clickeduid).
-        //   child('buyer').set(firebase.auth().currentUser.uid);
-        // });
+        var _this = this;
+        this.firedata.ref('/tempstore').once('value').then(function (res) {
+            console.log(res.val());
+            _this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_4__payment_payment__["a" /* PaymentPage */], {
+                price: res.val().clickedprice,
+                spotuid: res.val().clickeduid,
+                buyer: __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid
+            });
+        });
     };
     HomePage.prototype.addMarkerOnClick = function (map, position) {
         var _this = this;
@@ -438,8 +442,12 @@ var HomePage = /** @class */ (function () {
         };
     };
     HomePage.prototype.ionViewDidLoad = function () {
-        this.loadMap();
+        // this.loadMap();
         // this.fetchAllSpots();
+    };
+    HomePage.prototype.ionViewWillEnter = function () {
+        console.log('entered');
+        this.loadMap();
     };
     HomePage.prototype.loadMap = function () {
         var _this = this;
@@ -549,24 +557,20 @@ var HomePage = /** @class */ (function () {
     };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* ViewChild */])('map'),
-        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* ElementRef */])
+        __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* ElementRef */]) === "function" && _a || Object)
     ], HomePage.prototype, "mapElement", void 0);
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* ViewChild */])('mySelect'),
-        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* Select */])
+        __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* Select */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* Select */]) === "function" && _b || Object)
     ], HomePage.prototype, "selectRef", void 0);
     HomePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-home',template:/*ion-inline-start:"/home/lawrene/SpotGolbber/src/pages/home/home.html"*/'<ion-header >\n\n  <ion-navbar  align-title="center" color="dark">\n      <button ion-button left menuToggle>\n        <ion-icon class="icon ion-home custom-icon" name="menu"></ion-icon>\n      </button>\n      <ion-title color="strange">SPOTSWOPPER</ion-title>\n\n      <!-- Button for testing the login page -->\n      <ion-buttons end>\n          <button ion-button icon-only>\n            <ion-icon class="icon ion-home custom-icon" name="notifications"></ion-icon>\n          </button>\n      </ion-buttons>\n\n      <ion-buttons end>\n        <button ion-button icon-only (click)="openModal()">\n          <ion-icon name="options"></ion-icon>\n        </button>\n      </ion-buttons>\n    </ion-navbar>\n\n</ion-header>\n\n<ion-content #content class="contentdiv">\n  <div  #map id="map">\n      \n  </div>\n\n\n<div class="bottombuttonscontainer">\n\n    <ion-grid style="background-color: #222; ">\n      \n        <ion-row  style="justify-content: center;" >\n\n            <div class="testclass">\n                <img style="zoom:5%;" src="../../assets/icon/map-spot.svg"><br>My Spots\n            </div>\n\n            <div class="testclass">\n                    <img style="zoom:5%;" src="../../assets/icon/map.svg"><br>Map Layers\n            </div>\n\n            <div class="testclass" (click)="openOptions(3)">\n                <img style="zoom:5%;" src="../../assets/icon/world-wide-internet-signal.svg"><br>Off Grid\n            </div>\n\n            <div class="testclass" (click)="openOptions(4)">\n                <img style="zoom:5%;" src="../../assets/icon/search.svg"><br>Search Spots\n            </div>\n\n        </ion-row>\n\n\n\n\n\n\n        <!-- <ion-row>\n                <div class="layersbelow">\n                    <br>\n                    <br>\n                    \n                        <ion-list>\n                                <ion-card class="spotcard" *ngFor="let d of data" (click)="toggleDetails(d)"><ion-icon color="primary" item-right [name]="d.icon"></ion-icon>\n                                    {{d.title}}\n                                    <div *ngIf="d.showDetails">{{d.details}}</div>\n                                  </ion-card>\n                        </ion-list>\n                                   \n                        <br>\n                        <br>\n                        \n                </div >\n\n      </ion-row> -->\n\n      \n        <ion-row class="layersbelow" *ngIf="showOne" style="overflow-y: scroll;">                                \n            <mbsc-accordion> \n                <mbsc-card collapsible>\n                    <mbsc-card-header style="background: #222;">\n                    <mbsc-avatar src="../../assets/icon/lock.svg" style="zoom:80%;"></mbsc-avatar>                                \n                    <mbsc-card-title style="color:white">Private Spots</mbsc-card-title>\n                    </mbsc-card-header>\n                    <mbsc-card-content>\n                        <mbsc-listview [options]="listviewSettings">\n                            <mbsc-listview-item *ngFor="let spot of privateSpotList" (click)="goToSpot(spot, i)">\n                                <h3>{{spot.dist}}km away</h3>\n                            </mbsc-listview-item>\n                        </mbsc-listview>\n                    </mbsc-card-content>\n                </mbsc-card>\n\n                <mbsc-card collapsible>\n                        <mbsc-card-header style="background: #222;">\n                        <mbsc-avatar src="../../assets/icon/give-money.svg" style="zoom:80%;"></mbsc-avatar>                                \n                        <mbsc-card-title style="color:white">Spots for Lease</mbsc-card-title>\n                        </mbsc-card-header>\n                        <mbsc-card-content>\n                            <mbsc-listview [options]="listviewSettings">\n                                <mbsc-listview-item *ngFor="let spot of leaseSpotList" (click)="goToSpot(spot, i)">\n                                    <h3>{{spot.dist}}km away</h3>\n                                </mbsc-listview-item>\n                            </mbsc-listview>\n                        </mbsc-card-content>\n                </mbsc-card>\n\n                <mbsc-card collapsible>\n                        <mbsc-card-header style="background: #222;">\n                        <mbsc-avatar src="../../assets/icon/tag.svg" style="zoom:80%;"></mbsc-avatar>                                \n                        <mbsc-card-title style="color:white">Spots for Sale</mbsc-card-title>\n                        </mbsc-card-header>\n                        <mbsc-card-content>\n                            <mbsc-listview [options]="listviewSettings">\n                                <mbsc-listview-item *ngFor="let spot of saleSpotList" (click)="goToSpot(spot, i)">\n                                    <h3>{{spot.dist}}km away</h3>\n                                </mbsc-listview-item>\n                            </mbsc-listview>\n                        </mbsc-card-content>\n                </mbsc-card>\n\n                <mbsc-card collapsible>\n                        <mbsc-card-header style="background: #222;">\n                        <mbsc-avatar src="../../assets/icon/cart.svg" style="zoom:80%;"></mbsc-avatar>                                \n                        <mbsc-card-title style="color:white">Spots Purchased</mbsc-card-title>\n                        </mbsc-card-header>\n                        <mbsc-card-content>\n                            <mbsc-listview [options]="listviewSettings">\n                                <mbsc-listview-item *ngFor="let spot of purchasedSpotList" (click)="goToSpot(spot, i)">\n                                    <h3>{{spot.dist}}km away</h3>\n                                </mbsc-listview-item>\n                            </mbsc-listview>\n                        </mbsc-card-content>\n                </mbsc-card>\n            </mbsc-accordion>\n        </ion-row>\n                \n            <ion-row class="layersbelow" *ngIf="showThree">\n                <div >\n                    <br>\n                        <ion-grid style="width: 97vw;">\n                            <br>\n                            <ion-row style="text-align:center;">\n                            \n                                <ion-col >\n                                    <button ion-button block color="redlike"                                 (click)="openSaveModal()">\n                                            Save New Map\n                                     </button>\n                                </ion-col>\n                    \n                                 <ion-col >\n                                    <button ion-button block color="greytwo">\n                                        <img src="../../assets/icon/heartbeat.png">                                                       Go Offline</button>\n                                        </ion-col>     \n                            </ion-row>\n                        </ion-grid>\n\n                        \n                                            \n                </div >\n\n            </ion-row>\n\n            <ion-row class="layersbelow" *ngIf="showFour">\n                <div >\n                    <br>\n                    <br>\n                    \n                        <ion-searchbar animated=true\n                        placeholder="Search all Spots"\n                        [(ngModel)]="myInput"\n                        [showCancelButton]="shouldShowCancel"\n                        (ionInput)="onInput($event)"\n                        (ionCancel)="onCancel($event)">\n                    </ion-searchbar>\n                <ion-list>\n                        <ion-item *ngFor="let spot of spotList" (click)="goToSpot(spot, i)">\n                                <h2> {{ spot.pintype }} </h2>\n                                <h3> Distance away: <strong>{{ spot.dist }} km away</strong> </h3>\n                        </ion-item>\n                </ion-list>\n                </div >\n\n            </ion-row>\n    </ion-grid>\n    \n</div>\n\n<ion-select (ngModelChange)="onChange()" [(ngModel)]="pinspotas" #mySelect>\n        <ion-option>Private Spot</ion-option>\n        <ion-option>Spot for Lease</ion-option>\n        <ion-option>Spot for Sale</ion-option>\n        <ion-option>Spot Purchased</ion-option>\n        <!-- <ion-option>Not for Sale</ion-option> -->\n        \n    </ion-select>\n    \n</ion-content>\n'/*ion-inline-end:"/home/lawrene/SpotGolbber/src/pages/home/home.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* ToastController */],
-            __WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgZone */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* ActionSheetController */],
-            __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */]])
+        __metadata("design:paramtypes", [typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* ToastController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* ToastController */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgZone */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgZone */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* ActionSheetController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* ActionSheetController */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */]) === "function" && _h || Object])
     ], HomePage);
     return HomePage;
+    var _a, _b, _c, _d, _e, _f, _g, _h;
 }());
 
 //# sourceMappingURL=home.js.map
@@ -645,6 +649,8 @@ var LoginPage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(51);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common_http__ = __webpack_require__(358);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_firebase__ = __webpack_require__(759);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_firebase__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -657,13 +663,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var PaymentPage = /** @class */ (function () {
-    function PaymentPage(navCtrl, http, navParams) {
+    function PaymentPage(navCtrl, loadingCtrl, toastCtrl, http, navParams) {
         this.navCtrl = navCtrl;
+        this.loadingCtrl = loadingCtrl;
+        this.toastCtrl = toastCtrl;
         this.http = http;
         this.navParams = navParams;
+        this.firedata = __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.database();
         this.stripe = Stripe('pk_test_FIrkWSsjvlx9TKX0hm3tAyiO');
         this.baseUrl = "http://caurix.net/stripeApi/stripe-php-6.30.4/spotgolbber.php";
+        this.price = this.navParams.get('price') * 100;
+        this.spotuid = this.navParams.get('spotuid');
+        // console.log(this.price);
+        // console.log(this.spotuid);
     }
     PaymentPage.prototype.ionViewDidLoad = function () {
         console.log('ionViewDidLoad PaymentPage');
@@ -702,17 +716,18 @@ var PaymentPage = /** @class */ (function () {
         var form = document.getElementById('payment-form');
         form.addEventListener('submit', function (event) {
             event.preventDefault();
+            _this.load = _this.loadingCtrl.create({
+                content: 'Processing your payment please wait...',
+            });
             _this.stripe.createSource(_this.card).then(function (result) {
                 if (result.error) {
                     var errorElement = document.getElementById('card-errors');
                     errorElement.textContent = result.error.message;
                 }
                 else {
+                    _this.load.present();
                     _this.stripe.createToken(_this.card).
                         then(function (res) {
-                        console.log(res.token.id);
-                        // console.log(res.token.id);            
-                        // this.makePost(res.token.id);
                         _this.makePost(res.token.id);
                     }).catch(function (err) {
                         console.log(err);
@@ -722,21 +737,57 @@ var PaymentPage = /** @class */ (function () {
         });
     };
     PaymentPage.prototype.makePost = function (cardtoken) {
+        var _this = this;
         var url = this.baseUrl;
         var postData = new FormData();
         postData.append('stripeToken', cardtoken);
+        postData.append('spotUid', this.spotuid);
+        postData.append('amount', this.price);
         this.http.post(url, postData).subscribe(function (data) {
-            console.log(data);
+            var result = data;
+            _this.firedata.ref('/allpins').child(_this.spotuid).
+                child('buyer').set(__WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid).then(function (res) {
+                _this.firedata.ref('/allpayments').child(result.id).set(data).then(function (res) {
+                    console.log(res);
+                    _this.load.dismiss();
+                    _this.presentToast('Payment Succesful');
+                }).catch(function (err) {
+                    console.log(err);
+                });
+            }).catch(function (err) {
+                console.log(err);
+            });
+        }, function (err) {
+            console.log(err);
+            _this.load.dismiss();
+            _this.presentToast('Couldnt process payment');
         });
+    };
+    PaymentPage.prototype.presentToast = function (message) {
+        var _this = this;
+        var toast = this.toastCtrl.create({
+            message: message,
+            duration: 5000,
+            position: 'top'
+        });
+        toast.onDidDismiss(function () {
+            console.log('Dismissed toast');
+        });
+        toast.present().then(function (res) {
+            _this.navCtrl.pop();
+        });
+    };
+    PaymentPage.prototype.goHome = function () {
+        this.navCtrl.pop();
     };
     PaymentPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-payment',template:/*ion-inline-start:"/home/lawrene/SpotGolbber/src/pages/payment/payment.html"*/'<!--\n  Generated template for the PaymentPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <ion-title>payment</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n  <form action="/" method="post" id="payment-form">\n  \n    <div class="form-row">\n      <div id="card-element">\n        <!-- a Stripe Element will be inserted here. -->\n      </div>\n\n      <!-- Used to display Element errors -->\n      <div id="card-errors" role="alert"></div>\n    </div>\n\n  <button ion-button block large>Add Card</button>\n    \n  </form>\n\n</ion-content>\n'/*ion-inline-end:"/home/lawrene/SpotGolbber/src/pages/payment/payment.html"*/,
+            selector: 'page-payment',template:/*ion-inline-start:"/home/lawrene/SpotGolbber/src/pages/payment/payment.html"*/'<!--\n  Generated template for the PaymentPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <ion-title (click)="goHome()">payment</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n  <form action="/" method="post" id="payment-form">\n  \n    <div class="form-row">\n      <div id="card-element">\n        <!-- a Stripe Element will be inserted here. -->\n      </div>\n\n      <!-- Used to display Element errors -->\n      <div id="card-errors" role="alert"></div>\n    </div>\n\n  <button ion-button block large>Securely pay ${{price/100}}</button>\n    \n  </form>\n\n</ion-content>\n'/*ion-inline-end:"/home/lawrene/SpotGolbber/src/pages/payment/payment.html"*/,
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_common_http__["a" /* HttpClient */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_common_http__["a" /* HttpClient */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]) === "function" && _c || Object])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* LoadingController */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* ToastController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* ToastController */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2__angular_common_http__["a" /* HttpClient */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_common_http__["a" /* HttpClient */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]) === "function" && _e || Object])
     ], PaymentPage);
     return PaymentPage;
-    var _a, _b, _c;
+    var _a, _b, _c, _d, _e;
 }());
 
 //# sourceMappingURL=payment.js.map

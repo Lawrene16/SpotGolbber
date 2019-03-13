@@ -82,7 +82,7 @@ export class HomePage {
           (spot.pintype == "Private Spot" && spot.buyer == firebase.auth().currentUser.uid)
         ){
             this.privateSpotList.push(spot);
-            console.log(this.privateSpotList);
+            // console.log(this.privateSpotList);
         }
 
         // Load lease spots
@@ -91,7 +91,7 @@ export class HomePage {
           (spot.pintype == "Spot for Lease" && spot.buyer == firebase.auth().currentUser.uid)
         ){
             this.leaseSpotList.push(spot);
-            console.log(this.leaseSpotList);
+            // console.log(this.leaseSpotList);
         }
 
         // Load spots for sale
@@ -100,7 +100,7 @@ export class HomePage {
           (spot.pintype == "Spot for Sale" && spot.buyer == firebase.auth().currentUser.uid)
         ){
             this.saleSpotList.push(spot);
-            console.log(this.saleSpotList);
+            // console.log(this.saleSpotList);
         }
 
         // Load spots purchased
@@ -109,7 +109,7 @@ export class HomePage {
           (spot.pintype == "Spot Purchased" && spot.buyer == firebase.auth().currentUser.uid)
         ){
             this.purchasedSpotList.push(spot);
-            console.log(this.purchasedSpotList);
+            // console.log(this.purchasedSpotList);
         }
 
 
@@ -319,10 +319,11 @@ export class HomePage {
                 firedata.ref('/tempstore').set({
                   clickedLat: event.latLng.lat(),
                   clickedLng: event.latLng.lng(),
-                  clickeduid: firebaseSpot.pinuid
+                  clickeduid: firebaseSpot.pinuid,
+                  clickedprice: firebaseSpot.price
                   
                 }).then((res) =>{
-                  console.log(res);
+                  // console.log(res);
                   this.presentToast("You have purchased this spot. Please wait for a minimum of 3 hours to confirm purchase");
                   othersinfowindow.close();
                 }).catch((err) =>{
@@ -367,14 +368,16 @@ export class HomePage {
   }
 
   purchaseSpot(){
-    this.navCtrl.setRoot(PaymentPage);
-    // this.firedata.ref('/tempstore').once('value').then((res) =>{
-    //   console.log(res.val());
 
+    this.firedata.ref('/tempstore').once('value').then((res) =>{
+      console.log(res.val());
 
-    //   this.firedata.ref('/allpins').child(res.val().clickeduid).
-    //   child('buyer').set(firebase.auth().currentUser.uid);
-    // });
+      this.navCtrl.push(PaymentPage, {
+        price: res.val().clickedprice,
+        spotuid: res.val().clickeduid,
+        buyer: firebase.auth().currentUser.uid
+      });
+    });
 
   }
 
@@ -523,8 +526,13 @@ export class HomePage {
   }
 
   ionViewDidLoad(){
-    this.loadMap();
+    // this.loadMap();
     // this.fetchAllSpots();
+  }
+
+  ionViewWillEnter(){
+    console.log('entered');   
+    this.loadMap(); 
   }
 
   loadMap(){

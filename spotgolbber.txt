@@ -1,0 +1,36 @@
+<?php
+header('Access-Control-Allow-Origin: *'); 
+header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept');
+header('Access-Control-Allow-Methods: POST, PUT, GET, OPTIONS'); 
+
+require_once('init.php');
+
+
+$stripe = array(
+  "secret_key"      => "sk_test_bsy1Mty8wYKbfl9e1MAMjFN1",
+  "publishable_key" => "pk_test_FIrkWSsjvlx9TKX0hm3tAyiO"
+);
+
+\Stripe\Stripe::setApiKey($stripe['secret_key']);
+
+global $post;
+    try
+    {
+        $token = $_POST['stripeToken'];
+        $charge = \Stripe\Charge::create([
+            'amount' => 999,
+            'currency' => 'usd',
+            'description' => 'Example charge',
+            'source' => $token,
+        ]);
+        echo json_encode($charge);
+    }
+    catch (\Stripe\Error\Base $e) {
+        // Code to do something with the $e exception object when an error occurs
+        echo("Error charging: ".$e->getMessage());
+        echo("Status of charging: ".$e->getCode());
+    } catch (Exception $e) {
+        // Catch any other non-Stripe exceptions
+        echo("Error charging: ".$e->getMessage());
+         echo("Status of charging: ".$e->getCode());
+    }
