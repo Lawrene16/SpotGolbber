@@ -118,6 +118,7 @@ export class HomePage {
 
   }
 
+  
   goToSpot(item){
     this.map.setZoom(15);
     // console.log(item);
