@@ -57,7 +57,6 @@ export class HomePage {
       enhance: true
   }
 
-
   constructor(public navCtrl: NavController,
     public loadingCtrl: LoadingController,
     public toastCtrl: ToastController,
