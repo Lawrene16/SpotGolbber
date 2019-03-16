@@ -36495,6 +36495,7 @@ page-home .contentdiv {
 
 page-home .contentdiv .scroll-content {
   overflow: hidden;
+  background: #212121;
 }
 
 page-home .testclass {
@@ -36562,7 +36563,7 @@ page-home ion-searchbar {
 }
 
 page-home .layersbelow {
-  height: 40vh;
+  height: 45vh;
 }
 
 page-home mbsc-accordion {

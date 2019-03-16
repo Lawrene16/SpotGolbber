@@ -1,5 +1,6 @@
 import { Component, ViewChild, ElementRef, NgZone } from '@angular/core';
 import { NavController,
+  Content,
    LoadingController,
     Select,
     ToastController,
@@ -20,6 +21,8 @@ export class HomePage {
 
   @ViewChild('map') mapElement: ElementRef;
   @ViewChild('mySelect') selectRef: Select;
+  @ViewChild('content') pageBody: Content;
+
   map: any;
   firedata = firebase.database();
   pinuid;
@@ -34,7 +37,7 @@ export class HomePage {
   showTwo = false;
   showThree = false;
   showFour = false;
-  showOne = true;
+  showOne = false;
   // showTwo = true;
   // showThree = true;
   // showFour = true;
@@ -61,6 +64,8 @@ export class HomePage {
     public ngZone: NgZone,
     private actionSheetCtrl: ActionSheetController,
     public storage: Storage) {
+
+      // this.pageBody.scrollToBottom(300);
 
     (<any>window).ionicPageRef = {zone: this.ngZone,component: this};
 
@@ -117,11 +122,10 @@ export class HomePage {
     });
 
   }
-
   
   goToSpot(item){
     this.map.setZoom(15);
-    // console.log(item);
+    console.log(item.latLng);
     this.map.panTo(item.latLng);
   }
   
@@ -162,47 +166,38 @@ export class HomePage {
   }
 
   openOptions(index){
-    switch(index){
-        case 1:
-          break;
+    this.ngZone.run(() => {
 
-        case 2:
-          break;
-
-        case 3:
-          if(this.showThree == false){
-            // this.showThree = true; 
-            // this.showOne = false; 
-            // this.showTwo = false;
-            // this.showFour = false;
-            console.log("3 pressed" + this.showThree);
-            // this.pagebody.scrollToBottom();  
-            
-          }else{
-            // this.pagebody.scrollToTop(); 
-            // this.showThree = false;
-            console.log("3 pressed" + this.showThree);
-            
-          }
-          break;
-
-        case 4:
-            if(this.showFour == false){
-              // this.showFour = true;
-              // this.showOne = false; 
-              // this.showTwo = false;
-              // this.showThree = false;
-              console.log("4 pressed");
-              
-              // this.pagebody.scrollToBottom();  
-            }else{
-              // this.pagebody.scrollToTop(); 
-              // this.showFour = false;
+        switch(index){
+          case 3:
+            if(this.showThree == false){
+              this.showOne = false; this.showTwo = false;
+              this.showFour = false;this.showThree = true;          
+              this.pageBody.scrollToBottom(300);  
             }
-          break;
+            else{
+              this.pageBody.scrollToTop().then(() =>{ 
+                  this.showThree = false;  
+              });        
+            }
+            break;
 
-            
-    }
+            case 4:
+              if(this.showFour == false){
+                this.showOne = false; this.showTwo = false;
+                this.showThree = false;this.showFour = true;      
+                this.pageBody.scrollToBottom(300);  
+              }
+              else{
+                this.pageBody.scrollToTop().then(() =>{ 
+                    this.showFour = false;  
+                });        
+              }
+              break;
+        }
+    });
+
+   
   }
 
   fetchAllSpots(map){
@@ -526,11 +521,6 @@ export class HomePage {
     }
   }
 
-  ionViewDidLoad(){
-    // this.loadMap();
-    // this.fetchAllSpots();
-  }
-
   ionViewWillEnter(){
     console.log('entered');   
     this.loadMap(); 
@@ -554,8 +544,19 @@ export class HomePage {
       if(this.addmarkerInfoWindow == undefined){
         console.log('no need to call close');
         this.selectRef.open();
+
+        this.storage.get('position').then((res) =>{
+          console.log(res);
+        });
         
       }else{
+        console.log('need to call close');
+        this.selectRef.open();
+
+        this.storage.get('position').then((res) =>{
+          console.log(res);
+        });
+        
         // this.addmarkerInfoWindow.close();
       }
     });    

@@ -53,6 +53,41 @@
         </ion-row>
 
 
+        <ion-row class="layersbelow" >
+            <div *ngIf="showThree" >
+                <br>
+                    <ion-grid style="width: 97vw;"><br>
+                        <ion-row style="text-align:center;">
+                            <ion-col >
+                                <button ion-button block color="redlike"                                 (click)="openSaveModal()">
+                                        Save New Map
+                                 </button>
+                            </ion-col>
+                             <ion-col >
+                                <button ion-button block color="greytwo">
+                                    <img src="../../assets/icon/heartbeat.png">                                                       Go Offline</button>
+                              </ion-col>     
+                        </ion-row>
+                    </ion-grid>                    
+            </div >
+
+            <div *ngIf="showFour">
+                <br><br>
+                    <ion-searchbar animated=true
+                    placeholder="Search all Spots"
+                    [(ngModel)]="myInput"
+                    [showCancelButton]="shouldShowCancel"
+                    (ionInput)="onInput($event)"
+                    (ionCancel)="onCancel($event)">
+                </ion-searchbar>
+                <ion-list>
+                        <ion-item *ngFor="let spot of spotList" (click)="goToSpot(spot, i)">
+                                <h2> {{ spot.pintype }} </h2>
+                                <h3> Distance away: <strong>{{ spot.dist }} km away</strong> </h3>
+                        </ion-item>
+                </ion-list>
+            </div >
+        </ion-row>
 
 
 
@@ -76,8 +111,8 @@
 
       </ion-row> -->
 
-      
-        <ion-row class="layersbelow" *ngIf="showOne" style="overflow-y: scroll;">                                
+<!--       
+        <ion-row class="layersbelow" [hidden]="showOne" style="overflow-y: scroll;">                                
             <mbsc-accordion> 
                 <mbsc-card collapsible>
                     <mbsc-card-header style="background: #222;">
@@ -136,8 +171,8 @@
                 </mbsc-card>
             </mbsc-accordion>
         </ion-row>
-                
-            <ion-row class="layersbelow" *ngIf="showThree">
+                 -->
+            <!-- <ion-row class="layersbelow" [hidden]="showThree">
                 <div >
                     <br>
                         <ion-grid style="width: 97vw;">
@@ -163,7 +198,7 @@
 
             </ion-row>
 
-            <ion-row class="layersbelow" *ngIf="showFour">
+            <ion-row class="layersbelow" [hidden]="showFour">
                 <div >
                     <br>
                     <br>
@@ -183,7 +218,7 @@
                 </ion-list>
                 </div >
 
-            </ion-row>
+            </ion-row> -->
     </ion-grid>
     
 </div>
