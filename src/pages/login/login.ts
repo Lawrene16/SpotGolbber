@@ -18,8 +18,8 @@ import { HomePage } from '../home/home';
 })
 export class LoginPage {
 
-  email = 'a@gmail.com';
-  password = 'aaaaaaaa';
+  // email = 'a@gmail.com';
+  // password = 'aaaaaaaa';
 
   constructor(public navCtrl: NavController, 
     public auth: AuthProvider,
@@ -28,7 +28,7 @@ export class LoginPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');
-    this.signin();
+    // this.signin();
   }
 
   signin(){

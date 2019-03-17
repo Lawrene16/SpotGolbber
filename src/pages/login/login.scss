@@ -1,8 +1,18 @@
 page-login {
+
+    // ion-item{
+    // }
+
+    .content_bg{
+        background-image: url('../../assets/imgs/loginbg.png');
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
     .loginbtns{
-        height: 40px;
-        color: white;
-        background-color: color($colors, secondary);
+        // height: 40px;
+        color: black;
+        opacity: 20%;
+        background-color: color($colors, redlike);
     }
 
     .custom-icon {
@@ -13,19 +23,16 @@ page-login {
       .sometext{
         color: color($colors, secondary);
       }
-
-      .facebookbutton{
-        height: 40px;
-        color: white;
-        background-color: #4880ef;
-    }
     
     .itemclass{
-        background: transparent;
-        color: #fff;
+        height: 2vh;
+        align-content: center;
+        padding-left: 25px;
+        margin-bottom: 12px;
+        border-radius: 20px;    
     }
     
     .testclass{
-        padding-right: 20px;
+        padding-right: 30px;
     }
 }

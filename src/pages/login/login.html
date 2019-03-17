@@ -1,47 +1,55 @@
-<ion-content padding style="background: #2f2f2f">
+<ion-content class="content_bg" padding>
   
-  <p align="center"><img style="zoom:45%;" src="../../assets/icon/spotgobel.png"></p>
+  <p style="color:#fe3300;font-size: 30px;" align="center"><img style="zoom:10%;"
+     src="../../assets/icon/logom1.png"><br>SpotSwopper</p>
 
   <br>
   <br>
   
 <ion-list>  
 
-  <ion-item  class="itemclass">
-    <ion-label floating>E-mail</ion-label>
-    <ion-input [(ngModel)]="email"></ion-input>
+  <ion-item no-lines class="itemclass">
+    <!-- <ion-label floating>E-mail</ion-label> -->
+    <ion-input placeholder="Username / Email" [(ngModel)]="email"></ion-input>    
   </ion-item>
 
 
-  <ion-item  class="itemclass">
-      <ion-label floating>Password</ion-label>
-      <ion-input name="email" [(ngModel)]="password"></ion-input>
+  <ion-item no-lines class="itemclass">
+      <!-- <ion-label floating>Password</ion-label> -->
+      <ion-input placeholder="Password" style="font-size: 18px;" name="email" [(ngModel)]="password"></ion-input>
   </ion-item>
+
+  
+  <ion-item no-lines style="background: transparent;color: white">
+        <ion-label>Remember me on this device</ion-label>
+        <ion-checkbox [(ngModel)]="pepperoni"></ion-checkbox>
+    </ion-item>
 </ion-list>
 
-<div padding>
-    <button ion-button block outline color="strange" (click)="signin()">LOGIN</button>
-  <!-- <button block ion-button class="facebookbutton"><ion-icon class="icon ion-home custom-icon" name="logo-facebook" style="margin-right:20px"></ion-icon>Login with facebook</button>   -->
+<div>
+        <button ion-button block style="border-radius: 20px;" color="redlike" (click)="signin()">SIGN IN</button>
+    <!-- <button ion-button block outline color="light" (click)="signin()">LOGIN</button> -->
 </div>
+<br>
+
 
 <div class="bottombuttonscontainer">
 
     <ion-grid>
       
-      <ion-row style="justify-content: center;" >
+      <ion-row style="justify-content: center; padding-left: 20px;" >
 
-          <div class="testclass">
+        <div class="testclass" (click)="openOptions(3)">
+                <img style="zoom:10%;" src="../../assets/icon/facebook.svg">
+        </div>
+
+        <div class="testclass">
               <img style="zoom:10%;" src="../../assets/icon/twitter.svg">
-          </div>
+        </div>
 
-          <div class="testclass">
+        <div class="testclass">
                   <img style="zoom:10%;" src="../../assets/icon/google.svg">
-          </div>
-
-          <div class="testclass" (click)="openOptions(3)">
-              <img style="zoom:10%;" src="../../assets/icon/facebook.svg">
-          </div>
-
+        </div>
         </ion-row>
     </ion-grid>
     

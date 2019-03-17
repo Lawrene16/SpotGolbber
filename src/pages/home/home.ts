@@ -33,14 +33,10 @@ export class HomePage {
   addmarkerInfoWindow;
   dollarprice:any;
   spotdesc:any;
-  // showOne = false;
   showTwo = false;
   showThree = false;
   showFour = false;
   showOne = false;
-  // showTwo = true;
-  // showThree = true;
-  // showFour = true;
   spotList:Array<any>;
   loadedSpotList:Array<any>;
   privateSpotList:Array<any> = [];  
