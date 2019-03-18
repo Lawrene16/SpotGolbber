@@ -197,6 +197,7 @@ export class HomePage {
 
   fetchAllSpots(map){
 
+    // present the loader for all spots
     let load = this.loadingCtrl.create({
       content:'Loading full map...',
     });
@@ -208,9 +209,7 @@ export class HomePage {
         temparr.push(result[key]);
       }
       load.dismiss();
-      // Has gotten from firebase ready to load
       temparr.forEach(function(firebaseSpot) {
-
         // Customize and pin all markers
         var customicon;
         switch(firebaseSpot.pintype){
@@ -226,17 +225,14 @@ export class HomePage {
           case "Spot Purchased":
             customicon = '../../assets/icon/blue.png';
             break;  
-            
         }
         
         var marker = new google.maps.Marker({
           position: firebaseSpot.latLng,
           icon: customicon,
-          // draggable: true,  
           animation: google.maps.Animation.DROP,              
           map: map
         });
-
 
         var othersContentString = '<div id="content">'+
         '<div id="siteNotice">'+
@@ -244,7 +240,7 @@ export class HomePage {
         '<h1 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">'+firebaseSpot.pintype+'</h1>'+
         '<div id="bodyContent">'+
         '<p ><h4>Rating - 4.82/5.0 (139)</h4>' +  
-        '<p ><h4>Price - $' +firebaseSpot.price+ '</h4>' +                      
+        '<p ><h4>Price - $' +firebaseSpot.price + " + service fee(10%)" + '</h4>' +                      
         '<p ><h4>Details - Locked | ' +firebaseSpot.dist+ ' km away </h4>' +
         'Details of this location are locked '+
         'purchase spot! to get the details '+
@@ -281,26 +277,33 @@ export class HomePage {
         '</div>'+
         '</div>';
 
-
         var othersinfowindow = new google.maps.InfoWindow({
           content: othersContentString
         });
 
         var directionsService = new google.maps.DirectionsService();
         var directionsDisplay = new google.maps.DirectionsRenderer();
-        
 
         marker.addListener('click', (event) =>  {
+
+          // If map zoom is not 13 or 15
             if(map.getZoom() != 13 && map.getZoom() != 15){
                 map.setZoom(15);
                 map.panTo(marker.getPosition());
             }
+
+
+            // If map zoom is 15
             else if(map.getZoom() == 15){
 
+
+              // Present owner string
               if(firebaseSpot.pinowner == firebase.auth().currentUser.uid){
                 othersinfowindow.setContent(ownerContentString);
                 othersinfowindow.open(map, marker);
               }
+
+              // Present others string              
               else if(firebaseSpot.pinowner != firebase.auth().currentUser.uid &&
                firebaseSpot.buyer != firebase.auth().currentUser.uid){
                 othersinfowindow.setContent(othersContentString);
@@ -314,7 +317,6 @@ export class HomePage {
                   clickedprice: firebaseSpot.price
                   
                 }).then((res) =>{
-                  // console.log(res);
                   this.presentToast("You have purchased this spot. Please wait for a minimum of 3 hours to confirm purchase");
                   othersinfowindow.close();
                 }).catch((err) =>{
@@ -322,31 +324,44 @@ export class HomePage {
                 });
               
               }
-              else if(firebaseSpot.buyer == firebase.auth().currentUser.uid){
-                othersinfowindow.setContent(buyerContentString);
-                othersinfowindow.open(map, marker);
 
-                var end = new google.maps.LatLng(33.678, -116.243);
-                var request = {
-                  origin: marker.getPosition(),
-                  destination: end,
-                  travelMode: google.maps.TravelMode.DRIVING
-                };
 
-                directionsService.route(request, function(response, status) {
-                  if (status == google.maps.DirectionsStatus.OK) {
-                    directionsDisplay.setDirections(response);
-                    directionsDisplay.setMap(map);
-                  } else {
-                    // alert("Directions Request from " + start.toUrlValue(6) + " to " + end.toUrlValue(6) + " failed: " + status);
-                  }
-                });
+              // Check for all buyers and present their string
+              var myfiredata = firebase.database();
+              myfiredata.ref('/allpins').child(firebaseSpot.pinuid).child('buyers').orderByChild('mjbmmn').once('value', (buyersshot) => {
+              let buyersresult = buyersshot.val();
+              let buyerstemparr = [];
+              for (var buyerskey in buyersresult){
+              buyerstemparr.push(buyersresult[buyerskey]);
+              }
+              buyerstemparr.forEach(function(firebaseBuyer) {
 
-                othersinfowindow.addListener('closeclick', (e) =>{
-                  console.log('it has been closed');
-                  directionsDisplay.setMap(null);
-                });               
-              }  
+                console.log(firebaseBuyer);
+                //Check if current user is in the list of buyers
+                // then present the relevant content string
+                if(firebaseBuyer == firebase.auth().currentUser.uid){
+                  othersinfowindow.setContent(buyerContentString);
+                  othersinfowindow.open(map, marker);
+  
+                  var end = new google.maps.LatLng(33.678, -116.243);
+                  var request = {origin: marker.getPosition(),destination: end,travelMode: google.maps.TravelMode.DRIVING};
+  
+                  directionsService.route(request, function(response, status) {
+                    if (status == google.maps.DirectionsStatus.OK) {
+                      directionsDisplay.setDirections(response);
+                      directionsDisplay.setMap(map);
+                    } else {
+                    }
+                  });
+  
+                  othersinfowindow.addListener('closeclick', (e) =>{
+                    console.log('it has been closed');
+                    directionsDisplay.setMap(null);
+                  });               
+                } 
+
+              });
+            });      
           }
 
           else{
@@ -409,11 +424,11 @@ export class HomePage {
     var contentString = '<div id="content">'+
         '<div id="siteNotice">'+
         '</div>'+
-        '<h1 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">'+this.pinspotas+'</h1>'+
         '<div id="bodyContent">'+
         '<p ><h4>This spot is ' +dist+ ' km away from your current location </h4>' +
-        '<br><textarea id="price" class="taone" maxlength="5" placeholder="Price in $"></textarea>'+
+        '<textarea id="price" class="taone" maxlength="5" placeholder="Price in $"></textarea>'+
         '<br><textarea id="desc" class="tatwo" placeholder="Describe Spot Here"></textarea>'+
+        '<br><br><input type="checkbox"> By checking this box you agree that all information provided by you is true and if we discover that you have listed falsely we have the right to authorize a full refund to the buyer</input>' +
         '<br><br><p align="center"><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.listspot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f; margin-right:20px;" >List as '+this.pinspotas+'</button></p>'+
         '<br>><br>'+
         '</div>'+
@@ -484,7 +499,7 @@ export class HomePage {
           price: this.dollarprice.value,
           pinuid: this.pinuid,
           dist: distance,
-          buyer: 'a',
+          buyers: 'a',
           description: this.spotdesc.value,
           latLng: res,
           pintype: this.pinspotas

@@ -160,6 +160,7 @@ var HomePage = /** @class */ (function () {
         });
     };
     HomePage.prototype.fetchAllSpots = function (map) {
+        // present the loader for all spots
         var load = this.loadingCtrl.create({
             content: 'Loading full map...',
         });
@@ -171,7 +172,6 @@ var HomePage = /** @class */ (function () {
                 temparr.push(result[key]);
             }
             load.dismiss();
-            // Has gotten from firebase ready to load
             temparr.forEach(function (firebaseSpot) {
                 var _this = this;
                 // Customize and pin all markers
@@ -193,7 +193,6 @@ var HomePage = /** @class */ (function () {
                 var marker = new google.maps.Marker({
                     position: firebaseSpot.latLng,
                     icon: customicon,
-                    // draggable: true,  
                     animation: google.maps.Animation.DROP,
                     map: map
                 });
@@ -203,7 +202,7 @@ var HomePage = /** @class */ (function () {
                     '<h1 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">' + firebaseSpot.pintype + '</h1>' +
                     '<div id="bodyContent">' +
                     '<p ><h4>Rating - 4.82/5.0 (139)</h4>' +
-                    '<p ><h4>Price - $' + firebaseSpot.price + '</h4>' +
+                    '<p ><h4>Price - $' + firebaseSpot.price + " + service fee(10%)" + '</h4>' +
                     '<p ><h4>Details - Locked | ' + firebaseSpot.dist + ' km away </h4>' +
                     'Details of this location are locked ' +
                     'purchase spot! to get the details ' +
@@ -243,11 +242,13 @@ var HomePage = /** @class */ (function () {
                 var directionsService = new google.maps.DirectionsService();
                 var directionsDisplay = new google.maps.DirectionsRenderer();
                 marker.addListener('click', function (event) {
+                    // If map zoom is not 13 or 15
                     if (map.getZoom() != 13 && map.getZoom() != 15) {
                         map.setZoom(15);
                         map.panTo(marker.getPosition());
                     }
                     else if (map.getZoom() == 15) {
+                        // Present owner string
                         if (firebaseSpot.pinowner == __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid) {
                             othersinfowindow.setContent(ownerContentString);
                             othersinfowindow.open(map, marker);
@@ -263,36 +264,44 @@ var HomePage = /** @class */ (function () {
                                 clickeduid: firebaseSpot.pinuid,
                                 clickedprice: firebaseSpot.price
                             }).then(function (res) {
-                                // console.log(res);
                                 _this.presentToast("You have purchased this spot. Please wait for a minimum of 3 hours to confirm purchase");
                                 othersinfowindow.close();
                             }).catch(function (err) {
                                 console.log(err);
                             });
                         }
-                        else if (firebaseSpot.buyer == __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid) {
-                            othersinfowindow.setContent(buyerContentString);
-                            othersinfowindow.open(map, marker);
-                            var end = new google.maps.LatLng(33.678, -116.243);
-                            var request = {
-                                origin: marker.getPosition(),
-                                destination: end,
-                                travelMode: google.maps.TravelMode.DRIVING
-                            };
-                            directionsService.route(request, function (response, status) {
-                                if (status == google.maps.DirectionsStatus.OK) {
-                                    directionsDisplay.setDirections(response);
-                                    directionsDisplay.setMap(map);
-                                }
-                                else {
-                                    // alert("Directions Request from " + start.toUrlValue(6) + " to " + end.toUrlValue(6) + " failed: " + status);
+                        // Check for all buyers and present their string
+                        var myfiredata = __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.database();
+                        myfiredata.ref('/allpins').child(firebaseSpot.pinuid).child('buyers').orderByChild('mjbmmn').once('value', function (buyersshot) {
+                            var buyersresult = buyersshot.val();
+                            var buyerstemparr = [];
+                            for (var buyerskey in buyersresult) {
+                                buyerstemparr.push(buyersresult[buyerskey]);
+                            }
+                            buyerstemparr.forEach(function (firebaseBuyer) {
+                                console.log(firebaseBuyer);
+                                //Check if current user is in the list of buyers
+                                // then present the relevant content string
+                                if (firebaseBuyer == __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid) {
+                                    othersinfowindow.setContent(buyerContentString);
+                                    othersinfowindow.open(map, marker);
+                                    var end = new google.maps.LatLng(33.678, -116.243);
+                                    var request = { origin: marker.getPosition(), destination: end, travelMode: google.maps.TravelMode.DRIVING };
+                                    directionsService.route(request, function (response, status) {
+                                        if (status == google.maps.DirectionsStatus.OK) {
+                                            directionsDisplay.setDirections(response);
+                                            directionsDisplay.setMap(map);
+                                        }
+                                        else {
+                                        }
+                                    });
+                                    othersinfowindow.addListener('closeclick', function (e) {
+                                        console.log('it has been closed');
+                                        directionsDisplay.setMap(null);
+                                    });
                                 }
                             });
-                            othersinfowindow.addListener('closeclick', function (e) {
-                                console.log('it has been closed');
-                                directionsDisplay.setMap(null);
-                            });
-                        }
+                        });
                     }
                     else {
                         map.setZoom(15);
@@ -347,11 +356,11 @@ var HomePage = /** @class */ (function () {
         var contentString = '<div id="content">' +
             '<div id="siteNotice">' +
             '</div>' +
-            '<h1 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">' + this.pinspotas + '</h1>' +
             '<div id="bodyContent">' +
             '<p ><h4>This spot is ' + dist + ' km away from your current location </h4>' +
-            '<br><textarea id="price" class="taone" maxlength="5" placeholder="Price in $"></textarea>' +
+            '<textarea id="price" class="taone" maxlength="5" placeholder="Price in $"></textarea>' +
             '<br><textarea id="desc" class="tatwo" placeholder="Describe Spot Here"></textarea>' +
+            '<br><br><input type="checkbox"> By checking this box you agree that all information provided by you is true and if we discover that you have listed falsely we have the right to authorize a full refund to the buyer</input>' +
             '<br><br><p align="center"><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.listspot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f; margin-right:20px;" >List as ' + this.pinspotas + '</button></p>' +
             '<br>><br>' +
             '</div>' +
@@ -410,7 +419,7 @@ var HomePage = /** @class */ (function () {
                     price: _this.dollarprice.value,
                     pinuid: _this.pinuid,
                     dist: distance,
-                    buyer: 'a',
+                    buyers: 'a',
                     description: _this.spotdesc.value,
                     latLng: res,
                     pintype: _this.pinspotas
@@ -559,28 +568,24 @@ var HomePage = /** @class */ (function () {
     };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* ViewChild */])('map'),
-        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* ElementRef */])
+        __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* ElementRef */]) === "function" && _a || Object)
     ], HomePage.prototype, "mapElement", void 0);
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* ViewChild */])('mySelect'),
-        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* Select */])
+        __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* Select */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* Select */]) === "function" && _b || Object)
     ], HomePage.prototype, "selectRef", void 0);
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* ViewChild */])('content'),
-        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* Content */])
+        __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* Content */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* Content */]) === "function" && _c || Object)
     ], HomePage.prototype, "pageBody", void 0);
     HomePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-home',template:/*ion-inline-start:"/home/lawrene/SpotGolbber/src/pages/home/home.html"*/'<ion-header >\n\n  <ion-navbar  align-title="center" color="dark">\n      <button ion-button left menuToggle>\n        <ion-icon class="icon ion-home custom-icon" name="menu"></ion-icon>\n      </button>\n      <ion-title color="strange">SPOTSWOPPER</ion-title>\n\n      <!-- Button for testing the login page -->\n      <ion-buttons end>\n          <button ion-button icon-only>\n            <ion-icon class="icon ion-home custom-icon" name="notifications"></ion-icon>\n          </button>\n      </ion-buttons>\n\n      <ion-buttons end>\n        <button ion-button icon-only (click)="openModal()">\n          <ion-icon name="options"></ion-icon>\n        </button>\n      </ion-buttons>\n    </ion-navbar>\n\n</ion-header>\n\n<ion-content #content class="contentdiv">\n  <div  #map id="map">\n      \n  </div>\n\n\n<div class="bottombuttonscontainer">\n\n    <ion-grid style="background-color: #222; ">\n      \n        <ion-row  style="justify-content: center;" >\n\n            <div class="testclass">\n                <img style="zoom:5%;" src="../../assets/icon/map-spot.svg"><br>My Spots\n            </div>\n\n            <div class="testclass">\n                    <img style="zoom:5%;" src="../../assets/icon/map.svg"><br>Map Layers\n            </div>\n\n            <div class="testclass" (click)="openOptions(3)">\n                <img style="zoom:5%;" src="../../assets/icon/world-wide-internet-signal.svg"><br>Off Grid\n            </div>\n\n            <div class="testclass" (click)="openOptions(4)">\n                <img style="zoom:5%;" src="../../assets/icon/search.svg"><br>Search Spots\n            </div>\n\n        </ion-row>\n\n\n        <ion-row class="layersbelow" >\n            <div *ngIf="showThree" >\n                <br>\n                    <ion-grid style="width: 97vw;"><br>\n                        <ion-row style="text-align:center;">\n                            <ion-col >\n                                <button ion-button block color="redlike"                                 (click)="openSaveModal()">\n                                        Save New Map\n                                 </button>\n                            </ion-col>\n                             <ion-col >\n                                <button ion-button block color="greytwo">\n                                    <img src="../../assets/icon/heartbeat.png">                                                       Go Offline</button>\n                              </ion-col>     \n                        </ion-row>\n                    </ion-grid>                    \n            </div >\n\n            <div *ngIf="showFour">\n                <br><br>\n                    <ion-searchbar animated=true\n                    placeholder="Search all Spots"\n                    [(ngModel)]="myInput"\n                    [showCancelButton]="shouldShowCancel"\n                    (ionInput)="onInput($event)"\n                    (ionCancel)="onCancel($event)">\n                </ion-searchbar>\n                <ion-list>\n                        <ion-item *ngFor="let spot of spotList" (click)="goToSpot(spot, i)">\n                                <h2> {{ spot.pintype }} </h2>\n                                <h3> Distance away: <strong>{{ spot.dist }} km away</strong> </h3>\n                        </ion-item>\n                </ion-list>\n            </div >\n        </ion-row>\n\n\n\n\n        <!-- <ion-row>\n                <div class="layersbelow">\n                    <br>\n                    <br>\n                    \n                        <ion-list>\n                                <ion-card class="spotcard" *ngFor="let d of data" (click)="toggleDetails(d)"><ion-icon color="primary" item-right [name]="d.icon"></ion-icon>\n                                    {{d.title}}\n                                    <div *ngIf="d.showDetails">{{d.details}}</div>\n                                  </ion-card>\n                        </ion-list>\n                                   \n                        <br>\n                        <br>\n                        \n                </div >\n\n      </ion-row> -->\n\n<!--       \n        <ion-row class="layersbelow" [hidden]="showOne" style="overflow-y: scroll;">                                \n            <mbsc-accordion> \n                <mbsc-card collapsible>\n                    <mbsc-card-header style="background: #222;">\n                    <mbsc-avatar src="../../assets/icon/lock.svg" style="zoom:80%;"></mbsc-avatar>                                \n                    <mbsc-card-title style="color:white">Private Spots</mbsc-card-title>\n                    </mbsc-card-header>\n                    <mbsc-card-content>\n                        <mbsc-listview [options]="listviewSettings">\n                            <mbsc-listview-item *ngFor="let spot of privateSpotList" (click)="goToSpot(spot, i)">\n                                <h3>{{spot.dist}}km away</h3>\n                            </mbsc-listview-item>\n                        </mbsc-listview>\n                    </mbsc-card-content>\n                </mbsc-card>\n\n                <mbsc-card collapsible>\n                        <mbsc-card-header style="background: #222;">\n                        <mbsc-avatar src="../../assets/icon/give-money.svg" style="zoom:80%;"></mbsc-avatar>                                \n                        <mbsc-card-title style="color:white">Spots for Lease</mbsc-card-title>\n                        </mbsc-card-header>\n                        <mbsc-card-content>\n                            <mbsc-listview [options]="listviewSettings">\n                                <mbsc-listview-item *ngFor="let spot of leaseSpotList" (click)="goToSpot(spot, i)">\n                                    <h3>{{spot.dist}}km away</h3>\n                                </mbsc-listview-item>\n                            </mbsc-listview>\n                        </mbsc-card-content>\n                </mbsc-card>\n\n                <mbsc-card collapsible>\n                        <mbsc-card-header style="background: #222;">\n                        <mbsc-avatar src="../../assets/icon/tag.svg" style="zoom:80%;"></mbsc-avatar>                                \n                        <mbsc-card-title style="color:white">Spots for Sale</mbsc-card-title>\n                        </mbsc-card-header>\n                        <mbsc-card-content>\n                            <mbsc-listview [options]="listviewSettings">\n                                <mbsc-listview-item *ngFor="let spot of saleSpotList" (click)="goToSpot(spot, i)">\n                                    <h3>{{spot.dist}}km away</h3>\n                                </mbsc-listview-item>\n                            </mbsc-listview>\n                        </mbsc-card-content>\n                </mbsc-card>\n\n                <mbsc-card collapsible>\n                        <mbsc-card-header style="background: #222;">\n                        <mbsc-avatar src="../../assets/icon/cart.svg" style="zoom:80%;"></mbsc-avatar>                                \n                        <mbsc-card-title style="color:white">Spots Purchased</mbsc-card-title>\n                        </mbsc-card-header>\n                        <mbsc-card-content>\n                            <mbsc-listview [options]="listviewSettings">\n                                <mbsc-listview-item *ngFor="let spot of purchasedSpotList" (click)="goToSpot(spot, i)">\n                                    <h3>{{spot.dist}}km away</h3>\n                                </mbsc-listview-item>\n                            </mbsc-listview>\n                        </mbsc-card-content>\n                </mbsc-card>\n            </mbsc-accordion>\n        </ion-row>\n                 -->\n            <!-- <ion-row class="layersbelow" [hidden]="showThree">\n                <div >\n                    <br>\n                        <ion-grid style="width: 97vw;">\n                            <br>\n                            <ion-row style="text-align:center;">\n                            \n                                <ion-col >\n                                    <button ion-button block color="redlike"                                 (click)="openSaveModal()">\n                                            Save New Map\n                                     </button>\n                                </ion-col>\n                    \n                                 <ion-col >\n                                    <button ion-button block color="greytwo">\n                                        <img src="../../assets/icon/heartbeat.png">                                                       Go Offline</button>\n                                        </ion-col>     \n                            </ion-row>\n                        </ion-grid>\n\n                        \n                                            \n                </div >\n\n            </ion-row>\n\n            <ion-row class="layersbelow" [hidden]="showFour">\n                <div >\n                    <br>\n                    <br>\n                    \n                        <ion-searchbar animated=true\n                        placeholder="Search all Spots"\n                        [(ngModel)]="myInput"\n                        [showCancelButton]="shouldShowCancel"\n                        (ionInput)="onInput($event)"\n                        (ionCancel)="onCancel($event)">\n                    </ion-searchbar>\n                <ion-list>\n                        <ion-item *ngFor="let spot of spotList" (click)="goToSpot(spot, i)">\n                                <h2> {{ spot.pintype }} </h2>\n                                <h3> Distance away: <strong>{{ spot.dist }} km away</strong> </h3>\n                        </ion-item>\n                </ion-list>\n                </div >\n\n            </ion-row> -->\n    </ion-grid>\n    \n</div>\n\n<ion-select (ngModelChange)="onChange()" [(ngModel)]="pinspotas" #mySelect>\n        <ion-option>Private Spot</ion-option>\n        <ion-option>Spot for Lease</ion-option>\n        <ion-option>Spot for Sale</ion-option>\n        <ion-option>Spot Purchased</ion-option>\n        <!-- <ion-option>Not for Sale</ion-option> -->\n        \n    </ion-select>\n    \n</ion-content>\n'/*ion-inline-end:"/home/lawrene/SpotGolbber/src/pages/home/home.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* ToastController */],
-            __WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgZone */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* ActionSheetController */],
-            __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */]])
+        __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* ToastController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* ToastController */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgZone */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgZone */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* ActionSheetController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* ActionSheetController */]) === "function" && _h || Object, typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */]) === "function" && _j || Object])
     ], HomePage);
     return HomePage;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j;
 }());
 
 //# sourceMappingURL=home.js.map
@@ -617,12 +622,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * Ionic pages and navigation.
  */
 var LoginPage = /** @class */ (function () {
-    // email = 'a@gmail.com';
-    // password = 'aaaaaaaa';
     function LoginPage(navCtrl, auth, navParams) {
         this.navCtrl = navCtrl;
         this.auth = auth;
         this.navParams = navParams;
+        this.email = 'a@gmail.com';
+        this.password = 'aaaaaaaa';
     }
     LoginPage.prototype.ionViewDidLoad = function () {
         console.log('ionViewDidLoad LoginPage');
@@ -684,9 +689,13 @@ var PaymentPage = /** @class */ (function () {
         this.stripe = Stripe('pk_test_FIrkWSsjvlx9TKX0hm3tAyiO');
         this.baseUrl = "http://caurix.net/stripeApi/stripe-php-6.30.4/spotgolbber.php";
         this.price = this.navParams.get('price') * 100;
+        this.transactionfee = this.price * 0.1;
+        this.totalamount = this.price + this.transactionfee;
         this.spotuid = this.navParams.get('spotuid');
-        // console.log(this.price);
-        // console.log(this.spotuid);
+        console.log(this.price);
+        console.log(this.transactionfee);
+        console.log(this.totalamount);
+        console.log(this.spotuid);
     }
     PaymentPage.prototype.ionViewDidLoad = function () {
         console.log('ionViewDidLoad PaymentPage');
@@ -751,11 +760,12 @@ var PaymentPage = /** @class */ (function () {
         var postData = new FormData();
         postData.append('stripeToken', cardtoken);
         postData.append('spotUid', this.spotuid);
-        postData.append('amount', this.price);
+        postData.append('amount', this.totalamount);
         this.http.post(url, postData).subscribe(function (data) {
             var result = data;
+            var buyersuid = _this.firedata.ref('/allpins').child(_this.spotuid).push().key;
             _this.firedata.ref('/allpins').child(_this.spotuid).
-                child('buyer').set(__WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid).then(function (res) {
+                child('buyers').child(buyersuid).set(__WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid).then(function (res) {
                 _this.firedata.ref('/allpayments').child(result.id).set(data).then(function (res) {
                     console.log(res);
                     _this.load.dismiss();
@@ -791,15 +801,12 @@ var PaymentPage = /** @class */ (function () {
     };
     PaymentPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-payment',template:/*ion-inline-start:"/home/lawrene/SpotGolbber/src/pages/payment/payment.html"*/'<!--\n  Generated template for the PaymentPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <ion-title (click)="goHome()">payment</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n  <form action="/" method="post" id="payment-form">\n  \n    <div class="form-row">\n      <div id="card-element">\n        <!-- a Stripe Element will be inserted here. -->\n      </div>\n\n      <!-- Used to display Element errors -->\n      <div id="card-errors" role="alert"></div>\n    </div>\n\n  <button ion-button block large>Securely pay ${{price/100}}</button>\n    \n  </form>\n\n</ion-content>\n'/*ion-inline-end:"/home/lawrene/SpotGolbber/src/pages/payment/payment.html"*/,
+            selector: 'page-payment',template:/*ion-inline-start:"/home/lawrene/SpotGolbber/src/pages/payment/payment.html"*/'<!--\n  Generated template for the PaymentPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <ion-title (click)="goHome()">payment</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n  <form action="/" method="post" id="payment-form">\n  \n    <div class="form-row">\n      <div id="card-element">\n        <!-- a Stripe Element will be inserted here. -->\n      </div>\n\n      <!-- Used to display Element errors -->\n      <div id="card-errors" role="alert"></div>\n    </div>\n\n  <button ion-button block large>Securely pay ${{totalamount/100}}</button>\n    \n  </form>\n\n</ion-content>\n'/*ion-inline-end:"/home/lawrene/SpotGolbber/src/pages/payment/payment.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* ToastController */],
-            __WEBPACK_IMPORTED_MODULE_2__angular_common_http__["a" /* HttpClient */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavParams */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* ToastController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* ToastController */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2__angular_common_http__["a" /* HttpClient */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_common_http__["a" /* HttpClient */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavParams */]) === "function" && _e || Object])
     ], PaymentPage);
     return PaymentPage;
+    var _a, _b, _c, _d, _e;
 }());
 
 //# sourceMappingURL=payment.js.map

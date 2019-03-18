@@ -12,6 +12,8 @@ declare var Stripe;
 export class PaymentPage {
 
   price;
+  transactionfee;
+  totalamount;
   load;
   spotuid;
   firedata = firebase.database();
@@ -28,10 +30,17 @@ export class PaymentPage {
      public navParams: NavParams) {
 
       this.price = this.navParams.get('price')*100;
+      this.transactionfee = this.price * 0.1;
+      this.totalamount = this.price + this.transactionfee;
+
       this.spotuid = this.navParams.get('spotuid');
       
-      // console.log(this.price);
-      // console.log(this.spotuid);
+      console.log(this.price);
+      console.log(this.transactionfee);
+
+      console.log(this.totalamount);
+      
+      console.log(this.spotuid);
       
   }
 
@@ -111,14 +120,15 @@ export class PaymentPage {
     let postData = new FormData();
     postData.append('stripeToken', cardtoken);
     postData.append('spotUid', this.spotuid);
-    postData.append('amount', this.price);
+    postData.append('amount', this.totalamount);
     
 
 
     this.http.post(url, postData).subscribe((data) =>{
       var result:any = data;
+      var buyersuid = this.firedata.ref('/allpins').child(this.spotuid).push().key;
       this.firedata.ref('/allpins').child(this.spotuid).
-      child('buyer').set(firebase.auth().currentUser.uid).then((res) =>{
+      child('buyers').child(buyersuid).set(firebase.auth().currentUser.uid).then((res) =>{
 
         this.firedata.ref('/allpayments').child(result.id).set(data).then((res) =>{
           console.log(res);  
