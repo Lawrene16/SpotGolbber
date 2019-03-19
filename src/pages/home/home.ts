@@ -33,6 +33,7 @@ export class HomePage {
   addmarkerInfoWindow;
   dollarprice:any;
   spotdesc:any;
+  maxBuyers:any;
   showTwo = false;
   showThree = false;
   showFour = false;
@@ -234,10 +235,20 @@ export class HomePage {
           map: map
         });
 
+        var myfiredata = firebase.database();
+        myfiredata.ref('/allpins').child(firebaseSpot.pinuid).child('buyers').orderByChild('mjbmmn').once('value', (buyersshot) => {
+        let buyersresult = buyersshot.val();
+         let buyerstemparr = [];
+         for (var buyerskey in buyersresult){
+         buyerstemparr.push(buyersresult[buyerskey]);
+         }
+
+
+
         var othersContentString = '<div id="content">'+
         '<div id="siteNotice">'+
         '</div>'+
-        '<h1 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">'+firebaseSpot.pintype+'</h1>'+
+        '<h2 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">'+firebaseSpot.pintype+'</h2>'+
         '<div id="bodyContent">'+
         '<p ><h4>Rating - 4.82/5.0 (139)</h4>' +  
         '<p ><h4>Price - $' +firebaseSpot.price + " + service fee(10%)" + '</h4>' +                      
@@ -249,15 +260,27 @@ export class HomePage {
         '</div>'+
         '</div>';
 
+        var isFullContentString = '<div id="content">'+
+        '<div id="siteNotice">'+
+        '</div>'+
+        '<h2 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">'+firebaseSpot.pintype+'</h2>'+
+        '<div id="bodyContent">'+
+        '<p ><h4>Rating - 4.82/5.0 (139)</h4>' +  
+        '<p ><h4>Details - Locked | Maximum number of buyers reached </h4>' +
+        '<br><br>'+
+        '</div>'+
+        '</div>';
+
         var ownerContentString = '<div id="content">'+
         '<div id="siteNotice">'+
         '</div>'+
-        '<h1 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">You Pinned This Spot As A '+firebaseSpot.pintype+'</h1>'+
+        '<h2 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">You Pinned This Spot As A '+firebaseSpot.pintype+'</h2>'+
         '<div id="bodyContent">'+
         // '<p ><h4 style="color: #ae6c2f;">This spot belongs to you</h4>' +          
         '<p ><h4>Rating - 4.82/5.0 (139)</h4>' +  
         '<p ><h4>Price - $' +firebaseSpot.price+ '</h4>' +                      
         '<p ><h4>Details - ' +firebaseSpot.description+ '</h4>' +
+        '<p ><h4>Buyers - ' + buyerstemparr.length + "/" + firebaseSpot.maxbuyers+ '</h4>' +        
         '<br><br><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.purchaseSpot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f;" >Remove Spot</button>'+
         '<br><br><br><br>'+
         '</div>'+
@@ -266,7 +289,7 @@ export class HomePage {
         var buyerContentString = '<div id="content">'+
         '<div id="siteNotice">'+
         '</div>'+
-        '<h1 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">This spot now belongs to you</h1>'+
+        '<h2 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">You have purchased this spot</h2>'+
         '<div id="bodyContent">'+
         // '<p ><h4 style="color: #ae6c2f;">This spot belongs to you</h4>' +          
         '<p ><h4>Rating - 4.82/5.0 (139)</h4>' +  
@@ -280,97 +303,93 @@ export class HomePage {
         var othersinfowindow = new google.maps.InfoWindow({
           content: othersContentString
         });
-
         var directionsService = new google.maps.DirectionsService();
         var directionsDisplay = new google.maps.DirectionsRenderer();
 
+
+
         marker.addListener('click', (event) =>  {
+
+          // Check for all buyers and present their string
+       
+         buyerstemparr.forEach(function(firebaseBuyer) {
 
           // If map zoom is not 13 or 15
             if(map.getZoom() != 13 && map.getZoom() != 15){
-                map.setZoom(15);
-                map.panTo(marker.getPosition());
+              map.setZoom(15);
+              map.panTo(marker.getPosition());
             }
-
-
             // If map zoom is 15
             else if(map.getZoom() == 15){
-
-
               // Present owner string
               if(firebaseSpot.pinowner == firebase.auth().currentUser.uid){
                 othersinfowindow.setContent(ownerContentString);
                 othersinfowindow.open(map, marker);
               }
-
               // Present others string              
               else if(firebaseSpot.pinowner != firebase.auth().currentUser.uid &&
-               firebaseSpot.buyer != firebase.auth().currentUser.uid){
-                othersinfowindow.setContent(othersContentString);
-                othersinfowindow.open(map, marker);
+                firebaseBuyer != firebase.auth().currentUser.uid){
+
+                if(buyerstemparr.length < firebaseSpot.maxbuyers){
+                  othersinfowindow.setContent(othersContentString);
+                  othersinfowindow.open(map, marker);
+                  var firedata = firebase.database();
+                  firedata.ref('/tempstore').set({
+                    clickedLat: event.latLng.lat(),
+                    clickedLng: event.latLng.lng(),
+                    clickeduid: firebaseSpot.pinuid,
+                    clickedprice: firebaseSpot.price
+  
+                  }).then((res) =>{
+                    this.presentToast("You have purchased this spot. Please wait for a minimum of 3 hours to confirm purchase");
+                    othersinfowindow.close();
+                  }).catch((err) =>{
+                    console.log(err);
+                  });
+                }
+                else{
+                  othersinfowindow.setContent(isFullContentString);
+                  othersinfowindow.open(map, marker);
+                }
               
-                var firedata = firebase.database();
-                firedata.ref('/tempstore').set({
-                  clickedLat: event.latLng.lat(),
-                  clickedLng: event.latLng.lng(),
-                  clickeduid: firebaseSpot.pinuid,
-                  clickedprice: firebaseSpot.price
-                  
-                }).then((res) =>{
-                  this.presentToast("You have purchased this spot. Please wait for a minimum of 3 hours to confirm purchase");
-                  othersinfowindow.close();
-                }).catch((err) =>{
-                  console.log(err);
-                });
-              
+
               }
 
-
-              // Check for all buyers and present their string
-              var myfiredata = firebase.database();
-              myfiredata.ref('/allpins').child(firebaseSpot.pinuid).child('buyers').orderByChild('mjbmmn').once('value', (buyersshot) => {
-              let buyersresult = buyersshot.val();
-              let buyerstemparr = [];
-              for (var buyerskey in buyersresult){
-              buyerstemparr.push(buyersresult[buyerskey]);
-              }
-              buyerstemparr.forEach(function(firebaseBuyer) {
-
-                console.log(firebaseBuyer);
                 //Check if current user is in the list of buyers
                 // then present the relevant content string
-                if(firebaseBuyer == firebase.auth().currentUser.uid){
+              else if(firebaseBuyer == firebase.auth().currentUser.uid){
                   othersinfowindow.setContent(buyerContentString);
                   othersinfowindow.open(map, marker);
-  
-                  var end = new google.maps.LatLng(33.678, -116.243);
-                  var request = {origin: marker.getPosition(),destination: end,travelMode: google.maps.TravelMode.DRIVING};
-  
-                  directionsService.route(request, function(response, status) {
-                    if (status == google.maps.DirectionsStatus.OK) {
-                      directionsDisplay.setDirections(response);
-                      directionsDisplay.setMap(map);
-                    } else {
-                    }
-                  });
-  
-                  othersinfowindow.addListener('closeclick', (e) =>{
-                    console.log('it has been closed');
-                    directionsDisplay.setMap(null);
-                  });               
-                } 
+      
+                      var end = new google.maps.LatLng(33.678, -116.243);
+                      var request = {origin: marker.getPosition(),destination: end,travelMode: google.maps.TravelMode.DRIVING};
+      
+                      directionsService.route(request, function(response, status) {
+                        if (status == google.maps.DirectionsStatus.OK) {
+                          directionsDisplay.setDirections(response);
+                          directionsDisplay.setMap(map);
+                        } else {
+                        }
+                      });
+      
+                      othersinfowindow.addListener('closeclick', (e) =>{
+                        console.log('it has been closed');
+                        directionsDisplay.setMap(null);
+                      });               
+              }
+            }
+            else{
+              map.setZoom(15);
+              map.panTo(marker.getPosition());
+            }
 
-              });
+
+
+         });
             });      
-          }
-
-          else{
-            map.setZoom(15);
-            map.panTo(marker.getPosition());
-          }
+          });
         });
       });
-    });
   }
 
   purchaseSpot(){
@@ -425,29 +444,16 @@ export class HomePage {
         '<div id="siteNotice">'+
         '</div>'+
         '<div id="bodyContent">'+
-        '<p ><h4>This spot is ' +dist+ ' km away from your current location </h4>' +
-        '<textarea id="price" class="taone" maxlength="5" placeholder="Price in $"></textarea>'+
-        '<br><textarea id="desc" class="tatwo" placeholder="Describe Spot Here"></textarea>'+
+        '<p ><h4> ' +dist+ ' km away from your current location </h4>' +
+        '<input type="number" id="price" class="taone" maxlength="5" placeholder="Price in $"></input>'+
+        '<br><input type="number" id="noOfBuyers" class="taone" placeholder="Max number of buyers"></input>'+                
+        '<br><textarea style="height: 100px;" id="desc" class="taone" placeholder="Describe Spot Here"></textarea>'+
         '<br><br><input type="checkbox"> By checking this box you agree that all information provided by you is true and if we discover that you have listed falsely we have the right to authorize a full refund to the buyer</input>' +
         '<br><br><p align="center"><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.listspot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f; margin-right:20px;" >List as '+this.pinspotas+'</button></p>'+
         '<br>><br>'+
         '</div>'+
         '</div>';
 
-      var ownerContentString = '<div id="content">'+
-        '<div id="siteNotice">'+
-        '</div>'+
-        '<h1 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">You Pinned This Spot As A '+this.pinspotas+'</h1>'+
-        '<div id="bodyContent">'+
-        // '<p ><h4 style="color: #ae6c2f;">This spot belongs to you</h4>' +          
-        '<p ><h4>Rating - 4.82/5.0 (139)</h4>' +  
-        '<p ><h4>Price - $' +document.getElementById("price")+ '</h4>' +                      
-        '<p ><h4>Details - ' +document.getElementById("desc")+ '</h4>' +
-        '<br><br><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.purchaseSpot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f;" >Remove Spot</button>'+
-        '<br><br><br><br>'+
-        '</div>'+
-        '</div>';    
-    
     this.addmarkerInfoWindow = new google.maps.InfoWindow({
       content: contentString
     });
@@ -487,7 +493,10 @@ export class HomePage {
 
     this.dollarprice = document.getElementById("price");
     this.spotdesc = document.getElementById("desc");
+    this.maxBuyers = document.getElementById("noOfBuyers");
     
+    console.log(this.maxBuyers);
+
     this.storage.get('position').then((res) =>{
       console.log(this.pinspotas);
       console.log(this.dollarprice.value);    
@@ -500,6 +509,7 @@ export class HomePage {
           pinuid: this.pinuid,
           dist: distance,
           buyers: 'a',
+          maxbuyers: this.maxBuyers.value,
           description: this.spotdesc.value,
           latLng: res,
           pintype: this.pinspotas

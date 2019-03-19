@@ -173,7 +173,6 @@ var HomePage = /** @class */ (function () {
             }
             load.dismiss();
             temparr.forEach(function (firebaseSpot) {
-                var _this = this;
                 // Customize and pin all markers
                 var customicon;
                 switch (firebaseSpot.pintype) {
@@ -196,93 +195,108 @@ var HomePage = /** @class */ (function () {
                     animation: google.maps.Animation.DROP,
                     map: map
                 });
-                var othersContentString = '<div id="content">' +
-                    '<div id="siteNotice">' +
-                    '</div>' +
-                    '<h1 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">' + firebaseSpot.pintype + '</h1>' +
-                    '<div id="bodyContent">' +
-                    '<p ><h4>Rating - 4.82/5.0 (139)</h4>' +
-                    '<p ><h4>Price - $' + firebaseSpot.price + " + service fee(10%)" + '</h4>' +
-                    '<p ><h4>Details - Locked | ' + firebaseSpot.dist + ' km away </h4>' +
-                    'Details of this location are locked ' +
-                    'purchase spot! to get the details ' +
-                    '<br><br><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.purchaseSpot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f;" >Purchase Spot</button>' +
-                    '<br><br><br><br>' +
-                    '</div>' +
-                    '</div>';
-                var ownerContentString = '<div id="content">' +
-                    '<div id="siteNotice">' +
-                    '</div>' +
-                    '<h1 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">You Pinned This Spot As A ' + firebaseSpot.pintype + '</h1>' +
-                    '<div id="bodyContent">' +
-                    // '<p ><h4 style="color: #ae6c2f;">This spot belongs to you</h4>' +          
-                    '<p ><h4>Rating - 4.82/5.0 (139)</h4>' +
-                    '<p ><h4>Price - $' + firebaseSpot.price + '</h4>' +
-                    '<p ><h4>Details - ' + firebaseSpot.description + '</h4>' +
-                    '<br><br><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.purchaseSpot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f;" >Remove Spot</button>' +
-                    '<br><br><br><br>' +
-                    '</div>' +
-                    '</div>';
-                var buyerContentString = '<div id="content">' +
-                    '<div id="siteNotice">' +
-                    '</div>' +
-                    '<h1 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">This spot now belongs to you</h1>' +
-                    '<div id="bodyContent">' +
-                    // '<p ><h4 style="color: #ae6c2f;">This spot belongs to you</h4>' +          
-                    '<p ><h4>Rating - 4.82/5.0 (139)</h4>' +
-                    '<p ><h4>Details - ' + firebaseSpot.description + '</h4>' +
-                    '<p ><h4>Location - ' + firebaseSpot.dist + 'km away</h4>' +
-                    '<br><br><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.purchaseSpot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f;" >Remove Spot</button>' +
-                    '<br><br><br><br>' +
-                    '</div>' +
-                    '</div>';
-                var othersinfowindow = new google.maps.InfoWindow({
-                    content: othersContentString
-                });
-                var directionsService = new google.maps.DirectionsService();
-                var directionsDisplay = new google.maps.DirectionsRenderer();
-                marker.addListener('click', function (event) {
-                    // If map zoom is not 13 or 15
-                    if (map.getZoom() != 13 && map.getZoom() != 15) {
-                        map.setZoom(15);
-                        map.panTo(marker.getPosition());
+                var myfiredata = __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.database();
+                myfiredata.ref('/allpins').child(firebaseSpot.pinuid).child('buyers').orderByChild('mjbmmn').once('value', function (buyersshot) {
+                    var buyersresult = buyersshot.val();
+                    var buyerstemparr = [];
+                    for (var buyerskey in buyersresult) {
+                        buyerstemparr.push(buyersresult[buyerskey]);
                     }
-                    else if (map.getZoom() == 15) {
-                        // Present owner string
-                        if (firebaseSpot.pinowner == __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid) {
-                            othersinfowindow.setContent(ownerContentString);
-                            othersinfowindow.open(map, marker);
-                        }
-                        else if (firebaseSpot.pinowner != __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid &&
-                            firebaseSpot.buyer != __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid) {
-                            othersinfowindow.setContent(othersContentString);
-                            othersinfowindow.open(map, marker);
-                            var firedata = __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.database();
-                            firedata.ref('/tempstore').set({
-                                clickedLat: event.latLng.lat(),
-                                clickedLng: event.latLng.lng(),
-                                clickeduid: firebaseSpot.pinuid,
-                                clickedprice: firebaseSpot.price
-                            }).then(function (res) {
-                                _this.presentToast("You have purchased this spot. Please wait for a minimum of 3 hours to confirm purchase");
-                                othersinfowindow.close();
-                            }).catch(function (err) {
-                                console.log(err);
-                            });
-                        }
+                    var othersContentString = '<div id="content">' +
+                        '<div id="siteNotice">' +
+                        '</div>' +
+                        '<h2 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">' + firebaseSpot.pintype + '</h2>' +
+                        '<div id="bodyContent">' +
+                        '<p ><h4>Rating - 4.82/5.0 (139)</h4>' +
+                        '<p ><h4>Price - $' + firebaseSpot.price + " + service fee(10%)" + '</h4>' +
+                        '<p ><h4>Details - Locked | ' + firebaseSpot.dist + ' km away </h4>' +
+                        'Details of this location are locked ' +
+                        'purchase spot! to get the details ' +
+                        '<br><br><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.purchaseSpot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f;" >Purchase Spot</button>' +
+                        '<br><br><br><br>' +
+                        '</div>' +
+                        '</div>';
+                    var isFullContentString = '<div id="content">' +
+                        '<div id="siteNotice">' +
+                        '</div>' +
+                        '<h2 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">' + firebaseSpot.pintype + '</h2>' +
+                        '<div id="bodyContent">' +
+                        '<p ><h4>Rating - 4.82/5.0 (139)</h4>' +
+                        '<p ><h4>Details - Locked | Maximum number of buyers reached </h4>' +
+                        '<br><br>' +
+                        '</div>' +
+                        '</div>';
+                    var ownerContentString = '<div id="content">' +
+                        '<div id="siteNotice">' +
+                        '</div>' +
+                        '<h2 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">You Pinned This Spot As A ' + firebaseSpot.pintype + '</h2>' +
+                        '<div id="bodyContent">' +
+                        // '<p ><h4 style="color: #ae6c2f;">This spot belongs to you</h4>' +          
+                        '<p ><h4>Rating - 4.82/5.0 (139)</h4>' +
+                        '<p ><h4>Price - $' + firebaseSpot.price + '</h4>' +
+                        '<p ><h4>Details - ' + firebaseSpot.description + '</h4>' +
+                        '<p ><h4>Buyers - ' + buyerstemparr.length + "/" + firebaseSpot.maxbuyers + '</h4>' +
+                        '<br><br><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.purchaseSpot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f;" >Remove Spot</button>' +
+                        '<br><br><br><br>' +
+                        '</div>' +
+                        '</div>';
+                    var buyerContentString = '<div id="content">' +
+                        '<div id="siteNotice">' +
+                        '</div>' +
+                        '<h2 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">You have purchased this spot</h2>' +
+                        '<div id="bodyContent">' +
+                        // '<p ><h4 style="color: #ae6c2f;">This spot belongs to you</h4>' +          
+                        '<p ><h4>Rating - 4.82/5.0 (139)</h4>' +
+                        '<p ><h4>Details - ' + firebaseSpot.description + '</h4>' +
+                        '<p ><h4>Location - ' + firebaseSpot.dist + 'km away</h4>' +
+                        '<br><br><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.purchaseSpot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f;" >Remove Spot</button>' +
+                        '<br><br><br><br>' +
+                        '</div>' +
+                        '</div>';
+                    var othersinfowindow = new google.maps.InfoWindow({
+                        content: othersContentString
+                    });
+                    var directionsService = new google.maps.DirectionsService();
+                    var directionsDisplay = new google.maps.DirectionsRenderer();
+                    marker.addListener('click', function (event) {
                         // Check for all buyers and present their string
-                        var myfiredata = __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.database();
-                        myfiredata.ref('/allpins').child(firebaseSpot.pinuid).child('buyers').orderByChild('mjbmmn').once('value', function (buyersshot) {
-                            var buyersresult = buyersshot.val();
-                            var buyerstemparr = [];
-                            for (var buyerskey in buyersresult) {
-                                buyerstemparr.push(buyersresult[buyerskey]);
+                        buyerstemparr.forEach(function (firebaseBuyer) {
+                            var _this = this;
+                            // If map zoom is not 13 or 15
+                            if (map.getZoom() != 13 && map.getZoom() != 15) {
+                                map.setZoom(15);
+                                map.panTo(marker.getPosition());
                             }
-                            buyerstemparr.forEach(function (firebaseBuyer) {
-                                console.log(firebaseBuyer);
-                                //Check if current user is in the list of buyers
-                                // then present the relevant content string
-                                if (firebaseBuyer == __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid) {
+                            else if (map.getZoom() == 15) {
+                                // Present owner string
+                                if (firebaseSpot.pinowner == __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid) {
+                                    othersinfowindow.setContent(ownerContentString);
+                                    othersinfowindow.open(map, marker);
+                                }
+                                else if (firebaseSpot.pinowner != __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid &&
+                                    firebaseBuyer != __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid) {
+                                    if (buyerstemparr.length < firebaseSpot.maxbuyers) {
+                                        othersinfowindow.setContent(othersContentString);
+                                        othersinfowindow.open(map, marker);
+                                        var firedata = __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.database();
+                                        firedata.ref('/tempstore').set({
+                                            clickedLat: event.latLng.lat(),
+                                            clickedLng: event.latLng.lng(),
+                                            clickeduid: firebaseSpot.pinuid,
+                                            clickedprice: firebaseSpot.price
+                                        }).then(function (res) {
+                                            _this.presentToast("You have purchased this spot. Please wait for a minimum of 3 hours to confirm purchase");
+                                            othersinfowindow.close();
+                                        }).catch(function (err) {
+                                            console.log(err);
+                                        });
+                                    }
+                                    else {
+                                        othersinfowindow.setContent(isFullContentString);
+                                        othersinfowindow.open(map, marker);
+                                    }
+                                }
+                                else if (firebaseBuyer == __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid) {
                                     othersinfowindow.setContent(buyerContentString);
                                     othersinfowindow.open(map, marker);
                                     var end = new google.maps.LatLng(33.678, -116.243);
@@ -300,13 +314,13 @@ var HomePage = /** @class */ (function () {
                                         directionsDisplay.setMap(null);
                                     });
                                 }
-                            });
+                            }
+                            else {
+                                map.setZoom(15);
+                                map.panTo(marker.getPosition());
+                            }
                         });
-                    }
-                    else {
-                        map.setZoom(15);
-                        map.panTo(marker.getPosition());
-                    }
+                    });
                 });
             });
         });
@@ -357,25 +371,13 @@ var HomePage = /** @class */ (function () {
             '<div id="siteNotice">' +
             '</div>' +
             '<div id="bodyContent">' +
-            '<p ><h4>This spot is ' + dist + ' km away from your current location </h4>' +
-            '<textarea id="price" class="taone" maxlength="5" placeholder="Price in $"></textarea>' +
-            '<br><textarea id="desc" class="tatwo" placeholder="Describe Spot Here"></textarea>' +
+            '<p ><h4> ' + dist + ' km away from your current location </h4>' +
+            '<input type="number" id="price" class="taone" maxlength="5" placeholder="Price in $"></input>' +
+            '<br><input type="number" id="noOfBuyers" class="taone" placeholder="Max number of buyers"></input>' +
+            '<br><textarea style="height: 100px;" id="desc" class="taone" placeholder="Describe Spot Here"></textarea>' +
             '<br><br><input type="checkbox"> By checking this box you agree that all information provided by you is true and if we discover that you have listed falsely we have the right to authorize a full refund to the buyer</input>' +
             '<br><br><p align="center"><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.listspot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f; margin-right:20px;" >List as ' + this.pinspotas + '</button></p>' +
             '<br>><br>' +
-            '</div>' +
-            '</div>';
-        var ownerContentString = '<div id="content">' +
-            '<div id="siteNotice">' +
-            '</div>' +
-            '<h1 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">You Pinned This Spot As A ' + this.pinspotas + '</h1>' +
-            '<div id="bodyContent">' +
-            // '<p ><h4 style="color: #ae6c2f;">This spot belongs to you</h4>' +          
-            '<p ><h4>Rating - 4.82/5.0 (139)</h4>' +
-            '<p ><h4>Price - $' + document.getElementById("price") + '</h4>' +
-            '<p ><h4>Details - ' + document.getElementById("desc") + '</h4>' +
-            '<br><br><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.purchaseSpot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f;" >Remove Spot</button>' +
-            '<br><br><br><br>' +
             '</div>' +
             '</div>';
         this.addmarkerInfoWindow = new google.maps.InfoWindow({
@@ -409,6 +411,8 @@ var HomePage = /** @class */ (function () {
         var _this = this;
         this.dollarprice = document.getElementById("price");
         this.spotdesc = document.getElementById("desc");
+        this.maxBuyers = document.getElementById("noOfBuyers");
+        console.log(this.maxBuyers);
         this.storage.get('position').then(function (res) {
             console.log(_this.pinspotas);
             console.log(_this.dollarprice.value);
@@ -420,6 +424,7 @@ var HomePage = /** @class */ (function () {
                     pinuid: _this.pinuid,
                     dist: distance,
                     buyers: 'a',
+                    maxbuyers: _this.maxBuyers.value,
                     description: _this.spotdesc.value,
                     latLng: res,
                     pintype: _this.pinspotas
@@ -645,10 +650,11 @@ var LoginPage = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-login',template:/*ion-inline-start:"/home/lawrene/SpotGolbber/src/pages/login/login.html"*/'<ion-content class="content_bg" padding>\n  \n  <p style="color:#fe3300;font-size: 30px;" align="center"><img style="zoom:10%;"\n     src="../../assets/icon/logom1.png"><br>SpotSwopper</p>\n\n  <br>\n  <br>\n  \n<ion-list>  \n\n  <ion-item no-lines class="itemclass">\n    <!-- <ion-label floating>E-mail</ion-label> -->\n    <ion-input placeholder="Username / Email" [(ngModel)]="email"></ion-input>    \n  </ion-item>\n\n\n  <ion-item no-lines class="itemclass">\n      <!-- <ion-label floating>Password</ion-label> -->\n      <ion-input placeholder="Password" style="font-size: 18px;" name="email" [(ngModel)]="password"></ion-input>\n  </ion-item>\n\n  \n  <ion-item no-lines style="background: transparent;color: white">\n        <ion-label>Remember me on this device</ion-label>\n        <ion-checkbox [(ngModel)]="pepperoni"></ion-checkbox>\n    </ion-item>\n</ion-list>\n\n<div>\n        <button ion-button block style="border-radius: 20px;" color="redlike" (click)="signin()">SIGN IN</button>\n    <!-- <button ion-button block outline color="light" (click)="signin()">LOGIN</button> -->\n</div>\n<br>\n\n\n<div class="bottombuttonscontainer">\n\n    <ion-grid>\n      \n      <ion-row style="justify-content: center; padding-left: 20px;" >\n\n        <div class="testclass" (click)="openOptions(3)">\n                <img style="zoom:10%;" src="../../assets/icon/facebook.svg">\n        </div>\n\n        <div class="testclass">\n              <img style="zoom:10%;" src="../../assets/icon/twitter.svg">\n        </div>\n\n        <div class="testclass">\n                  <img style="zoom:10%;" src="../../assets/icon/google.svg">\n        </div>\n        </ion-row>\n    </ion-grid>\n    \n</div>\n\n<div padding style="text-align:center;" (click)="createaccount()">\n    <ion-label style="color:white; font-size: 17px;" >Dont have an account? Sign Up</ion-label>\n</div>\n</ion-content>'/*ion-inline-end:"/home/lawrene/SpotGolbber/src/pages/login/login.html"*/,
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__providers_auth_auth__["a" /* AuthProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_auth_auth__["a" /* AuthProvider */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavParams */]) === "function" && _c || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */],
+            __WEBPACK_IMPORTED_MODULE_2__providers_auth_auth__["a" /* AuthProvider */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavParams */]])
     ], LoginPage);
     return LoginPage;
-    var _a, _b, _c;
 }());
 
 //# sourceMappingURL=login.js.map
@@ -803,10 +809,13 @@ var PaymentPage = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-payment',template:/*ion-inline-start:"/home/lawrene/SpotGolbber/src/pages/payment/payment.html"*/'<!--\n  Generated template for the PaymentPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar>\n    <ion-title (click)="goHome()">payment</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n  <form action="/" method="post" id="payment-form">\n  \n    <div class="form-row">\n      <div id="card-element">\n        <!-- a Stripe Element will be inserted here. -->\n      </div>\n\n      <!-- Used to display Element errors -->\n      <div id="card-errors" role="alert"></div>\n    </div>\n\n  <button ion-button block large>Securely pay ${{totalamount/100}}</button>\n    \n  </form>\n\n</ion-content>\n'/*ion-inline-end:"/home/lawrene/SpotGolbber/src/pages/payment/payment.html"*/,
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* ToastController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* ToastController */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2__angular_common_http__["a" /* HttpClient */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_common_http__["a" /* HttpClient */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavParams */]) === "function" && _e || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["m" /* ToastController */],
+            __WEBPACK_IMPORTED_MODULE_2__angular_common_http__["a" /* HttpClient */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavParams */]])
     ], PaymentPage);
     return PaymentPage;
-    var _a, _b, _c, _d, _e;
 }());
 
 //# sourceMappingURL=payment.js.map
