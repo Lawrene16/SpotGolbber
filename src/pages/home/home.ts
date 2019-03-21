@@ -210,7 +210,10 @@ export class HomePage {
         temparr.push(result[key]);
       }
       load.dismiss();
+
       temparr.forEach(function(firebaseSpot) {
+
+        
         // Customize and pin all markers
         var customicon;
         switch(firebaseSpot.pintype){
@@ -227,13 +230,6 @@ export class HomePage {
             customicon = '../../assets/icon/blue.png';
             break;  
         }
-        
-        var marker = new google.maps.Marker({
-          position: firebaseSpot.latLng,
-          icon: customicon,
-          animation: google.maps.Animation.DROP,              
-          map: map
-        });
 
         var myfiredata = firebase.database();
         myfiredata.ref('/allpins').child(firebaseSpot.pinuid).child('buyers').orderByChild('mjbmmn').once('value', (buyersshot) => {
@@ -243,6 +239,17 @@ export class HomePage {
          buyerstemparr.push(buyersresult[buyerskey]);
          }
 
+
+        if(buyerstemparr.length >= firebaseSpot.maxbuyers){
+            customicon = '../../assets/icon/white.png';
+        }
+        
+        var marker = new google.maps.Marker({
+          position: firebaseSpot.latLng,
+          icon: customicon,
+          animation: google.maps.Animation.DROP,              
+          map: map
+        });
 
 
         var othersContentString = '<div id="content">'+
@@ -393,7 +400,6 @@ export class HomePage {
   }
 
   purchaseSpot(){
-
     this.firedata.ref('/tempstore').once('value').then((res) =>{
       console.log(res.val());
 

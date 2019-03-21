@@ -36481,7 +36481,7 @@ ion-navbar.toolbar {
 }
 
 page-home #map {
-  height: 85vh;
+  height: 89vh;
 }
 
 page-home .item-cover {
@@ -36514,6 +36514,7 @@ page-home .bottombuttonscontainer {
   width: 100vw;
   background-color: #212121;
   left: 0vw;
+  bottom: -45vh;
   z-index: 5;
 }
 
@@ -36571,7 +36572,7 @@ page-home mbsc-accordion {
 }
 
 page-login .content_bg {
-  background-image: url("../../assets/imgs/loginbg.png");
+  background-image: url("../../assets/icon/backg.jpeg");
   background-repeat: no-repeat;
   background-size: cover;
 }
