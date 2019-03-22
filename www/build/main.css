@@ -36481,7 +36481,7 @@ ion-navbar.toolbar {
 }
 
 page-home #map {
-  height: 89vh;
+  height: 96vh;
 }
 
 page-home .item-cover {
@@ -36495,7 +36495,6 @@ page-home .contentdiv {
 
 page-home .contentdiv .scroll-content {
   overflow: hidden;
-  background: #212121;
 }
 
 page-home .testclass {
@@ -36512,8 +36511,13 @@ page-home .bottombuttonscontainer {
   text-align: center;
   position: absolute;
   width: 100vw;
-  background-color: #212121;
   left: 0vw;
+  bottom: -45vh;
+  z-index: 5;
+}
+
+page-home .fabbi {
+  position: absolute;
   bottom: -45vh;
   z-index: 5;
 }
@@ -36526,6 +36530,7 @@ page-home input[type=text] {
 page-home ion-grid {
   height: 100%;
   width: 100%;
+  background-color: #222;
 }
 
 page-home .taone {

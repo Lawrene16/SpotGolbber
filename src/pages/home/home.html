@@ -1,41 +1,38 @@
-<ion-header >
-
-  <ion-navbar  align-title="center" color="dark">
-      <button ion-button left menuToggle>
-        <ion-icon class="icon ion-home custom-icon" name="menu"></ion-icon>
-      </button>
-      <ion-title color="strange">SPOTSWOPPER</ion-title>
-
-      <!-- Button for testing the login page -->
-      <ion-buttons end>
-          <button ion-button icon-only>
-            <ion-icon class="icon ion-home custom-icon" name="notifications"></ion-icon>
-          </button>
-      </ion-buttons>
-
-      <ion-buttons end>
-        <button ion-button icon-only (click)="openModal()">
-          <ion-icon name="options"></ion-icon>
-        </button>
-      </ion-buttons>
+<ion-header>
+    <ion-navbar ion-fixed transparent align-title="center" color="dark">
+                    <button ion-button left menuToggle>
+                      <ion-icon class="icon ion-home custom-icon" name="menu"></ion-icon>
+                    </button>
+                    <ion-title color="strange">SPOTSWOPPER</ion-title>
+              
+                    <ion-buttons end>
+                        <button ion-button icon-only>
+                          <ion-icon class="icon ion-home custom-icon" name="notifications"></ion-icon>
+                        </button>
+                    </ion-buttons>
+              
+                    <ion-buttons end>
+                      <button ion-button icon-only (click)="openModal()">
+                        <ion-icon name="options"></ion-icon>
+                      </button>
+                    </ion-buttons>
     </ion-navbar>
-
 </ion-header>
+
+
 
 <ion-content #content class="contentdiv">
   <div  #map id="map">
       
   </div>
 
-  <ion-fab>
-    <button ion-fab>
-        <img src="../../assets/icon/map-spot.svg">
-    </button>
-  </ion-fab>
+   <button ion-fab class="fabbi">
+       <img src="../../assets/icon/focus.svg">
+   </button>
 
 <div class="bottombuttonscontainer">
 
-    <ion-grid style="background-color: #222; ">
+    <ion-grid>
       
         <ion-row  style="justify-content: center;" >
 
@@ -177,58 +174,15 @@
             </mbsc-accordion>
         </ion-row>
                  -->
-            <!-- <ion-row class="layersbelow" [hidden]="showThree">
-                <div >
-                    <br>
-                        <ion-grid style="width: 97vw;">
-                            <br>
-                            <ion-row style="text-align:center;">
-                            
-                                <ion-col >
-                                    <button ion-button block color="redlike"                                 (click)="openSaveModal()">
-                                            Save New Map
-                                     </button>
-                                </ion-col>
-                    
-                                 <ion-col >
-                                    <button ion-button block color="greytwo">
-                                        <img src="../../assets/icon/heartbeat.png">                                                       Go Offline</button>
-                                        </ion-col>     
-                            </ion-row>
-                        </ion-grid>
-
-                        
-                                            
-                </div >
-
-            </ion-row>
-
-            <ion-row class="layersbelow" [hidden]="showFour">
-                <div >
-                    <br>
-                    <br>
-                    
-                        <ion-searchbar animated=true
-                        placeholder="Search all Spots"
-                        [(ngModel)]="myInput"
-                        [showCancelButton]="shouldShowCancel"
-                        (ionInput)="onInput($event)"
-                        (ionCancel)="onCancel($event)">
-                    </ion-searchbar>
-                <ion-list>
-                        <ion-item *ngFor="let spot of spotList" (click)="goToSpot(spot, i)">
-                                <h2> {{ spot.pintype }} </h2>
-                                <h3> Distance away: <strong>{{ spot.dist }} km away</strong> </h3>
-                        </ion-item>
-                </ion-list>
-                </div >
-
-            </ion-row> -->
     </ion-grid>
     
 </div>
 
-<ion-select (ngModelChange)="onChange()" [(ngModel)]="pinspotas" #mySelect>
+<ion-select style=
+        "position: absolute;
+        bottom:0vh;
+        z-index: 5;" 
+(ngModelChange)="onChange()" [(ngModel)]="pinspotas" #mySelect>
         <ion-option>Private Spot</ion-option>
         <ion-option>Spot for Lease</ion-option>
         <ion-option>Spot for Sale</ion-option>
