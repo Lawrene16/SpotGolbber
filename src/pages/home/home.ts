@@ -124,6 +124,12 @@ export class HomePage {
     console.log(item.latLng);
     this.map.panTo(item.latLng);
   }
+
+  fabclicked(){
+    let latLng = new google.maps.LatLng(33.678, -116.243);
+    this.map.setZoom(15);
+    this.map.panTo(latLng);
+  }
   
   onInput(searchbar){
       // Reset items back to all of the items
@@ -389,9 +395,6 @@ export class HomePage {
               map.setZoom(15);
               map.panTo(marker.getPosition());
             }
-
-
-
          });
             });      
           });
@@ -556,7 +559,7 @@ export class HomePage {
     let latLng = new google.maps.LatLng(33.678, -116.243);
     let mapOptions = {
       center: latLng,
-      zoom: 13,
+      zoom: 5,
       disableDefaultUI: true,
       mapTypeId: 'hybrid'
     }
@@ -566,6 +569,8 @@ export class HomePage {
 
     this.map.addListener('click', (e) => {
       this.storage.set('position', e.latLng);
+
+      console.log(this.map.getZoom());
 
       if(this.addmarkerInfoWindow == undefined){
         console.log('no need to call close');
@@ -606,7 +611,7 @@ export class HomePage {
 
     defmarker.addListener('click', function() {
       map.setZoom(15);
-      map.setCenter(defmarker.getPosition());
+      map.panTo(defmarker.getPosition());
     });
 
     return defmarker;

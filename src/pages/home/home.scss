@@ -40,7 +40,8 @@ page-home {
 
     .fabbi{
         position: absolute;
-        bottom: -45vh;        
+        bottom: 12vh;    
+        right: 5vw;    
         z-index: 5;
     }
 
@@ -49,12 +50,12 @@ page-home {
         border-radius: 4px;
     }
 
-    ion-grid {
+    .bottomgrid{
         height: 100%;
         width: 100%;
         background-color: #222;
     }
-
+    
     .taone {
         margin-top: 10px;
         width: 95%;
