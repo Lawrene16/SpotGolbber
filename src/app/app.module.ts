@@ -6,7 +6,6 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { IonicStorageModule } from '@ionic/storage';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
 import { HttpClientModule } from '@angular/common/http';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -17,7 +16,7 @@ import { AuthProvider } from '../providers/auth/auth';
 import { UploaderProvider } from '../providers/uploader/uploader';
 import { PaymentPage } from '../pages/payment/payment';
 // import { AccordionListComponent } from '../components/accordion-list/accordion-list';
-// import { ExpandableComponent } from '../components/expandable/expandable';
+import { ExpandableComponent } from '../components/expandable/expandable';
 
 var firebaseconfig = {
   apiKey: "AIzaSyDxNm3T6n3CPB5u28aVRIIzggSV9HChpsw",
@@ -34,9 +33,9 @@ var firebaseconfig = {
     MyApp,
     HomePage,
     PaymentPage,
+    ExpandableComponent,
     // AccordionListComponent,
     LoginPage,
-    ListPage
   ],
   imports: [ 
     MbscModule, 
@@ -53,7 +52,6 @@ var firebaseconfig = {
     HomePage,
     PaymentPage,
     LoginPage,
-    ListPage
   ],
   providers: [
     StatusBar,

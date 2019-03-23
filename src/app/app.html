@@ -6,6 +6,9 @@
                     <img class="userimage" src="../../assets/icon/user.svg">
                     <div class="user-name">Edung Divinefavour</div>
                     <div class="user-mail">lawrenedickson49@gmail.com</div>
+                    <br>
+                    <br>
+                   
                 </div>
             <!-- </ion-title> -->
 
@@ -18,11 +21,19 @@
           <button ion-item menuClose *ngFor="let p of pages" (click)="openPage(p)">
               <ion-icon item-start [name]="p.icon"></ion-icon>
               <!-- <ion-icon item-start [name]="p.icon" [color]="isActive(p)"></ion-icon> -->
-
               {{ p.title }}
             </button>
         </ion-list>
+
+            <ion-grid style="margin-top: 10px;">
+                    <ion-row style="justify-content: center;">
+                            <div>
+                                    <img alt="logo" height="30" class="timg" src="../../assets/icon/logom1.png" >                        
+                                </div>
+                        <div style="margin-top: 6px; padding-left: 5px;">SPOTSWOPPER</div>
+                    </ion-row>
+                </ion-grid>
       </ion-content>
 </ion-menu>
-      
+
 <ion-nav id="nav" [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>

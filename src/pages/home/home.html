@@ -8,16 +8,16 @@
             <ion-grid style="margin-top: 10px;">
                 <ion-row style="justify-content: center;">
                         <div>
-                                <img alt="logo" height="30" class="timg" src="../../assets/icon/logom1.png" >                        
-                            </div>
+                            <img alt="logo" height="30" class="timg" src="../../assets/icon/logom1.png" >                        
+                        </div>
                     <div style="margin-top: 5px; padding-left: 5px;">SPOTSWOPPER</div>
                 </ion-row>
             </ion-grid>
         </ion-title>
               
         <ion-buttons end>
-            <button ion-button icon-only>
-                <ion-icon class="icon ion-home custom-icon" name="notifications"></ion-icon>
+            <button ion-button icon-only (click)="openSecondModal()">
+                <ion-icon  class="icon ion-home custom-icon" name="notifications"></ion-icon>
             </button>
         </ion-buttons>
               
@@ -30,10 +30,8 @@
 </ion-header>
 
 
-
 <ion-content #content class="contentdiv">
   <div  #map id="map">
-      
   </div>
 
    <button ion-fab class="fabbi" (click)="fabclicked()">
@@ -45,27 +43,44 @@
         <ion-grid class="bottomgrid">
         
             <ion-row  style="justify-content: center;" >
-
-                <div class="testclass">
+                <ion-col class="testclass" (click)="openOptions(1)">
                     <img style="zoom:5%;" src="../../assets/icon/map-spot.svg"><br>My Spots
-                </div>
+                </ion-col>
 
-                <div class="testclass">
+                <ion-col class="testclass">
                         <img style="zoom:5%;" src="../../assets/icon/map.svg"><br>Map Layers
-                </div>
+                </ion-col>
 
-                <div class="testclass" (click)="openOptions(3)">
+                <ion-col class="testclass" (click)="openOptions(3)">
                     <img style="zoom:5%;" src="../../assets/icon/world-wide-internet-signal.svg"><br>Off Grid
-                </div>
+                </ion-col>
 
-                <div class="testclass" (click)="openOptions(4)">
-                    <img style="zoom:5%;" src="../../assets/icon/search.svg"><br>Search Spots
-                </div>
-
+                <ion-col class="testclass" (click)="openOptions(4)">
+                    <img style="zoom:5%;" src="../../assets/icon/search.svg"><br>Search Spot
+                </ion-col>
             </ion-row>
 
 
             <ion-row class="layersbelow" >
+
+                <br>
+                <div *ngIf="showOne"  >
+                    <ion-list style="width: 98vw;">
+                        <button no-lines style="background: transparent;color: white" detail-none (click)="expandItem(item)" ion-item *ngFor="let item of items">
+                            <ion-thumbnail item-start>
+                                <img src="{{item.img}}" style="zoom:70%;">
+                            </ion-thumbnail>
+                            <h2>{{item.title}}</h2>
+                            <expandable [expandHeight]="itemExpandHeight" [expanded]="item.expanded">
+                              Hello people
+                            </expandable>
+                                <button ion-button clear item-end  color="primary" >
+                                    View
+                                </button>
+                        </button>
+                    </ion-list>
+                </div>
+
                 <div *ngIf="showThree" >
                     <br>
                         <ion-grid style="width: 97vw;"><br>
@@ -99,91 +114,9 @@
                             </ion-item>
                     </ion-list>
                 </div >
+
+
             </ion-row>
-
-
-
-
-            <!-- <ion-row>
-                    <div class="layersbelow">
-                        <br>
-                        <br>
-                        
-                            <ion-list>
-                                    <ion-card class="spotcard" *ngFor="let d of data" (click)="toggleDetails(d)"><ion-icon color="primary" item-right [name]="d.icon"></ion-icon>
-                                        {{d.title}}
-                                        <div *ngIf="d.showDetails">{{d.details}}</div>
-                                    </ion-card>
-                            </ion-list>
-                                    
-                            <br>
-                            <br>
-                            
-                    </div >
-
-        </ion-row> -->
-
-    <!--       
-            <ion-row class="layersbelow" [hidden]="showOne" style="overflow-y: scroll;">                                
-                <mbsc-accordion> 
-                    <mbsc-card collapsible>
-                        <mbsc-card-header style="background: #222;">
-                        <mbsc-avatar src="../../assets/icon/lock.svg" style="zoom:80%;"></mbsc-avatar>                                
-                        <mbsc-card-title style="color:white">Private Spots</mbsc-card-title>
-                        </mbsc-card-header>
-                        <mbsc-card-content>
-                            <mbsc-listview [options]="listviewSettings">
-                                <mbsc-listview-item *ngFor="let spot of privateSpotList" (click)="goToSpot(spot, i)">
-                                    <h3>{{spot.dist}}km away</h3>
-                                </mbsc-listview-item>
-                            </mbsc-listview>
-                        </mbsc-card-content>
-                    </mbsc-card>
-
-                    <mbsc-card collapsible>
-                            <mbsc-card-header style="background: #222;">
-                            <mbsc-avatar src="../../assets/icon/give-money.svg" style="zoom:80%;"></mbsc-avatar>                                
-                            <mbsc-card-title style="color:white">Spots for Lease</mbsc-card-title>
-                            </mbsc-card-header>
-                            <mbsc-card-content>
-                                <mbsc-listview [options]="listviewSettings">
-                                    <mbsc-listview-item *ngFor="let spot of leaseSpotList" (click)="goToSpot(spot, i)">
-                                        <h3>{{spot.dist}}km away</h3>
-                                    </mbsc-listview-item>
-                                </mbsc-listview>
-                            </mbsc-card-content>
-                    </mbsc-card>
-
-                    <mbsc-card collapsible>
-                            <mbsc-card-header style="background: #222;">
-                            <mbsc-avatar src="../../assets/icon/tag.svg" style="zoom:80%;"></mbsc-avatar>                                
-                            <mbsc-card-title style="color:white">Spots for Sale</mbsc-card-title>
-                            </mbsc-card-header>
-                            <mbsc-card-content>
-                                <mbsc-listview [options]="listviewSettings">
-                                    <mbsc-listview-item *ngFor="let spot of saleSpotList" (click)="goToSpot(spot, i)">
-                                        <h3>{{spot.dist}}km away</h3>
-                                    </mbsc-listview-item>
-                                </mbsc-listview>
-                            </mbsc-card-content>
-                    </mbsc-card>
-
-                    <mbsc-card collapsible>
-                            <mbsc-card-header style="background: #222;">
-                            <mbsc-avatar src="../../assets/icon/cart.svg" style="zoom:80%;"></mbsc-avatar>                                
-                            <mbsc-card-title style="color:white">Spots Purchased</mbsc-card-title>
-                            </mbsc-card-header>
-                            <mbsc-card-content>
-                                <mbsc-listview [options]="listviewSettings">
-                                    <mbsc-listview-item *ngFor="let spot of purchasedSpotList" (click)="goToSpot(spot, i)">
-                                        <h3>{{spot.dist}}km away</h3>
-                                    </mbsc-listview-item>
-                                </mbsc-listview>
-                            </mbsc-card-content>
-                    </mbsc-card>
-                </mbsc-accordion>
-            </ion-row>
-                    -->
         </ion-grid>
         
     </div>

@@ -36462,7 +36462,7 @@ ion-navbar.toolbar {
 .user-name {
   font-size: 15px;
   position: absolute;
-  bottom: 25px;
+  bottom: 35px;
   right: 16px;
 }
 
@@ -36474,10 +36474,20 @@ ion-navbar.toolbar {
 }
 
 .user-mail {
-  font-size: 12px;
+  font-size: 13px;
   position: absolute;
-  bottom: 8px;
+  bottom: 15px;
   right: 16px;
+}
+
+expandable .expand-wrapper {
+  height: 0;
+  -webkit-transition: 0.2s linear;
+  transition: 0.2s linear;
+}
+
+expandable .collapsed {
+  height: 0 !important;
 }
 
 page-home #map {
@@ -36498,8 +36508,6 @@ page-home .contentdiv .scroll-content {
 }
 
 page-home .testclass {
-  text-align: center;
-  padding-left: 5vw;
   color: #fff;
 }
 
@@ -36571,6 +36579,7 @@ page-home ion-searchbar {
 
 page-home .layersbelow {
   height: 45vh;
+  overflow-y: auto;
 }
 
 page-home mbsc-accordion {

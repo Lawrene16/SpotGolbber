@@ -20,8 +20,6 @@ page-home {
     }
 
     .testclass{
-        text-align: center;
-        padding-left: 5vw;
         color: #fff;
     }
 
@@ -91,6 +89,7 @@ page-home {
 
       .layersbelow{
         height: 45vh;
+        overflow-y: auto;
       }
 
       mbsc-accordion{
