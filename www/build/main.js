@@ -1,58 +1,6 @@
 webpackJsonp([2],{
 
-/***/ 187:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LoginPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(56);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-/**
- * Generated class for the LoginPage page.
- *
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-var LoginPage = /** @class */ (function () {
-    function LoginPage(navCtrl, 
-        // public auth: AuthProvider,
-        navParams) {
-        this.navCtrl = navCtrl;
-        this.navParams = navParams;
-        this.email = 'a@gmail.com';
-        this.password = 'aaaaaaaa';
-    }
-    LoginPage.prototype.ionViewDidLoad = function () {
-        console.log('ionViewDidLoad LoginPage');
-        // this.signin();
-    };
-    LoginPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-login',template:/*ion-inline-start:"/home/lawrene/SpotGolbber/src/pages/login/login.html"*/'<ion-content class="content_bg" padding>\n \n  <p style="color:#fff;font-size: 30px;" align="center"><img style="zoom:10%;"\n     src="../../assets/icon/logom1.png"><br>SpotSwopper</p>\n\n  <br>\n  <br>\n  \n<ion-list>  \n\n  <ion-item no-lines class="itemclass">\n    <ion-input placeholder="Username / Email" [(ngModel)]="email"></ion-input>    \n  </ion-item>\n\n\n  <ion-item no-lines class="itemclass">\n      <ion-input placeholder="Password" style="font-size: 18px;" name="email" [(ngModel)]="password"></ion-input>\n  </ion-item>\n<br>\n  \n  <ion-item no-lines style="background: transparent;color: white">\n        <ion-label>Remember me on this device</ion-label>\n        <ion-checkbox [(ngModel)]="pepperoni"></ion-checkbox>\n    </ion-item>\n</ion-list>\n\n<div>\n        <button ion-button block style="border-radius: 20px;" color="redlike" (click)="signin()">SIGN IN</button>\n</div>\n<br>\n\n\n<div class="bottombuttonscontainer">\n\n    <ion-grid>\n      \n      <ion-row style="justify-content: center; padding-left: 20px;" >\n\n        <div class="testclass" (click)="openOptions(3)">\n                <img style="zoom:10%;" src="../../assets/icon/facebook.svg">\n        </div>\n\n        <div class="testclass">\n              <img style="zoom:10%;" src="../../assets/icon/twitter.svg">\n        </div>\n\n        <div class="testclass">\n                  <img style="zoom:10%;" src="../../assets/icon/google.svg">\n        </div>\n        </ion-row>\n    </ion-grid>\n    \n</div>\n\n<div padding style="text-align:center;" (click)="createaccount()">\n    <ion-label style="color:white; font-size: 17px;" >Dont have an account? Sign Up</ion-label>\n</div>\n\n  \n</ion-content>'/*ion-inline-end:"/home/lawrene/SpotGolbber/src/pages/login/login.html"*/,
-        }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavParams */]) === "function" && _b || Object])
-    ], LoginPage);
-    return LoginPage;
-    var _a, _b;
-}());
-
-//# sourceMappingURL=login.js.map
-
-/***/ }),
-
-/***/ 198:
+/***/ 197:
 /***/ (function(module, exports) {
 
 function webpackEmptyAsyncContext(req) {
@@ -65,11 +13,11 @@ function webpackEmptyAsyncContext(req) {
 webpackEmptyAsyncContext.keys = function() { return []; };
 webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
 module.exports = webpackEmptyAsyncContext;
-webpackEmptyAsyncContext.id = 198;
+webpackEmptyAsyncContext.id = 197;
 
 /***/ }),
 
-/***/ 242:
+/***/ 241:
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -93,19 +41,22 @@ function webpackAsyncContext(req) {
 webpackAsyncContext.keys = function webpackAsyncContextKeys() {
 	return Object.keys(map);
 };
-webpackAsyncContext.id = 242;
+webpackAsyncContext.id = 241;
 module.exports = webpackAsyncContext;
 
 /***/ }),
 
-/***/ 305:
+/***/ 304:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HomePage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(56);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_storage__ = __webpack_require__(297);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_storage__ = __webpack_require__(296);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_firebase__ = __webpack_require__(427);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_firebase__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__payment_payment__ = __webpack_require__(401);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -118,14 +69,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
 var HomePage = /** @class */ (function () {
     function HomePage(navCtrl, loadingCtrl, toastCtrl, ngZone, actionSheetCtrl, storage) {
+        var _this = this;
         this.navCtrl = navCtrl;
         this.loadingCtrl = loadingCtrl;
         this.toastCtrl = toastCtrl;
         this.ngZone = ngZone;
         this.actionSheetCtrl = actionSheetCtrl;
         this.storage = storage;
+        this.firedata = __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.database();
         this.showselect = false;
         this.showTwo = false;
         this.showThree = false;
@@ -138,51 +93,42 @@ var HomePage = /** @class */ (function () {
         this.items = [];
         this.itemExpandHeight = 100;
         this.initMySpots();
-        //   // this.pageBody.scrollToBottom(300);
-        // (<any>window).ionicPageRef = {zone: this.ngZone,component: this};
-        // this.firedata.ref('/allpins').on('value', countryList => {
-        //   let countries = [];
-        //   countryList.forEach( country => {
-        //     countries.push(country.val());
-        //     return false;
-        //   });
-        //   this.spotList = countries;
-        //   this.loadedSpotList = countries;
-        //   this.spotList.forEach(spot =>{
-        //     // Load my private spots
-        //     if(
-        //       (spot.pintype == "Private Spot" && spot.pinowner == firebase.auth().currentUser.uid) ||
-        //       (spot.pintype == "Private Spot" && spot.buyer == firebase.auth().currentUser.uid)
-        //     ){
-        //         this.privateSpotList.push(spot);
-        //         // console.log(this.privateSpotList);
-        //     }
-        //     // Load lease spots
-        //     if(
-        //       (spot.pintype == "Spot for Lease" && spot.pinowner == firebase.auth().currentUser.uid) ||
-        //       (spot.pintype == "Spot for Lease" && spot.buyer == firebase.auth().currentUser.uid)
-        //     ){
-        //         this.leaseSpotList.push(spot);
-        //         // console.log(this.leaseSpotList);
-        //     }
-        //     // Load spots for sale
-        //     if(
-        //       (spot.pintype == "Spot for Sale" && spot.pinowner == firebase.auth().currentUser.uid) ||
-        //       (spot.pintype == "Spot for Sale" && spot.buyer == firebase.auth().currentUser.uid)
-        //     ){
-        //         this.saleSpotList.push(spot);
-        //         // console.log(this.saleSpotList);
-        //     }
-        //     // Load spots purchased
-        //     if(
-        //       (spot.pintype == "Spot Purchased" && spot.pinowner == firebase.auth().currentUser.uid) ||
-        //       (spot.pintype == "Spot Purchased" && spot.buyer == firebase.auth().currentUser.uid)
-        //     ){
-        //         this.purchasedSpotList.push(spot);
-        //         // console.log(this.purchasedSpotList);
-        //     }
-        //   });
-        // });
+        window.ionicPageRef = { zone: this.ngZone, component: this };
+        this.firedata.ref('/allpins').on('value', function (countryList) {
+            var countries = [];
+            countryList.forEach(function (country) {
+                countries.push(country.val());
+                return false;
+            });
+            _this.spotList = countries;
+            _this.loadedSpotList = countries;
+            _this.spotList.forEach(function (spot) {
+                // Load my private spots
+                if ((spot.pintype == "Private Spot" && spot.pinowner == __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid) ||
+                    (spot.pintype == "Private Spot" && spot.buyer == __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid)) {
+                    _this.privateSpotList.push(spot);
+                    // console.log(this.privateSpotList);
+                }
+                // Load lease spots
+                if ((spot.pintype == "Spot for Lease" && spot.pinowner == __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid) ||
+                    (spot.pintype == "Spot for Lease" && spot.buyer == __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid)) {
+                    _this.leaseSpotList.push(spot);
+                    // console.log(this.leaseSpotList);
+                }
+                // Load spots for sale
+                if ((spot.pintype == "Spot for Sale" && spot.pinowner == __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid) ||
+                    (spot.pintype == "Spot for Sale" && spot.buyer == __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid)) {
+                    _this.saleSpotList.push(spot);
+                    // console.log(this.saleSpotList);
+                }
+                // Load spots purchased
+                if ((spot.pintype == "Spot Purchased" && spot.pinowner == __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid) ||
+                    (spot.pintype == "Spot Purchased" && spot.buyer == __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid)) {
+                    _this.purchasedSpotList.push(spot);
+                    // console.log(this.purchasedSpotList);
+                }
+            });
+        });
     }
     HomePage.prototype.initMySpots = function () {
         this.items = [
@@ -203,45 +149,45 @@ var HomePage = /** @class */ (function () {
             return listItem;
         });
     };
-    // goToSpot(item){
-    //   this.map.setZoom(15);
-    //   console.log(item.latLng);
-    //   this.map.panTo(item.latLng);
-    // }
-    // fabclicked(){
-    //   let latLng = new google.maps.LatLng(33.678, -116.243);
-    //   this.map.setZoom(15);
-    //   this.map.panTo(latLng);
-    // }
-    // onInput(searchbar){
-    //     // Reset items back to all of the items
-    //       this.initializeItems();
-    //       // set q to the value of the searchbar
-    //       var q = searchbar.srcElement.value;
-    //       // if the value is an empty string don't filter the items
-    //       if (!q) {
-    //         return;
-    //       }
-    //       this.spotList = this.spotList.sort(function(a, b) {
-    //         if (a.dist < b.dist)
-    //           return -1;
-    //         if (a.dist > b.dist)
-    //           return 1;
-    //         return 0;
-    //       });
-    //       this.spotList = this.spotList.filter((v) => {
-    //         if(v.pintype && q) {
-    //           if (v.pintype.toLowerCase().indexOf(q.toLowerCase()) > -1) {
-    //             return true;
-    //           }
-    //           return false;
-    //         }
-    //       });
-    //       console.log(q, this.spotList.length);      
-    // }
-    // initializeItems(): void {
-    //   this.spotList = this.loadedSpotList;
-    // }
+    HomePage.prototype.goToSpot = function (item) {
+        this.map.setZoom(15);
+        console.log(item.latLng);
+        this.map.panTo(item.latLng);
+    };
+    HomePage.prototype.fabclicked = function () {
+        var latLng = new google.maps.LatLng(33.678, -116.243);
+        this.map.setZoom(15);
+        this.map.panTo(latLng);
+    };
+    HomePage.prototype.onInput = function (searchbar) {
+        // Reset items back to all of the items
+        this.initializeItems();
+        // set q to the value of the searchbar
+        var q = searchbar.srcElement.value;
+        // if the value is an empty string don't filter the items
+        if (!q) {
+            return;
+        }
+        this.spotList = this.spotList.sort(function (a, b) {
+            if (a.dist < b.dist)
+                return -1;
+            if (a.dist > b.dist)
+                return 1;
+            return 0;
+        });
+        this.spotList = this.spotList.filter(function (v) {
+            if (v.pintype && q) {
+                if (v.pintype.toLowerCase().indexOf(q.toLowerCase()) > -1) {
+                    return true;
+                }
+                return false;
+            }
+        });
+        console.log(q, this.spotList.length);
+    };
+    HomePage.prototype.initializeItems = function () {
+        this.spotList = this.loadedSpotList;
+    };
     HomePage.prototype.openOptions = function (index) {
         var _this = this;
         this.ngZone.run(function () {
@@ -291,355 +237,359 @@ var HomePage = /** @class */ (function () {
             }
         });
     };
-    // fetchAllSpots(map){
-    //   // present the loader for all spots
-    //   let load = this.loadingCtrl.create({
-    //     content:'Loading full map...',
-    //   });
-    //   load.present();
-    //   this.firedata.ref('/allpins').orderByChild('mjbmmn').once('value', (snapshot) => {
-    //     let result = snapshot.val();
-    //     let temparr = [];
-    //     for (var key in result){
-    //       temparr.push(result[key]);
-    //     }
-    //     load.dismiss();
-    //     temparr.forEach(function(firebaseSpot) {
-    //       // Customize and pin all markers
-    //       var customicon;
-    //       switch(firebaseSpot.pintype){
-    //         case "Private Spot":
-    //           customicon = '../../assets/icon/black.png';
-    //           break;
-    //         case "Spot for Lease":
-    //            customicon = '../../assets/icon/yellow.png';
-    //           break;    
-    //         case "Spot for Sale":
-    //             customicon = '../../assets/icon/green.png'     ; 
-    //           break;
-    //         case "Spot Purchased":
-    //           customicon = '../../assets/icon/blue.png';
-    //           break;  
-    //       }
-    //       var myfiredata = firebase.database();
-    //       myfiredata.ref('/allpins').child(firebaseSpot.pinuid).child('buyers').orderByChild('mjbmmn').once('value', (buyersshot) => {
-    //       let buyersresult = buyersshot.val();
-    //        let buyerstemparr = [];
-    //        for (var buyerskey in buyersresult){
-    //        buyerstemparr.push(buyersresult[buyerskey]);
-    //        }
-    //       if(buyerstemparr.length >= firebaseSpot.maxbuyers){
-    //           customicon = '../../assets/icon/white.png';
-    //       }
-    //       var marker = new google.maps.Marker({
-    //         position: firebaseSpot.latLng,
-    //         icon: customicon,
-    //         animation: google.maps.Animation.DROP,              
-    //         map: map
-    //       });
-    //       var othersContentString = '<div id="content">'+
-    //       '<div id="siteNotice">'+
-    //       '</div>'+
-    //       '<h2 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">'+firebaseSpot.pintype+'</h2>'+
-    //       '<div id="bodyContent">'+
-    //       '<p ><h4>Rating - 4.82/5.0 (139)</h4>' +  
-    //       '<p ><h4>Price - $' +firebaseSpot.price + " + service fee(10%)" + '</h4>' +                      
-    //       '<p ><h4>Details - Locked | ' +firebaseSpot.dist+ ' km away </h4>' +
-    //       'Details of this location are locked '+
-    //       'purchase spot! to get the details '+
-    //       '<br><br><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.purchaseSpot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f;" >Purchase Spot</button>'+
-    //       '<br><br><br><br>'+
-    //       '</div>'+
-    //       '</div>';
-    //       var isFullContentString = '<div id="content">'+
-    //       '<div id="siteNotice">'+
-    //       '</div>'+
-    //       '<h2 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">'+firebaseSpot.pintype+'</h2>'+
-    //       '<div id="bodyContent">'+
-    //       '<p ><h4>Rating - 4.82/5.0 (139)</h4>' +  
-    //       '<p ><h4>Details - Locked | Maximum number of buyers reached </h4>' +
-    //       '<br><br>'+
-    //       '</div>'+
-    //       '</div>';
-    //       var ownerContentString = '<div id="content">'+
-    //       '<div id="siteNotice">'+
-    //       '</div>'+
-    //       '<h2 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">You Pinned This Spot As A '+firebaseSpot.pintype+'</h2>'+
-    //       '<div id="bodyContent">'+
-    //       // '<p ><h4 style="color: #ae6c2f;">This spot belongs to you</h4>' +          
-    //       '<p ><h4>Rating - 4.82/5.0 (139)</h4>' +  
-    //       '<p ><h4>Price - $' +firebaseSpot.price+ '</h4>' +                      
-    //       '<p ><h4>Details - ' +firebaseSpot.description+ '</h4>' +
-    //       '<p ><h4>Buyers - ' + buyerstemparr.length + "/" + firebaseSpot.maxbuyers+ '</h4>' +        
-    //       '<br><br><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.purchaseSpot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f;" >Remove Spot</button>'+
-    //       '<br><br><br><br>'+
-    //       '</div>'+
-    //       '</div>';
-    //       var buyerContentString = '<div id="content">'+
-    //       '<div id="siteNotice">'+
-    //       '</div>'+
-    //       '<h2 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">You have purchased this spot</h2>'+
-    //       '<div id="bodyContent">'+
-    //       // '<p ><h4 style="color: #ae6c2f;">This spot belongs to you</h4>' +          
-    //       '<p ><h4>Rating - 4.82/5.0 (139)</h4>' +  
-    //       '<p ><h4>Details - ' +firebaseSpot.description+ '</h4>' +
-    //       '<p ><h4>Location - ' +firebaseSpot.dist+ 'km away</h4>' + 
-    //       '<br><br><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.purchaseSpot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f;" >Remove Spot</button>'+
-    //       '<br><br><br><br>'+
-    //       '</div>'+
-    //       '</div>';
-    //       var othersinfowindow = new google.maps.InfoWindow({
-    //         content: othersContentString
-    //       });
-    //       var directionsService = new google.maps.DirectionsService();
-    //       var directionsDisplay = new google.maps.DirectionsRenderer();
-    //       marker.addListener('click', (event) =>  {
-    //         // Check for all buyers and present their string
-    //        buyerstemparr.forEach(function(firebaseBuyer) {
-    //         // If map zoom is not 13 or 15
-    //           if(map.getZoom() != 13 && map.getZoom() != 15){
-    //             map.setZoom(15);
-    //             map.panTo(marker.getPosition());
-    //           }
-    //           // If map zoom is 15
-    //           else if(map.getZoom() == 15){
-    //             // Present owner string
-    //             if(firebaseSpot.pinowner == firebase.auth().currentUser.uid){
-    //               othersinfowindow.setContent(ownerContentString);
-    //               othersinfowindow.open(map, marker);
-    //             }
-    //             // Present others string              
-    //             else if(firebaseSpot.pinowner != firebase.auth().currentUser.uid &&
-    //               firebaseBuyer != firebase.auth().currentUser.uid){
-    //               if(buyerstemparr.length < firebaseSpot.maxbuyers){
-    //                 othersinfowindow.setContent(othersContentString);
-    //                 othersinfowindow.open(map, marker);
-    //                 var firedata = firebase.database();
-    //                 firedata.ref('/tempstore').set({
-    //                   clickedLat: event.latLng.lat(),
-    //                   clickedLng: event.latLng.lng(),
-    //                   clickeduid: firebaseSpot.pinuid,
-    //                   clickedprice: firebaseSpot.price
-    //                 }).then((res) =>{
-    //                   this.presentToast("You have purchased this spot. Please wait for a minimum of 3 hours to confirm purchase");
-    //                   othersinfowindow.close();
-    //                 }).catch((err) =>{
-    //                   console.log(err);
-    //                 });
-    //               }
-    //               else{
-    //                 othersinfowindow.setContent(isFullContentString);
-    //                 othersinfowindow.open(map, marker);
-    //               }
-    //             }
-    //               //Check if current user is in the list of buyers
-    //               // then present the relevant content string
-    //             else if(firebaseBuyer == firebase.auth().currentUser.uid){
-    //                 othersinfowindow.setContent(buyerContentString);
-    //                 othersinfowindow.open(map, marker);
-    //                     var end = new google.maps.LatLng(33.678, -116.243);
-    //                     var request = {origin: marker.getPosition(),destination: end,travelMode: google.maps.TravelMode.DRIVING};
-    //                     directionsService.route(request, function(response, status) {
-    //                       if (status == google.maps.DirectionsStatus.OK) {
-    //                         directionsDisplay.setDirections(response);
-    //                         directionsDisplay.setMap(map);
-    //                       } else {
-    //                       }
-    //                     });
-    //                     othersinfowindow.addListener('closeclick', (e) =>{
-    //                       console.log('it has been closed');
-    //                       directionsDisplay.setMap(null);
-    //                     });               
-    //             }
-    //           }
-    //           else{
-    //             map.setZoom(15);
-    //             map.panTo(marker.getPosition());
-    //           }
-    //        });
-    //           });      
-    //         });
-    //       });
-    //     });
-    // }
-    // purchaseSpot(){
-    //   this.firedata.ref('/tempstore').once('value').then((res) =>{
-    //     console.log(res.val());
-    //     this.navCtrl.push(PaymentPage, {
-    //       price: res.val().clickedprice,
-    //       spotuid: res.val().clickeduid,
-    //       buyer: firebase.auth().currentUser.uid
-    //     });
-    //   });
-    // }
-    // addMarkerOnClick(map, position){
-    //   this.getdist();
-    //   var customicon;
-    //   // console.log(this.pinspotas);
-    //   switch(this.pinspotas){
-    //     case "Private Spot":
-    //       customicon = '../../assets/icon/black.png';
-    //       break;
-    //     case "Spot for Lease":
-    //        customicon = '../../assets/icon/yellow.png';
-    //       break;
-    //     case "Spot for Sale":
-    //         customicon = '../../assets/icon/green.png'     ; 
-    //       break;
-    //     case "Spot Purchased":
-    //       customicon = '../../assets/icon/blue.png';
-    //       break;  
-    //   }
-    //   var pinnedmarker = new google.maps.Marker({
-    //     position: position,
-    //     icon: customicon,
-    //     // draggable: true,  
-    //     animation: google.maps.Animation.DROP,              
-    //     map: map
-    //   });
-    //   var loc1 = new google.maps.LatLng(33.678, -116.243);
-    //       var loc2 = pinnedmarker.getPosition();
-    //       var dist = loc2.distanceFrom(loc1);
-    //       dist = dist/1000;
-    //       this.storage.set('dist', dist);
-    //   var contentString = '<div id="content">'+
-    //       '<div id="siteNotice">'+
-    //       '</div>'+
-    //       '<div id="bodyContent">'+
-    //       '<p ><h4> ' +dist+ ' km away from your current location </h4>' +
-    //       '<input type="number" id="price" class="taone" maxlength="5" placeholder="Price in $"></input>'+
-    //       '<br><input type="number" id="noOfBuyers" class="taone" placeholder="Max number of buyers"></input>'+                
-    //       '<br><textarea style="height: 100px;" id="desc" class="taone" placeholder="Describe Spot Here"></textarea>'+
-    //       '<br><br><input type="checkbox"> By checking this box you agree that all information provided by you is true and if we discover that you have listed falsely we have the right to authorize a full refund to the buyer</input>' +
-    //       '<br><br><p align="center"><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.listspot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f; margin-right:20px;" >List as '+this.pinspotas+'</button></p>'+
-    //       '<br>><br>'+
-    //       '</div>'+
-    //       '</div>';
-    //   this.addmarkerInfoWindow = new google.maps.InfoWindow({
-    //     content: contentString
-    //   });
-    //   map.setZoom(15);
-    //   map.panTo(pinnedmarker.getPosition());
-    //   this.addmarkerInfoWindow.open(map, pinnedmarker);
-    //   pinnedmarker.addListener('click', (event) =>{
-    //       if(map.getZoom() != 13 && map.getZoom() != 15){
-    //         map.setZoom(15);
-    //         map.panTo(pinnedmarker.getPosition());
-    //       }
-    //       else if(map.getZoom() == 15){
-    //         // this.addmarkerInfoWindow.setContent(ownerContentString);
-    //         // this.addmarkerInfoWindow.open(map, pinnedmarker);
-    //         this.presentToast("We are taking time to verify this spot, Please wait for a few hours and try again");
-    //       }
-    //       else{
-    //         map.setZoom(15);
-    //         map.panTo(pinnedmarker.getPosition());
-    //       }
-    //     });
-    //     this.addmarkerInfoWindow.addListener('closeclick', (e) =>{
-    //       console.log('it has been closed');
-    //       pinnedmarker.setMap(null);
-    //     });
-    //   return pinnedmarker;
-    // }
-    // listspot(){
-    //   this.dollarprice = document.getElementById("price");
-    //   this.spotdesc = document.getElementById("desc");
-    //   this.maxBuyers = document.getElementById("noOfBuyers");
-    //   console.log(this.maxBuyers);
-    //   this.storage.get('position').then((res) =>{
-    //     console.log(this.pinspotas);
-    //     console.log(this.dollarprice.value);    
-    //     this.storage.get('dist').then((distance) =>{
-    //       this.pinuid = this.firedata.ref('/allpins').push().key;
-    //       this.firedata.ref('/allpins').child(this.pinuid).set({
-    //         pinowner: firebase.auth().currentUser.uid,
-    //         price: this.dollarprice.value,
-    //         pinuid: this.pinuid,
-    //         dist: distance,
-    //         buyers: 'a',
-    //         maxbuyers: this.maxBuyers.value,
-    //         description: this.spotdesc.value,
-    //         latLng: res,
-    //         pintype: this.pinspotas
-    //       }).then((res) =>{
-    //         this.addmarkerInfoWindow.close();
-    //         this.presentToast('Spot pinned as ' + this.pinspotas + ' at $' + this.dollarprice.value );
-    //         console.log(res);
-    //       }).catch((err) =>{
-    //         console.log(err);
-    //       });
-    //     });
-    //   });
-    // }
-    // getdist(){
-    //   google.maps.LatLng.prototype.distanceFrom = function(latlng) {
-    //     var lat = [this.lat(), latlng.lat()]
-    //     var lng = [this.lng(), latlng.lng()]
-    //     var R = 6378137;
-    //     var dLat = (lat[1]-lat[0]) * Math.PI / 180;
-    //     var dLng = (lng[1]-lng[0]) * Math.PI / 180;
-    //     var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-    //     Math.cos(lat[0] * Math.PI / 180 ) * Math.cos(lat[1] * Math.PI / 180 ) *
-    //     Math.sin(dLng/2) * Math.sin(dLng/2);
-    //     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-    //     var d = R * c;
-    //     return Math.round(d);
-    //   }
-    // }
+    HomePage.prototype.fetchAllSpots = function (map) {
+        // present the loader for all spots
+        var load = this.loadingCtrl.create({
+            content: 'Loading full map...',
+        });
+        load.present();
+        this.firedata.ref('/allpins').orderByChild('mjbmmn').once('value', function (snapshot) {
+            var result = snapshot.val();
+            var temparr = [];
+            for (var key in result) {
+                temparr.push(result[key]);
+            }
+            load.dismiss();
+            temparr.forEach(function (firebaseSpot) {
+                // Customize and pin all markers
+                var customicon;
+                switch (firebaseSpot.pintype) {
+                    case "Private Spot":
+                        customicon = '../../assets/icon/black.png';
+                        break;
+                    case "Spot for Lease":
+                        customicon = '../../assets/icon/yellow.png';
+                        break;
+                    case "Spot for Sale":
+                        customicon = '../../assets/icon/green.png';
+                        break;
+                    case "Spot Purchased":
+                        customicon = '../../assets/icon/blue.png';
+                        break;
+                }
+                var myfiredata = __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.database();
+                myfiredata.ref('/allpins').child(firebaseSpot.pinuid).child('buyers').orderByChild('mjbmmn').once('value', function (buyersshot) {
+                    var buyersresult = buyersshot.val();
+                    var buyerstemparr = [];
+                    for (var buyerskey in buyersresult) {
+                        buyerstemparr.push(buyersresult[buyerskey]);
+                    }
+                    if (buyerstemparr.length >= firebaseSpot.maxbuyers) {
+                        customicon = '../../assets/icon/white.png';
+                    }
+                    var marker = new google.maps.Marker({
+                        position: firebaseSpot.latLng,
+                        icon: customicon,
+                        animation: google.maps.Animation.DROP,
+                        map: map
+                    });
+                    var othersContentString = '<div id="content">' +
+                        '<div id="siteNotice">' +
+                        '</div>' +
+                        '<h2 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">' + firebaseSpot.pintype + '</h2>' +
+                        '<div id="bodyContent">' +
+                        '<p ><h4>Rating - 4.82/5.0 (139)</h4>' +
+                        '<p ><h4>Price - $' + firebaseSpot.price + " + service fee(10%)" + '</h4>' +
+                        '<p ><h4>Details - Locked | ' + firebaseSpot.dist + ' km away </h4>' +
+                        'Details of this location are locked ' +
+                        'purchase spot! to get the details ' +
+                        '<br><br><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.purchaseSpot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f;" >Purchase Spot</button>' +
+                        '<br><br><br><br>' +
+                        '</div>' +
+                        '</div>';
+                    var isFullContentString = '<div id="content">' +
+                        '<div id="siteNotice">' +
+                        '</div>' +
+                        '<h2 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">' + firebaseSpot.pintype + '</h2>' +
+                        '<div id="bodyContent">' +
+                        '<p ><h4>Rating - 4.82/5.0 (139)</h4>' +
+                        '<p ><h4>Details - Locked | Maximum number of buyers reached </h4>' +
+                        '<br><br>' +
+                        '</div>' +
+                        '</div>';
+                    var ownerContentString = '<div id="content">' +
+                        '<div id="siteNotice">' +
+                        '</div>' +
+                        '<h2 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">You Pinned This Spot As A ' + firebaseSpot.pintype + '</h2>' +
+                        '<div id="bodyContent">' +
+                        // '<p ><h4 style="color: #ae6c2f;">This spot belongs to you</h4>' +          
+                        '<p ><h4>Rating - 4.82/5.0 (139)</h4>' +
+                        '<p ><h4>Price - $' + firebaseSpot.price + '</h4>' +
+                        '<p ><h4>Details - ' + firebaseSpot.description + '</h4>' +
+                        '<p ><h4>Buyers - ' + buyerstemparr.length + "/" + firebaseSpot.maxbuyers + '</h4>' +
+                        '<br><br><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.purchaseSpot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f;" >Remove Spot</button>' +
+                        '<br><br><br><br>' +
+                        '</div>' +
+                        '</div>';
+                    var buyerContentString = '<div id="content">' +
+                        '<div id="siteNotice">' +
+                        '</div>' +
+                        '<h2 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">You have purchased this spot</h2>' +
+                        '<div id="bodyContent">' +
+                        // '<p ><h4 style="color: #ae6c2f;">This spot belongs to you</h4>' +          
+                        '<p ><h4>Rating - 4.82/5.0 (139)</h4>' +
+                        '<p ><h4>Details - ' + firebaseSpot.description + '</h4>' +
+                        '<p ><h4>Location - ' + firebaseSpot.dist + 'km away</h4>' +
+                        '<br><br><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.purchaseSpot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f;" >Remove Spot</button>' +
+                        '<br><br><br><br>' +
+                        '</div>' +
+                        '</div>';
+                    var othersinfowindow = new google.maps.InfoWindow({
+                        content: othersContentString
+                    });
+                    var directionsService = new google.maps.DirectionsService();
+                    var directionsDisplay = new google.maps.DirectionsRenderer();
+                    marker.addListener('click', function (event) {
+                        // Check for all buyers and present their string
+                        buyerstemparr.forEach(function (firebaseBuyer) {
+                            var _this = this;
+                            // If map zoom is not 13 or 15
+                            if (map.getZoom() != 13 && map.getZoom() != 15) {
+                                map.setZoom(15);
+                                map.panTo(marker.getPosition());
+                            }
+                            else if (map.getZoom() == 15) {
+                                // Present owner string
+                                if (firebaseSpot.pinowner == __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid) {
+                                    othersinfowindow.setContent(ownerContentString);
+                                    othersinfowindow.open(map, marker);
+                                }
+                                else if (firebaseSpot.pinowner != __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid &&
+                                    firebaseBuyer != __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid) {
+                                    if (buyerstemparr.length < firebaseSpot.maxbuyers) {
+                                        othersinfowindow.setContent(othersContentString);
+                                        othersinfowindow.open(map, marker);
+                                        var firedata = __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.database();
+                                        firedata.ref('/tempstore').set({
+                                            clickedLat: event.latLng.lat(),
+                                            clickedLng: event.latLng.lng(),
+                                            clickeduid: firebaseSpot.pinuid,
+                                            clickedprice: firebaseSpot.price
+                                        }).then(function (res) {
+                                            _this.presentToast("You have purchased this spot. Please wait for a minimum of 3 hours to confirm purchase");
+                                            othersinfowindow.close();
+                                        }).catch(function (err) {
+                                            console.log(err);
+                                        });
+                                    }
+                                    else {
+                                        othersinfowindow.setContent(isFullContentString);
+                                        othersinfowindow.open(map, marker);
+                                    }
+                                }
+                                else if (firebaseBuyer == __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid) {
+                                    othersinfowindow.setContent(buyerContentString);
+                                    othersinfowindow.open(map, marker);
+                                    var end = new google.maps.LatLng(33.678, -116.243);
+                                    var request = { origin: marker.getPosition(), destination: end, travelMode: google.maps.TravelMode.DRIVING };
+                                    directionsService.route(request, function (response, status) {
+                                        if (status == google.maps.DirectionsStatus.OK) {
+                                            directionsDisplay.setDirections(response);
+                                            directionsDisplay.setMap(map);
+                                        }
+                                        else {
+                                        }
+                                    });
+                                    othersinfowindow.addListener('closeclick', function (e) {
+                                        console.log('it has been closed');
+                                        directionsDisplay.setMap(null);
+                                    });
+                                }
+                            }
+                            else {
+                                map.setZoom(15);
+                                map.panTo(marker.getPosition());
+                            }
+                        });
+                    });
+                });
+            });
+        });
+    };
+    HomePage.prototype.purchaseSpot = function () {
+        var _this = this;
+        this.firedata.ref('/tempstore').once('value').then(function (res) {
+            console.log(res.val());
+            _this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_4__payment_payment__["a" /* PaymentPage */], {
+                price: res.val().clickedprice,
+                spotuid: res.val().clickeduid,
+                buyer: __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid
+            });
+        });
+    };
+    HomePage.prototype.addMarkerOnClick = function (map, position) {
+        var _this = this;
+        this.getdist();
+        var customicon;
+        // console.log(this.pinspotas);
+        switch (this.pinspotas) {
+            case "Private Spot":
+                customicon = '../../assets/icon/black.png';
+                break;
+            case "Spot for Lease":
+                customicon = '../../assets/icon/yellow.png';
+                break;
+            case "Spot for Sale":
+                customicon = '../../assets/icon/green.png';
+                break;
+            case "Spot Purchased":
+                customicon = '../../assets/icon/blue.png';
+                break;
+        }
+        var pinnedmarker = new google.maps.Marker({
+            position: position,
+            icon: customicon,
+            // draggable: true,  
+            animation: google.maps.Animation.DROP,
+            map: map
+        });
+        var loc1 = new google.maps.LatLng(33.678, -116.243);
+        var loc2 = pinnedmarker.getPosition();
+        var dist = loc2.distanceFrom(loc1);
+        dist = dist / 1000;
+        this.storage.set('dist', dist);
+        var contentString = '<div id="content">' +
+            '<div id="siteNotice">' +
+            '</div>' +
+            '<div id="bodyContent">' +
+            '<p ><h4> ' + dist + ' km away from your current location </h4>' +
+            '<input type="number" id="price" class="taone" maxlength="5" placeholder="Price in $"></input>' +
+            '<br><input type="number" id="noOfBuyers" class="taone" placeholder="Max number of buyers"></input>' +
+            '<br><textarea style="height: 100px;" id="desc" class="taone" placeholder="Describe Spot Here"></textarea>' +
+            '<br><br><input type="checkbox"> By checking this box you agree that all information provided by you is true and if we discover that you have listed falsely we have the right to authorize a full refund to the buyer</input>' +
+            '<br><br><p align="center"><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.listspot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f; margin-right:20px;" >List as ' + this.pinspotas + '</button></p>' +
+            '<br>><br>' +
+            '</div>' +
+            '</div>';
+        this.addmarkerInfoWindow = new google.maps.InfoWindow({
+            content: contentString
+        });
+        map.setZoom(15);
+        map.panTo(pinnedmarker.getPosition());
+        this.addmarkerInfoWindow.open(map, pinnedmarker);
+        pinnedmarker.addListener('click', function (event) {
+            if (map.getZoom() != 13 && map.getZoom() != 15) {
+                map.setZoom(15);
+                map.panTo(pinnedmarker.getPosition());
+            }
+            else if (map.getZoom() == 15) {
+                // this.addmarkerInfoWindow.setContent(ownerContentString);
+                // this.addmarkerInfoWindow.open(map, pinnedmarker);
+                _this.presentToast("We are taking time to verify this spot, Please wait for a few hours and try again");
+            }
+            else {
+                map.setZoom(15);
+                map.panTo(pinnedmarker.getPosition());
+            }
+        });
+        this.addmarkerInfoWindow.addListener('closeclick', function (e) {
+            console.log('it has been closed');
+            pinnedmarker.setMap(null);
+        });
+        return pinnedmarker;
+    };
+    HomePage.prototype.listspot = function () {
+        var _this = this;
+        this.dollarprice = document.getElementById("price");
+        this.spotdesc = document.getElementById("desc");
+        this.maxBuyers = document.getElementById("noOfBuyers");
+        console.log(this.maxBuyers);
+        this.storage.get('position').then(function (res) {
+            console.log(_this.pinspotas);
+            console.log(_this.dollarprice.value);
+            _this.storage.get('dist').then(function (distance) {
+                _this.pinuid = _this.firedata.ref('/allpins').push().key;
+                _this.firedata.ref('/allpins').child(_this.pinuid).set({
+                    pinowner: __WEBPACK_IMPORTED_MODULE_3_firebase___default.a.auth().currentUser.uid,
+                    price: _this.dollarprice.value,
+                    pinuid: _this.pinuid,
+                    dist: distance,
+                    buyers: 'a',
+                    maxbuyers: _this.maxBuyers.value,
+                    description: _this.spotdesc.value,
+                    latLng: res,
+                    pintype: _this.pinspotas
+                }).then(function (res) {
+                    _this.addmarkerInfoWindow.close();
+                    _this.presentToast('Spot pinned as ' + _this.pinspotas + ' at $' + _this.dollarprice.value);
+                    console.log(res);
+                }).catch(function (err) {
+                    console.log(err);
+                });
+            });
+        });
+    };
+    HomePage.prototype.getdist = function () {
+        google.maps.LatLng.prototype.distanceFrom = function (latlng) {
+            var lat = [this.lat(), latlng.lat()];
+            var lng = [this.lng(), latlng.lng()];
+            var R = 6378137;
+            var dLat = (lat[1] - lat[0]) * Math.PI / 180;
+            var dLng = (lng[1] - lng[0]) * Math.PI / 180;
+            var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat[0] * Math.PI / 180) * Math.cos(lat[1] * Math.PI / 180) *
+                    Math.sin(dLng / 2) * Math.sin(dLng / 2);
+            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            var d = R * c;
+            return Math.round(d);
+        };
+    };
     HomePage.prototype.ionViewWillEnter = function () {
         // console.log('entered');   
-        // this.loadMap(); 
+        this.loadMap();
     };
-    // loadMap(){
-    //   let latLng = new google.maps.LatLng(33.678, -116.243);
-    //   let mapOptions = {
-    //     center: latLng,
-    //     zoom: 5,
-    //     disableDefaultUI: true,
-    //     mapTypeId: 'hybrid'
-    //   }
-    //   this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
-    //   this.addDefaultMarker(this.map, latLng);
-    //   this.fetchAllSpots(this.map);
-    //   this.map.addListener('click', (e) => {
-    //     this.storage.set('position', e.latLng);
-    //     console.log(this.map.getZoom());
-    //     if(this.addmarkerInfoWindow == undefined){
-    //       console.log('no need to call close');
-    //       this.selectRef.open();
-    //       this.storage.get('position').then((res) =>{
-    //         console.log(res);
-    //       });
-    //     }else{
-    //       console.log('need to call close');
-    //       this.selectRef.open();
-    //       this.storage.get('position').then((res) =>{
-    //         console.log(res);
-    //       });
-    //       // this.addmarkerInfoWindow.close();
-    //     }
-    //   });    
-    // }
-    // onChange(){
-    //   this.storage.get('position').then((res) =>{
-    //     this.addMarkerOnClick(this.map, res);
-    //     console.log(res);
-    //   });
-    // }
-    // addDefaultMarker(map, position){
-    //   var defmarker = new google.maps.Marker({
-    //     position: position,
-    //     map: map,
-    //     animation: google.maps.Animation.BOUNCE,
-    //     title: 'Hello World!'
-    //   });
-    //   defmarker.addListener('click', function() {
-    //     map.setZoom(15);
-    //     map.panTo(defmarker.getPosition());
-    //   });
-    //   return defmarker;
-    // }
+    HomePage.prototype.loadMap = function () {
+        var _this = this;
+        var latLng = new google.maps.LatLng(33.678, -116.243);
+        var mapOptions = {
+            center: latLng,
+            zoom: 5,
+            disableDefaultUI: true,
+            mapTypeId: 'hybrid'
+        };
+        this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+        this.addDefaultMarker(this.map, latLng);
+        this.fetchAllSpots(this.map);
+        this.map.addListener('click', function (e) {
+            _this.storage.set('position', e.latLng);
+            console.log(_this.map.getZoom());
+            if (_this.addmarkerInfoWindow == undefined) {
+                console.log('no need to call close');
+                _this.selectRef.open();
+                _this.storage.get('position').then(function (res) {
+                    console.log(res);
+                });
+            }
+            else {
+                console.log('need to call close');
+                _this.selectRef.open();
+                _this.storage.get('position').then(function (res) {
+                    console.log(res);
+                });
+                // this.addmarkerInfoWindow.close();
+            }
+        });
+    };
+    HomePage.prototype.onChange = function () {
+        var _this = this;
+        this.storage.get('position').then(function (res) {
+            _this.addMarkerOnClick(_this.map, res);
+            console.log(res);
+        });
+    };
+    HomePage.prototype.addDefaultMarker = function (map, position) {
+        var defmarker = new google.maps.Marker({
+            position: position,
+            map: map,
+            animation: google.maps.Animation.BOUNCE,
+            title: 'Hello World!'
+        });
+        defmarker.addListener('click', function () {
+            map.setZoom(15);
+            map.panTo(defmarker.getPosition());
+        });
+        return defmarker;
+    };
     HomePage.prototype.openModal = function () {
         var actionSheet = this.actionSheetCtrl.create({
             title: 'Are you sure you want to logout',
@@ -743,6 +693,69 @@ var HomePage = /** @class */ (function () {
 
 /***/ }),
 
+/***/ 400:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LoginPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(56);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_auth_auth__ = __webpack_require__(787);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__home_home__ = __webpack_require__(304);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+/**
+ * Generated class for the LoginPage page.
+ *
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+var LoginPage = /** @class */ (function () {
+    function LoginPage(navCtrl, auth, navParams) {
+        this.navCtrl = navCtrl;
+        this.auth = auth;
+        this.navParams = navParams;
+        this.email = 'a@gmail.com';
+        this.password = 'aaaaaaaa';
+    }
+    LoginPage.prototype.ionViewDidLoad = function () {
+        console.log('ionViewDidLoad LoginPage');
+        // this.signin();
+    };
+    LoginPage.prototype.signin = function () {
+        var _this = this;
+        this.auth.signInWithEmail(this.email, this.password).then(function () {
+            _this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_3__home_home__["a" /* HomePage */]);
+        }).catch(function (err) {
+            console.log(err);
+        });
+    };
+    LoginPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
+            selector: 'page-login',template:/*ion-inline-start:"/home/lawrene/SpotGolbber/src/pages/login/login.html"*/'<ion-content class="content_bg" padding>\n \n  <p style="color:#fff;font-size: 30px;" align="center"><img style="zoom:10%;"\n     src="../../assets/icon/logom1.png"><br>SpotSwopper</p>\n\n  <br>\n  <br>\n  \n<ion-list>  \n\n  <ion-item no-lines class="itemclass">\n    <ion-input placeholder="Username / Email" [(ngModel)]="email"></ion-input>    \n  </ion-item>\n\n\n  <ion-item no-lines class="itemclass">\n      <ion-input placeholder="Password" style="font-size: 18px;" name="email" [(ngModel)]="password"></ion-input>\n  </ion-item>\n<br>\n  \n  <ion-item no-lines style="background: transparent;color: white">\n        <ion-label>Remember me on this device</ion-label>\n        <ion-checkbox [(ngModel)]="pepperoni"></ion-checkbox>\n    </ion-item>\n</ion-list>\n\n<div>\n        <button ion-button block style="border-radius: 20px;" color="redlike" (click)="signin()">SIGN IN</button>\n</div>\n<br>\n\n\n<div class="bottombuttonscontainer">\n\n    <ion-grid>\n      \n      <ion-row style="justify-content: center; padding-left: 20px;" >\n\n        <div class="testclass" (click)="openOptions(3)">\n                <img style="zoom:10%;" src="../../assets/icon/facebook.svg">\n        </div>\n\n        <div class="testclass">\n              <img style="zoom:10%;" src="../../assets/icon/twitter.svg">\n        </div>\n\n        <div class="testclass">\n                  <img style="zoom:10%;" src="../../assets/icon/google.svg">\n        </div>\n        </ion-row>\n    </ion-grid>\n    \n</div>\n\n<div padding style="text-align:center;" (click)="createaccount()">\n    <ion-label style="color:white; font-size: 17px;" >Dont have an account? Sign Up</ion-label>\n</div>\n\n  \n</ion-content>'/*ion-inline-end:"/home/lawrene/SpotGolbber/src/pages/login/login.html"*/,
+        }),
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__providers_auth_auth__["a" /* AuthProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_auth_auth__["a" /* AuthProvider */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavParams */]) === "function" && _c || Object])
+    ], LoginPage);
+    return LoginPage;
+    var _a, _b, _c;
+}());
+
+//# sourceMappingURL=login.js.map
+
+/***/ }),
+
 /***/ 401:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -750,7 +763,7 @@ var HomePage = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PaymentPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(56);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common_http__ = __webpack_require__(243);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common_http__ = __webpack_require__(242);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_firebase__ = __webpack_require__(427);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_firebase__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -923,22 +936,22 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mobiscroll_angular__ = __webpack_require__(400);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mobiscroll_angular__ = __webpack_require__(399);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_forms__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__ = __webpack_require__(51);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ionic_angular__ = __webpack_require__(56);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_storage__ = __webpack_require__(297);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_storage__ = __webpack_require__(296);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__app_component__ = __webpack_require__(495);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_home_home__ = __webpack_require__(305);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__angular_common_http__ = __webpack_require__(243);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_home_home__ = __webpack_require__(304);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__angular_common_http__ = __webpack_require__(242);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_angularfire2__ = __webpack_require__(501);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_angularfire2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_angularfire2__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_angularfire2_auth__ = __webpack_require__(398);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_angularfire2_auth__ = __webpack_require__(397);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_angularfire2_auth___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_angularfire2_auth__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ionic_native_status_bar__ = __webpack_require__(299);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__ionic_native_splash_screen__ = __webpack_require__(304);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pages_login_login__ = __webpack_require__(187);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ionic_native_status_bar__ = __webpack_require__(298);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__ionic_native_splash_screen__ = __webpack_require__(303);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pages_login_login__ = __webpack_require__(400);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__providers_auth_auth__ = __webpack_require__(787);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_payment_payment__ = __webpack_require__(401);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_expandable_expandable__ = __webpack_require__(788);
@@ -1032,9 +1045,10 @@ var AppModule = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MyApp; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(56);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(299);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(304);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_home_home__ = __webpack_require__(305);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(298);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(303);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_home_home__ = __webpack_require__(304);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_login_login__ = __webpack_require__(400);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1049,12 +1063,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var MyApp = /** @class */ (function () {
     function MyApp(platform, statusBar, splashScreen) {
         this.platform = platform;
         this.statusBar = statusBar;
         this.splashScreen = splashScreen;
-        this.rootPage = __WEBPACK_IMPORTED_MODULE_4__pages_home_home__["a" /* HomePage */];
+        this.rootPage = __WEBPACK_IMPORTED_MODULE_5__pages_login_login__["a" /* LoginPage */];
         this.initializeApp();
         // used for an example of ngFor and navigation
         this.pages = [
@@ -1105,7 +1120,7 @@ var MyApp = /** @class */ (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AuthProvider; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angularfire2_auth__ = __webpack_require__(398);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angularfire2_auth__ = __webpack_require__(397);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angularfire2_auth___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_angularfire2_auth__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;

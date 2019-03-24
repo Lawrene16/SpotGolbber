@@ -24,7 +24,7 @@ export class LoginPage {
 
 
   constructor(public navCtrl: NavController, 
-    // public auth: AuthProvider,
+    public auth: AuthProvider,
     public navParams: NavParams) {
   }
 
@@ -33,12 +33,12 @@ export class LoginPage {
     // this.signin();
   }
 
-  // signin(){
-  //   this.auth.signInWithEmail(this.email, this.password).then(() =>{
-  //     this.navCtrl.setRoot(HomePage);
-  //   }).catch((err) =>{
-  //     console.log(err);
-  //   });
-  // }
+  signin(){
+    this.auth.signInWithEmail(this.email, this.password).then(() =>{
+      this.navCtrl.setRoot(HomePage);
+    }).catch((err) =>{
+      console.log(err);
+    });
+  }
 
 }
