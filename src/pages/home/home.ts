@@ -275,6 +275,7 @@ export class HomePage {
         let buyersresult = buyersshot.val();
          let buyerstemparr = [];
          for (var buyerskey in buyersresult){
+           
          buyerstemparr.push(buyersresult[buyerskey]);
          }
 
@@ -294,14 +295,15 @@ export class HomePage {
         var othersContentString = '<div id="content">'+
         '<div id="siteNotice">'+
         '</div>'+
-        '<h2 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">'+firebaseSpot.pintype+'</h2>'+
+        '<h2 style="color:#488aff;" id="firstHeading" class="firstHeading">'+firebaseSpot.pintype+'</h2>'+
         '<div id="bodyContent">'+
         '<p ><h4>Rating - 4.82/5.0 (139)</h4>' +  
         '<p ><h4>Price - $' +firebaseSpot.price + " + service fee(10%)" + '</h4>' +                      
-        '<p ><h4>Details - Locked | ' +firebaseSpot.dist+ ' km away </h4>' +
+        '<p ><h4>Details - ' +firebaseSpot.description+ '</h4>' +
+        '<p ><h4>Location - Locked | ' + firebaseSpot.dist + ' km away </h4>' +        
         'Details of this location are locked '+
         'purchase spot! to get the details '+
-        '<br><br><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.purchaseSpot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f;" >Purchase Spot</button>'+
+        '<br><br><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.purchaseSpot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #488aff;" >Purchase Spot</button>'+
         '<br><br><br><br>'+
         '</div>'+
         '</div>';
@@ -309,7 +311,7 @@ export class HomePage {
         var isFullContentString = '<div id="content">'+
         '<div id="siteNotice">'+
         '</div>'+
-        '<h2 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">'+firebaseSpot.pintype+'</h2>'+
+        '<h2 style="color:#488aff;" id="firstHeading" class="firstHeading">'+firebaseSpot.pintype+'</h2>'+
         '<div id="bodyContent">'+
         '<p ><h4>Rating - 4.82/5.0 (139)</h4>' +  
         '<p ><h4>Details - Locked | Maximum number of buyers reached </h4>' +
@@ -320,28 +322,28 @@ export class HomePage {
         var ownerContentString = '<div id="content">'+
         '<div id="siteNotice">'+
         '</div>'+
-        '<h2 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">You Pinned This Spot As A '+firebaseSpot.pintype+'</h2>'+
+        '<h2 style="color:#488aff;" id="firstHeading" class="firstHeading">You Pinned This Spot As A '+firebaseSpot.pintype+'</h2>'+
         '<div id="bodyContent">'+
         // '<p ><h4 style="color: #ae6c2f;">This spot belongs to you</h4>' +          
         '<p ><h4>Rating - 4.82/5.0 (139)</h4>' +  
         '<p ><h4>Price - $' +firebaseSpot.price+ '</h4>' +                      
         '<p ><h4>Details - ' +firebaseSpot.description+ '</h4>' +
         '<p ><h4>Buyers - ' + buyerstemparr.length + "/" + firebaseSpot.maxbuyers+ '</h4>' +        
-        '<br><br><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.purchaseSpot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f;" >Remove Spot</button>'+
+        '<br><br><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.purchaseSpot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #488aff;" >Remove Spot</button>'+
         '<br><br><br><br>'+
         '</div>'+
         '</div>';
 
-        var buyerContentString = '<div id="content">'+
+        var hasBoughtContentString = '<div id="content">'+
         '<div id="siteNotice">'+
         '</div>'+
-        '<h2 style="color:#ae6c2f;" id="firstHeading" class="firstHeading">You have purchased this spot</h2>'+
+        '<h2 style="color:#488aff;" id="firstHeading" class="firstHeading">You have purchased this spot</h2>'+
         '<div id="bodyContent">'+
         // '<p ><h4 style="color: #ae6c2f;">This spot belongs to you</h4>' +          
         '<p ><h4>Rating - 4.82/5.0 (139)</h4>' +  
         '<p ><h4>Details - ' +firebaseSpot.description+ '</h4>' +
-        '<p ><h4>Location - ' +firebaseSpot.dist+ 'km away</h4>' + 
-        '<br><br><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.purchaseSpot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f;" >Remove Spot</button>'+
+        '<p ><h4>Location - ' + Math.round(firebaseSpot.latLng.lat * 100) / 100+ '(lat) | '+ Math.round(firebaseSpot.latLng.lat * 100) / 100 + '(lng) ' + firebaseSpot.dist+'km away</h4>' +                
+        '<br><br><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.purchaseSpot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #488aff;" >Remove Spot</button>'+
         '<br><br><br><br>'+
         '</div>'+
         '</div>';
@@ -404,7 +406,7 @@ export class HomePage {
                 //Check if current user is in the list of buyers
                 // then present the relevant content string
               else if(firebaseBuyer == firebase.auth().currentUser.uid){
-                  othersinfowindow.setContent(buyerContentString);
+                  othersinfowindow.setContent(hasBoughtContentString);
                   othersinfowindow.open(map, marker);
       
                       var end = new google.maps.LatLng(33.678, -116.243);
@@ -491,7 +493,7 @@ export class HomePage {
         '<br><input type="number" id="noOfBuyers" class="taone" placeholder="Max number of buyers"></input>'+                
         '<br><textarea style="height: 100px;" id="desc" class="taone" placeholder="Describe Spot Here"></textarea>'+
         '<br><br><input type="checkbox"> By checking this box you agree that all information provided by you is true and if we discover that you have listed falsely we have the right to authorize a full refund to the buyer</input>' +
-        '<br><br><p align="center"><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.listspot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f; margin-right:20px;" >List as '+this.pinspotas+'</button></p>'+
+        '<br><br><p align="center"><button onClick="window.ionicPageRef.zone.run(function () { window.ionicPageRef.component.listspot() })" style="background:#000;background-color: white; padding: 10px;color: black;border: 2px solid #ae6c2f; margin-right:20px;" >LIST</button></p>'+
         '<br>><br>'+
         '</div>'+
         '</div>';
@@ -543,25 +545,40 @@ export class HomePage {
       console.log(this.pinspotas);
       console.log(this.dollarprice.value);    
 
+
       this.storage.get('dist').then((distance) =>{
-        this.pinuid = this.firedata.ref('/allpins').push().key;
-        this.firedata.ref('/allpins').child(this.pinuid).set({
-          pinowner: firebase.auth().currentUser.uid,
-          price: this.dollarprice.value,
-          pinuid: this.pinuid,
-          dist: distance,
-          buyers: 'a',
-          maxbuyers: this.maxBuyers.value,
-          description: this.spotdesc.value,
-          latLng: res,
-          pintype: this.pinspotas
-        }).then((res) =>{
-          this.addmarkerInfoWindow.close();
-          this.presentToast('Spot pinned as ' + this.pinspotas + ' at $' + this.dollarprice.value );
-          console.log(res);
-        }).catch((err) =>{
-          console.log(err);
-        });
+
+        if(this.dollarprice.value < 1){
+          this.presentToast("Cannot pin spot without a price");
+        }
+        else if(this.spotdesc.value == "" || this.spotdesc.value.length < 15){
+          this.presentToast("Please fill in a valid description for this spot");
+        }
+        else{
+          this.pinuid = this.firedata.ref('/allpins').push().key;
+          this.firedata.ref('/allpins').child(this.pinuid).set({
+            pinowner: firebase.auth().currentUser.uid,
+            price: this.dollarprice.value,
+            pinuid: this.pinuid,
+            dist: distance,
+            buyers: 'a',
+            maxbuyers: this.maxBuyers.value,
+            description: this.spotdesc.value,
+            latLng: res,
+            pintype: this.pinspotas
+          }).then((res) =>{
+            this.pinspotas = "a";
+            
+            this.addmarkerInfoWindow.close();
+            this.presentToast('Spot pinned as ' + this.pinspotas + ' at $' + this.dollarprice.value );
+            console.log(res);
+          }).catch((err) =>{
+            console.log(err);
+          });
+        }
+
+
+
   
       });
     });

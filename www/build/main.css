@@ -36453,14 +36453,14 @@ ion-navbar.toolbar {
 }
 
 .container {
+  background-image: url("../assets/icon/test.png");
   text-align: center;
   color: white;
-  background: #222;
   padding: 0px;
 }
 
 .user-name {
-  font-size: 15px;
+  font-size: 18px;
   position: absolute;
   bottom: 35px;
   right: 16px;
@@ -36474,7 +36474,7 @@ ion-navbar.toolbar {
 }
 
 .user-mail {
-  font-size: 13px;
+  font-size: 15px;
   position: absolute;
   bottom: 15px;
   right: 16px;
