@@ -43,11 +43,10 @@ var LoginPage = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-login',template:/*ion-inline-start:"/home/lawrene/SpotGolbber/src/pages/login/login.html"*/'<ion-content class="content_bg" padding>\n \n  <!-- <p style="color:#fff;font-size: 30px;" align="center"><img style="zoom:10%;"\n     src="../../assets/icon/logom1.png"><br>SpotSwopper</p> -->\n\n     <br>\n\n\n     <ion-grid style="margin-top: 10px;">\n      <ion-row style="justify-content: center;">\n              <div>\n                      <img alt="logo" height="50" class="timg" src="../../assets/icon/logom1.png" >                        \n                  </div>\n          <div style="margin-top: 10px; font-size: 30px; color:white; padding-left: 5px;">SPOTSWOPPER</div>\n      </ion-row>\n      <ion-row class="knowrow">Know where you stand</ion-row>\n  </ion-grid>\n  <br>\n  <br>\n  \n<ion-list>  \n\n  <ion-item no-lines class="itemclass">\n    <ion-input class="custom-input" placeholder="Username / Email" [(ngModel)]="email"  style="font-size: 18px;" type="email" required></ion-input>  \n    <ion-icon color="white" name="ios-contact-outline" item-left></ion-icon>\n      \n  </ion-item>\n\n    <ion-item no-lines class="itemclass">\n        <ion-input class="custom-input" placeholder="Password" style="font-size: 18px;" type="password" required name="email" [(ngModel)]="password"> </ion-input>\n        <ion-icon color="white" name="ios-lock-outline" item-left></ion-icon>\n    </ion-item>\n\n\n\n  <br>\n\n  <div align="center" style="color: white; font-size: 20px">Forgot Password</div>\n  <br>\n  <br>\n  <div>\n    <button ion-button block style="border-radius: 20px;" color="redlike" (click)="signin()">SIGN IN</button>\n</div>\n<br>\n\n<div align="center" style="color: white; font-size: 20px; opacity: 0.9; margin-top: 50dp">-----------------------OR------------------------</div>\n<br>\n<div  align="center" class="knowrow">Login with your social networks</div>\n\n<!--   \n  <ion-item no-lines style="background: transparent;color: white">\n        <ion-label>Remember me on this device</ion-label>\n        <ion-checkbox [(ngModel)]="pepperoni"></ion-checkbox>\n    </ion-item> -->\n</ion-list>\n\n\n\n\n<div>\n\n    <ion-grid>\n      \n      <ion-row style="justify-content: center; padding-left: 20px;" >\n\n        <div class="testclass">\n                <img style="zoom:10%;" src="../../assets/icon/facebook.svg">\n        </div>\n\n        <div class="testclass">\n              <img style="zoom:10%;" src="../../assets/icon/twitter.svg">\n        </div>\n\n        <div class="testclass">\n                  <img style="zoom:10%;" src="../../assets/icon/google.svg">\n        </div>\n        </ion-row>\n    </ion-grid>\n    \n</div>\n\n<div align="center" style="text-align:center;" (click)="createaccount()">\n    <ion-label style="color:white; font-size: 17px;" >Dont have an account? Sign Up</ion-label>\n</div>\n\n  \n</ion-content>'/*ion-inline-end:"/home/lawrene/SpotGolbber/src/pages/login/login.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */],
-            __WEBPACK_IMPORTED_MODULE_2__providers_auth_auth__["a" /* AuthProvider */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavParams */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__providers_auth_auth__["a" /* AuthProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_auth_auth__["a" /* AuthProvider */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavParams */]) === "function" && _c || Object])
     ], LoginPage);
     return LoginPage;
+    var _a, _b, _c;
 }());
 
 //# sourceMappingURL=login.js.map
@@ -238,15 +237,11 @@ webpackEmptyAsyncContext.id = 200;
 var map = {
 	"../pages/listspot/listspot.module": [
 		791,
-		0
-	],
-	"../pages/login/login.module": [
-		789,
-		2
+		3
 	],
 	"../pages/payment/payment.module": [
 		790,
-		1
+		6
 	]
 };
 function webpackAsyncContext(req) {
@@ -1071,6 +1066,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17_firebase__ = __webpack_require__(166);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_17_firebase__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__pages_register_register__ = __webpack_require__(796);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__pages_forgotpassword_forgotpassword__ = __webpack_require__(798);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1097,6 +1093,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
+
 var firebaseconfig = {
     apiKey: "AIzaSyDxNm3T6n3CPB5u28aVRIIzggSV9HChpsw",
     authDomain: "spotgolbber.firebaseapp.com",
@@ -1116,6 +1113,7 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_7__pages_home_home__["a" /* HomePage */],
                 __WEBPACK_IMPORTED_MODULE_18__pages_register_register__["a" /* RegisterPage */],
                 __WEBPACK_IMPORTED_MODULE_15__pages_payment_payment__["a" /* PaymentPage */],
+                __WEBPACK_IMPORTED_MODULE_19__pages_forgotpassword_forgotpassword__["a" /* ForgotpasswordPage */],
                 __WEBPACK_IMPORTED_MODULE_16__components_expandable_expandable__["a" /* ExpandableComponent */],
                 // AccordionListComponent,
                 __WEBPACK_IMPORTED_MODULE_13__pages_login_login__["a" /* LoginPage */],
@@ -1126,7 +1124,6 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__["a" /* BrowserModule */],
                 __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["e" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_6__app_component__["a" /* MyApp */], {}, {
                     links: [
-                        { loadChildren: '../pages/login/login.module#LoginPageModule', name: 'LoginPage', segment: 'login', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/payment/payment.module#PaymentPageModule', name: 'PaymentPage', segment: 'payment', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/listspot/listspot.module#ListspotPageModule', name: 'ListspotPage', segment: 'listspot', priority: 'low', defaultHistory: [] }
                     ]
@@ -1140,6 +1137,7 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_6__app_component__["a" /* MyApp */],
                 __WEBPACK_IMPORTED_MODULE_7__pages_home_home__["a" /* HomePage */],
                 __WEBPACK_IMPORTED_MODULE_18__pages_register_register__["a" /* RegisterPage */],
+                __WEBPACK_IMPORTED_MODULE_19__pages_forgotpassword_forgotpassword__["a" /* ForgotpasswordPage */],
                 __WEBPACK_IMPORTED_MODULE_15__pages_payment_payment__["a" /* PaymentPage */],
                 __WEBPACK_IMPORTED_MODULE_13__pages_login_login__["a" /* LoginPage */],
             ],
@@ -1170,7 +1168,7 @@ var AppModule = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(398);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(401);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_home_home__ = __webpack_require__(402);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_register_register__ = __webpack_require__(796);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_forgotpassword_forgotpassword__ = __webpack_require__(798);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1191,7 +1189,7 @@ var MyApp = /** @class */ (function () {
         this.platform = platform;
         this.statusBar = statusBar;
         this.splashScreen = splashScreen;
-        this.rootPage = __WEBPACK_IMPORTED_MODULE_5__pages_register_register__["a" /* RegisterPage */];
+        this.rootPage = __WEBPACK_IMPORTED_MODULE_5__pages_forgotpassword_forgotpassword__["a" /* ForgotpasswordPage */];
         this.initializeApp();
         // used for an example of ngFor and navigation
         this.pages = [
@@ -1320,13 +1318,58 @@ var RegisterPage = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-register',template:/*ion-inline-start:"/home/lawrene/SpotGolbber/src/pages/register/register.html"*/'<ion-content class="content_bg" padding>\n \n  <!-- <p style="color:#fff;font-size: 30px;" align="center"><img style="zoom:10%;"\n     src="../../assets/icon/logom1.png"><br>SpotSwopper</p> -->\n\n     <br>\n\n\n     <ion-grid style="margin-top: 10px;">\n      <ion-row style="justify-content: center;">\n              <div>\n                      <img alt="logo" height="50" class="timg" src="../../assets/icon/logom1.png" >                        \n                  </div>\n          <div style="margin-top: 10px; font-size: 30px; color:white; padding-left: 5px;">SPOTSWOPPER</div>\n      </ion-row>\n      <ion-row class="knowrow">Know where you stand</ion-row>\n  </ion-grid>\n  <br>\n  <br>\n  \n<ion-list>  \n\n  <ion-item no-lines class="itemclass">\n    <ion-input class="custom-input" placeholder="Email Address" [(ngModel)]="email"  style="font-size: 18px;" type="email" required></ion-input>  \n    <ion-icon color="white" name="ios-contact-outline" item-left></ion-icon>  \n  </ion-item>\n\n    <ion-item no-lines class="itemclass">\n        <ion-input class="custom-input" placeholder="Password" style="font-size: 18px;" type="password" required [(ngModel)]="password"> </ion-input>\n        <ion-icon color="white" name="ios-lock-outline" item-left></ion-icon>\n    </ion-item>\n\n    <ion-item no-lines class="itemclass">\n      <ion-input class="custom-input" placeholder="Password" style="font-size: 18px;" type="password" required [(ngModel)]="confirmpassword"> </ion-input>\n      <ion-icon color="white" name="ios-lock-outline" item-left></ion-icon>\n    </ion-item>\n\n  <br>\n  <div style="margin-top: 20px">\n    <button ion-button block style="border-radius: 20px;" color="redlike" (click)="signin()">SIGN UP</button>\n</div>\n<br>\n\n<div align="center" style="color: white; font-size: 16px; opacity: 0.9; margin-top: 50dp">By signing up you agree to our <u style="color: #fe3300">Terms of use</u></div>\n<br>\n\n<div align="center" style="color: white; font-size: 20px; opacity: 0.9; margin-top: 50dp">-----------------------OR------------------------</div>\n<br>\n<div  align="center" class="knowrow">Join now with your social networks</div>\n\n<!--   \n  <ion-item no-lines style="background: transparent;color: white">\n        <ion-label>Remember me on this device</ion-label>\n        <ion-checkbox [(ngModel)]="pepperoni"></ion-checkbox>\n    </ion-item> -->\n</ion-list>\n\n\n\n\n<div>\n\n    <ion-grid>\n      \n      <ion-row style="justify-content: center; padding-left: 20px;" >\n\n        <div class="testclass">\n                <img style="zoom:10%;" src="../../assets/icon/facebook.svg">\n        </div>\n\n        <div class="testclass">\n              <img style="zoom:10%;" src="../../assets/icon/twitter.svg">\n        </div>\n\n        <div class="testclass">\n                  <img style="zoom:10%;" src="../../assets/icon/google.svg">\n        </div>\n        </ion-row>\n    </ion-grid>\n    \n</div>\n\n<div align="center" style="text-align:center;" (click)="createaccount()">\n    <ion-label style="color:white; font-size: 17px;" >Dont have an account? Sign Up</ion-label>\n</div>\n\n  \n</ion-content>'/*ion-inline-end:"/home/lawrene/SpotGolbber/src/pages/register/register.html"*/,
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavParams */]) === "function" && _b || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavParams */]])
     ], RegisterPage);
     return RegisterPage;
-    var _a, _b;
 }());
 
 //# sourceMappingURL=register.js.map
+
+/***/ }),
+
+/***/ 798:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ForgotpasswordPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(56);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+/**
+ * Generated class for the ForgotpasswordPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+var ForgotpasswordPage = /** @class */ (function () {
+    function ForgotpasswordPage(navCtrl, navParams) {
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+    }
+    ForgotpasswordPage.prototype.ionViewDidLoad = function () {
+        console.log('ionViewDidLoad ForgotpasswordPage');
+    };
+    ForgotpasswordPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
+            selector: 'page-forgotpassword',template:/*ion-inline-start:"/home/lawrene/SpotGolbber/src/pages/forgotpassword/forgotpassword.html"*/'<ion-content class="content_bg" padding>\n \n  <!-- <p style="color:#fff;font-size: 30px;" align="center"><img style="zoom:10%;"\n     src="../../assets/icon/logom1.png"><br>SpotSwopper</p> -->\n\n     <br>\n\n\n     <ion-grid style="margin-top: 10px;">\n      <ion-row style="justify-content: center;">\n              <div>\n                      <img alt="logo" height="50" class="timg" src="../../assets/icon/logom1.png" >                        \n                  </div>\n          <div style="margin-top: 10px; font-size: 30px; color:white; padding-left: 5px;">SPOTSWOPPER</div>\n      </ion-row>\n      <ion-row class="knowrow">Know where you stand</ion-row>\n      <ion-row class="know1row">Password Recovery</ion-row>\n      \n  </ion-grid>\n  <br>\n  <br>\n  \n\n<ion-list>  \n\n  <ion-item no-lines class="itemclass">\n    <ion-input class="custom-input" placeholder="Email Address" [(ngModel)]="email"  style="font-size: 18px;" type="email" required></ion-input>  \n    <ion-icon color="white" name="ios-contact-outline" item-left></ion-icon>\n      \n  </ion-item>\n\n\n  <br>\n  <br>\n  <div>\n    <button ion-button block style="border-radius: 20px;" color="redlike" (click)="signin()">SUBMIT</button>\n</div>\n<br>\n\n<div align="center" \nstyle="color: white; font-size: 18px; opacity: 0.9;\n margin-top: 50dp">I remember it now!</div>\n<br>\n\n</ion-list>\n\n\n</ion-content>'/*ion-inline-end:"/home/lawrene/SpotGolbber/src/pages/forgotpassword/forgotpassword.html"*/,
+        }),
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavParams */]) === "function" && _b || Object])
+    ], ForgotpasswordPage);
+    return ForgotpasswordPage;
+    var _a, _b;
+}());
+
+//# sourceMappingURL=forgotpassword.js.map
 
 /***/ })
 

@@ -19,6 +19,7 @@ import { PaymentPage } from '../pages/payment/payment';
 import { ExpandableComponent } from '../components/expandable/expandable';
 import * as firebase from 'firebase';
 import { RegisterPage } from '../pages/register/register';
+import { ForgotpasswordPage } from '../pages/forgotpassword/forgotpassword';
 
 var firebaseconfig = {
   apiKey: "AIzaSyDxNm3T6n3CPB5u28aVRIIzggSV9HChpsw",
@@ -40,6 +41,7 @@ firebase.initializeApp(firebaseconfig);
     HomePage,
     RegisterPage,
     PaymentPage,
+    ForgotpasswordPage,
     ExpandableComponent,
     // AccordionListComponent,
     LoginPage,
@@ -58,6 +60,7 @@ firebase.initializeApp(firebaseconfig);
     MyApp,
     HomePage,
     RegisterPage,    
+    ForgotpasswordPage,
     PaymentPage,
     LoginPage,
   ],

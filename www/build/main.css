@@ -39840,6 +39840,84 @@ expandable .collapsed {
   height: 0 !important;
 }
 
+page-forgotpassword .content_bg {
+  background-image: url("../../assets/icon/backgroundimg.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+page-forgotpassword .loginbtns {
+  color: black;
+  opacity: 20%;
+  background-color: #fe3300;
+}
+
+page-forgotpassword .custom-icon {
+  color: white;
+}
+
+page-forgotpassword .sometext {
+  color: #7ed420;
+}
+
+page-forgotpassword .itemclass {
+  height: 7vh;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  background: rgba(158, 158, 158, 0.6);
+  padding-left: 10px;
+  opacity: 0.3;
+  margin-bottom: 12px;
+  color: white;
+  border-radius: 20px;
+}
+
+page-forgotpassword .testclass {
+  padding-right: 30px;
+}
+
+page-forgotpassword .knowrow {
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 18px;
+  color: #9e9e9e;
+}
+
+page-forgotpassword .know1row {
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  margin-top: 30px;
+  margin-bottom: 10px;
+  font-size: 25px;
+  color: #fe3300;
+}
+
+page-forgotpassword ion-input.custom-input {
+  font-size: 20px;
+}
+
+page-forgotpassword ion-input.custom-input ::-webkit-input-placeholder {
+  font-size: 18px;
+  color: white;
+}
+
+page-forgotpassword ion-input.custom-input ::-ms-input-placeholder {
+  font-size: 18px;
+  color: white;
+}
+
+page-forgotpassword ion-input.custom-input ::placeholder {
+  font-size: 18px;
+  color: white;
+}
+
 page-home #map {
   height: 96vh;
 }
