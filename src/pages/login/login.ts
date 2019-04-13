@@ -18,8 +18,8 @@ import { HomePage } from '../home/home';
 })
 export class LoginPage {
 
-  email = 'a@gmail.com';
-  password = 'aaaaaaaa';
+  // email = 'a@gmail.com';
+  // password = 'aaaaaaaa';
 
 
 
@@ -33,12 +33,12 @@ export class LoginPage {
     // this.signin();
   }
 
-  signin(){
-    this.auth.signInWithEmail(this.email, this.password).then(() =>{
-      this.navCtrl.setRoot(HomePage);
-    }).catch((err) =>{
-      console.log(err);
-    });
-  }
+  // signin(){
+  //   this.auth.signInWithEmail(this.email, this.password).then(() =>{
+  //     this.navCtrl.setRoot(HomePage);
+  //   }).catch((err) =>{
+  //     console.log(err);
+  //   });
+  // }
 
 }

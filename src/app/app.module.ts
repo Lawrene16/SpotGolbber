@@ -17,6 +17,7 @@ import { UploaderProvider } from '../providers/uploader/uploader';
 import { PaymentPage } from '../pages/payment/payment';
 // import { AccordionListComponent } from '../components/accordion-list/accordion-list';
 import { ExpandableComponent } from '../components/expandable/expandable';
+import * as firebase from 'firebase';
 
 var firebaseconfig = {
   apiKey: "AIzaSyDxNm3T6n3CPB5u28aVRIIzggSV9HChpsw",
@@ -27,6 +28,10 @@ var firebaseconfig = {
     messagingSenderId: "72131126436"
 };
 
+
+
+
+firebase.initializeApp(firebaseconfig);
 
 @NgModule({
   declarations: [
