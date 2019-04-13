@@ -18,6 +18,7 @@ import { PaymentPage } from '../pages/payment/payment';
 // import { AccordionListComponent } from '../components/accordion-list/accordion-list';
 import { ExpandableComponent } from '../components/expandable/expandable';
 import * as firebase from 'firebase';
+import { RegisterPage } from '../pages/register/register';
 
 var firebaseconfig = {
   apiKey: "AIzaSyDxNm3T6n3CPB5u28aVRIIzggSV9HChpsw",
@@ -37,6 +38,7 @@ firebase.initializeApp(firebaseconfig);
   declarations: [
     MyApp,
     HomePage,
+    RegisterPage,
     PaymentPage,
     ExpandableComponent,
     // AccordionListComponent,
@@ -55,6 +57,7 @@ firebase.initializeApp(firebaseconfig);
   entryComponents: [
     MyApp,
     HomePage,
+    RegisterPage,    
     PaymentPage,
     LoginPage,
   ],

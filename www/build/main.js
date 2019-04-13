@@ -41,7 +41,7 @@ var LoginPage = /** @class */ (function () {
     };
     LoginPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-login',template:/*ion-inline-start:"/home/lawrene/SpotGolbber/src/pages/login/login.html"*/'<ion-content class="content_bg" padding>\n \n  <!-- <p style="color:#fff;font-size: 30px;" align="center"><img style="zoom:10%;"\n     src="../../assets/icon/logom1.png"><br>SpotSwopper</p> -->\n\n     <br>\n\n\n     <ion-grid style="margin-top: 10px;">\n      <ion-row style="justify-content: center;">\n              <div>\n                      <img alt="logo" height="50" class="timg" src="../../assets/icon/logom1.png" >                        \n                  </div>\n          <div style="margin-top: 10px; font-size: 30px; color:white; padding-left: 5px;">SPOTSWOPPER</div>\n      </ion-row>\n      <ion-row class="knowrow">Know where you stand</ion-row>\n  </ion-grid>\n  <br>\n  <br>\n  \n<ion-list>  \n\n  <ion-item no-lines class="itemclass">\n    <ion-input placeholder="Username / Email" [(ngModel)]="email"  style="font-size: 18px;" type="email" required></ion-input>  \n    <ion-icon color="white" name="ios-contact-outline" item-left></ion-icon>\n      \n  </ion-item>\n\n    <ion-item no-lines class="itemclass">\n        <ion-input placeholder="Password" style="font-size: 18px;" type="password" required name="email" [(ngModel)]="password"> </ion-input>\n        <ion-icon color="white" name="ios-lock-outline" item-left></ion-icon>\n    </ion-item>\n\n\n\n  <br>\n\n  <div align="center" style="color: white; font-size: 20px">Forgot Password</div>\n  <br>\n  <br>\n  <div>\n    <button ion-button block style="border-radius: 20px;" color="redlike" (click)="signin()">SIGN IN</button>\n</div>\n<br>\n\n<div align="center" style="color: white; font-size: 20px; opacity: 0.9; margin-top: 50dp">-----------------------OR------------------------</div>\n<br>\n<div  align="center" class="knowrow">Login with your social networks</div>\n\n<!--   \n  <ion-item no-lines style="background: transparent;color: white">\n        <ion-label>Remember me on this device</ion-label>\n        <ion-checkbox [(ngModel)]="pepperoni"></ion-checkbox>\n    </ion-item> -->\n</ion-list>\n\n\n\n\n<div>\n\n    <ion-grid>\n      \n      <ion-row style="justify-content: center; padding-left: 20px;" >\n\n        <div class="testclass">\n                <img style="zoom:10%;" src="../../assets/icon/facebook.svg">\n        </div>\n\n        <div class="testclass">\n              <img style="zoom:10%;" src="../../assets/icon/twitter.svg">\n        </div>\n\n        <div class="testclass">\n                  <img style="zoom:10%;" src="../../assets/icon/google.svg">\n        </div>\n        </ion-row>\n    </ion-grid>\n    \n</div>\n\n<div align="center" style="text-align:center;" (click)="createaccount()">\n    <ion-label style="color:white; font-size: 17px;" >Dont have an account? Sign Up</ion-label>\n</div>\n\n  \n</ion-content>'/*ion-inline-end:"/home/lawrene/SpotGolbber/src/pages/login/login.html"*/,
+            selector: 'page-login',template:/*ion-inline-start:"/home/lawrene/SpotGolbber/src/pages/login/login.html"*/'<ion-content class="content_bg" padding>\n \n  <!-- <p style="color:#fff;font-size: 30px;" align="center"><img style="zoom:10%;"\n     src="../../assets/icon/logom1.png"><br>SpotSwopper</p> -->\n\n     <br>\n\n\n     <ion-grid style="margin-top: 10px;">\n      <ion-row style="justify-content: center;">\n              <div>\n                      <img alt="logo" height="50" class="timg" src="../../assets/icon/logom1.png" >                        \n                  </div>\n          <div style="margin-top: 10px; font-size: 30px; color:white; padding-left: 5px;">SPOTSWOPPER</div>\n      </ion-row>\n      <ion-row class="knowrow">Know where you stand</ion-row>\n  </ion-grid>\n  <br>\n  <br>\n  \n<ion-list>  \n\n  <ion-item no-lines class="itemclass">\n    <ion-input class="custom-input" placeholder="Username / Email" [(ngModel)]="email"  style="font-size: 18px;" type="email" required></ion-input>  \n    <ion-icon color="white" name="ios-contact-outline" item-left></ion-icon>\n      \n  </ion-item>\n\n    <ion-item no-lines class="itemclass">\n        <ion-input class="custom-input" placeholder="Password" style="font-size: 18px;" type="password" required name="email" [(ngModel)]="password"> </ion-input>\n        <ion-icon color="white" name="ios-lock-outline" item-left></ion-icon>\n    </ion-item>\n\n\n\n  <br>\n\n  <div align="center" style="color: white; font-size: 20px">Forgot Password</div>\n  <br>\n  <br>\n  <div>\n    <button ion-button block style="border-radius: 20px;" color="redlike" (click)="signin()">SIGN IN</button>\n</div>\n<br>\n\n<div align="center" style="color: white; font-size: 20px; opacity: 0.9; margin-top: 50dp">-----------------------OR------------------------</div>\n<br>\n<div  align="center" class="knowrow">Login with your social networks</div>\n\n<!--   \n  <ion-item no-lines style="background: transparent;color: white">\n        <ion-label>Remember me on this device</ion-label>\n        <ion-checkbox [(ngModel)]="pepperoni"></ion-checkbox>\n    </ion-item> -->\n</ion-list>\n\n\n\n\n<div>\n\n    <ion-grid>\n      \n      <ion-row style="justify-content: center; padding-left: 20px;" >\n\n        <div class="testclass">\n                <img style="zoom:10%;" src="../../assets/icon/facebook.svg">\n        </div>\n\n        <div class="testclass">\n              <img style="zoom:10%;" src="../../assets/icon/twitter.svg">\n        </div>\n\n        <div class="testclass">\n                  <img style="zoom:10%;" src="../../assets/icon/google.svg">\n        </div>\n        </ion-row>\n    </ion-grid>\n    \n</div>\n\n<div align="center" style="text-align:center;" (click)="createaccount()">\n    <ion-label style="color:white; font-size: 17px;" >Dont have an account? Sign Up</ion-label>\n</div>\n\n  \n</ion-content>'/*ion-inline-end:"/home/lawrene/SpotGolbber/src/pages/login/login.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_2__providers_auth_auth__["a" /* AuthProvider */],
@@ -238,19 +238,15 @@ webpackEmptyAsyncContext.id = 200;
 var map = {
 	"../pages/listspot/listspot.module": [
 		791,
-		1
+		0
 	],
 	"../pages/login/login.module": [
 		789,
-		3
+		2
 	],
 	"../pages/payment/payment.module": [
 		790,
-		2
-	],
-	"../pages/splash/splash.module": [
-		792,
-		0
+		1
 	]
 };
 function webpackAsyncContext(req) {
@@ -1074,6 +1070,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_expandable_expandable__ = __webpack_require__(788);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17_firebase__ = __webpack_require__(166);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_17_firebase__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__pages_register_register__ = __webpack_require__(796);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1099,6 +1096,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 // import { AccordionListComponent } from '../components/accordion-list/accordion-list';
 
 
+
 var firebaseconfig = {
     apiKey: "AIzaSyDxNm3T6n3CPB5u28aVRIIzggSV9HChpsw",
     authDomain: "spotgolbber.firebaseapp.com",
@@ -1116,6 +1114,7 @@ var AppModule = /** @class */ (function () {
             declarations: [
                 __WEBPACK_IMPORTED_MODULE_6__app_component__["a" /* MyApp */],
                 __WEBPACK_IMPORTED_MODULE_7__pages_home_home__["a" /* HomePage */],
+                __WEBPACK_IMPORTED_MODULE_18__pages_register_register__["a" /* RegisterPage */],
                 __WEBPACK_IMPORTED_MODULE_15__pages_payment_payment__["a" /* PaymentPage */],
                 __WEBPACK_IMPORTED_MODULE_16__components_expandable_expandable__["a" /* ExpandableComponent */],
                 // AccordionListComponent,
@@ -1129,8 +1128,7 @@ var AppModule = /** @class */ (function () {
                     links: [
                         { loadChildren: '../pages/login/login.module#LoginPageModule', name: 'LoginPage', segment: 'login', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/payment/payment.module#PaymentPageModule', name: 'PaymentPage', segment: 'payment', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/listspot/listspot.module#ListspotPageModule', name: 'ListspotPage', segment: 'listspot', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/splash/splash.module#SplashPageModule', name: 'SplashPage', segment: 'splash', priority: 'low', defaultHistory: [] }
+                        { loadChildren: '../pages/listspot/listspot.module#ListspotPageModule', name: 'ListspotPage', segment: 'listspot', priority: 'low', defaultHistory: [] }
                     ]
                 }),
                 __WEBPACK_IMPORTED_MODULE_8__angular_common_http__["b" /* HttpClientModule */],
@@ -1141,6 +1139,7 @@ var AppModule = /** @class */ (function () {
             entryComponents: [
                 __WEBPACK_IMPORTED_MODULE_6__app_component__["a" /* MyApp */],
                 __WEBPACK_IMPORTED_MODULE_7__pages_home_home__["a" /* HomePage */],
+                __WEBPACK_IMPORTED_MODULE_18__pages_register_register__["a" /* RegisterPage */],
                 __WEBPACK_IMPORTED_MODULE_15__pages_payment_payment__["a" /* PaymentPage */],
                 __WEBPACK_IMPORTED_MODULE_13__pages_login_login__["a" /* LoginPage */],
             ],
@@ -1171,7 +1170,7 @@ var AppModule = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(398);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(401);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_home_home__ = __webpack_require__(402);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_login_login__ = __webpack_require__(107);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_register_register__ = __webpack_require__(796);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1192,7 +1191,7 @@ var MyApp = /** @class */ (function () {
         this.platform = platform;
         this.statusBar = statusBar;
         this.splashScreen = splashScreen;
-        this.rootPage = __WEBPACK_IMPORTED_MODULE_5__pages_login_login__["a" /* LoginPage */];
+        this.rootPage = __WEBPACK_IMPORTED_MODULE_5__pages_register_register__["a" /* RegisterPage */];
         this.initializeApp();
         // used for an example of ngFor and navigation
         this.pages = [
@@ -1222,14 +1221,15 @@ var MyApp = /** @class */ (function () {
     };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* ViewChild */])(__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* Nav */]),
-        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* Nav */])
+        __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* Nav */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* Nav */]) === "function" && _a || Object)
     ], MyApp.prototype, "nav", void 0);
     MyApp = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({template:/*ion-inline-start:"/home/lawrene/SpotGolbber/src/app/app.html"*/'<ion-menu persistent="true" [content]="content" type="overlay">\n    <ion-header no-border>\n      <ion-toolbar>\n            <!-- <ion-title> -->\n                <div class="container" (click)="openprofile()">\n                    <img class="userimage" src="../../assets/icon/man.svg">\n                    <b class="user-name">Edung Divinefavour</b>\n                    <b class="user-mail">lawrenedickson49@gmail.com</b>\n                    <br>\n                    <br>\n                   \n                </div>\n            <!-- </ion-title> -->\n\n      </ion-toolbar>\n    </ion-header>\n    \n    <ion-content>\n\n        <ion-list>\n          <button ion-item menuClose *ngFor="let p of pages" (click)="openPage(p)">\n              <ion-icon item-start [name]="p.icon"></ion-icon>\n              <!-- <ion-icon item-start [name]="p.icon" [color]="isActive(p)"></ion-icon> -->\n              {{ p.title }}\n            </button>\n        </ion-list>\n\n            <ion-grid style="margin-top: 10px;">\n                    <ion-row style="justify-content: center;">\n                            <div>\n                                    <img alt="logo" height="30" class="timg" src="../../assets/icon/logom1.png" >                        \n                                </div>\n                        <div style="margin-top: 6px; color:tomato; padding-left: 5px;">SPOTSWOPPER</div>\n                    </ion-row>\n                </ion-grid>\n      </ion-content>\n</ion-menu>\n\n<ion-nav id="nav" [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>'/*ion-inline-end:"/home/lawrene/SpotGolbber/src/app/app.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* Platform */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */]])
+        __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* Platform */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* Platform */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */]) === "function" && _d || Object])
     ], MyApp);
     return MyApp;
+    var _a, _b, _c, _d;
 }());
 
 //# sourceMappingURL=app.component.js.map
@@ -1281,6 +1281,52 @@ var ExpandableComponent = /** @class */ (function () {
 }());
 
 //# sourceMappingURL=expandable.js.map
+
+/***/ }),
+
+/***/ 796:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RegisterPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(56);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+/**
+ * Generated class for the RegisterPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+var RegisterPage = /** @class */ (function () {
+    function RegisterPage(navCtrl, navParams) {
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+    }
+    RegisterPage.prototype.ionViewDidLoad = function () {
+        console.log('ionViewDidLoad RegisterPage');
+    };
+    RegisterPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
+            selector: 'page-register',template:/*ion-inline-start:"/home/lawrene/SpotGolbber/src/pages/register/register.html"*/'<ion-content class="content_bg" padding>\n \n  <!-- <p style="color:#fff;font-size: 30px;" align="center"><img style="zoom:10%;"\n     src="../../assets/icon/logom1.png"><br>SpotSwopper</p> -->\n\n     <br>\n\n\n     <ion-grid style="margin-top: 10px;">\n      <ion-row style="justify-content: center;">\n              <div>\n                      <img alt="logo" height="50" class="timg" src="../../assets/icon/logom1.png" >                        \n                  </div>\n          <div style="margin-top: 10px; font-size: 30px; color:white; padding-left: 5px;">SPOTSWOPPER</div>\n      </ion-row>\n      <ion-row class="knowrow">Know where you stand</ion-row>\n  </ion-grid>\n  <br>\n  <br>\n  \n<ion-list>  \n\n  <ion-item no-lines class="itemclass">\n    <ion-input class="custom-input" placeholder="Email Address" [(ngModel)]="email"  style="font-size: 18px;" type="email" required></ion-input>  \n    <ion-icon color="white" name="ios-contact-outline" item-left></ion-icon>  \n  </ion-item>\n\n    <ion-item no-lines class="itemclass">\n        <ion-input class="custom-input" placeholder="Password" style="font-size: 18px;" type="password" required [(ngModel)]="password"> </ion-input>\n        <ion-icon color="white" name="ios-lock-outline" item-left></ion-icon>\n    </ion-item>\n\n    <ion-item no-lines class="itemclass">\n      <ion-input class="custom-input" placeholder="Password" style="font-size: 18px;" type="password" required [(ngModel)]="confirmpassword"> </ion-input>\n      <ion-icon color="white" name="ios-lock-outline" item-left></ion-icon>\n    </ion-item>\n\n  <br>\n  <div style="margin-top: 20px">\n    <button ion-button block style="border-radius: 20px;" color="redlike" (click)="signin()">SIGN UP</button>\n</div>\n<br>\n\n<div align="center" style="color: white; font-size: 16px; opacity: 0.9; margin-top: 50dp">By signing up you agree to our <u style="color: #fe3300">Terms of use</u></div>\n<br>\n\n<div align="center" style="color: white; font-size: 20px; opacity: 0.9; margin-top: 50dp">-----------------------OR------------------------</div>\n<br>\n<div  align="center" class="knowrow">Join now with your social networks</div>\n\n<!--   \n  <ion-item no-lines style="background: transparent;color: white">\n        <ion-label>Remember me on this device</ion-label>\n        <ion-checkbox [(ngModel)]="pepperoni"></ion-checkbox>\n    </ion-item> -->\n</ion-list>\n\n\n\n\n<div>\n\n    <ion-grid>\n      \n      <ion-row style="justify-content: center; padding-left: 20px;" >\n\n        <div class="testclass">\n                <img style="zoom:10%;" src="../../assets/icon/facebook.svg">\n        </div>\n\n        <div class="testclass">\n              <img style="zoom:10%;" src="../../assets/icon/twitter.svg">\n        </div>\n\n        <div class="testclass">\n                  <img style="zoom:10%;" src="../../assets/icon/google.svg">\n        </div>\n        </ion-row>\n    </ion-grid>\n    \n</div>\n\n<div align="center" style="text-align:center;" (click)="createaccount()">\n    <ion-label style="color:white; font-size: 17px;" >Dont have an account? Sign Up</ion-label>\n</div>\n\n  \n</ion-content>'/*ion-inline-end:"/home/lawrene/SpotGolbber/src/pages/register/register.html"*/,
+        }),
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavParams */]) === "function" && _b || Object])
+    ], RegisterPage);
+    return RegisterPage;
+    var _a, _b;
+}());
+
+//# sourceMappingURL=register.js.map
 
 /***/ })
 

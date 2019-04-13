@@ -21,31 +21,32 @@
 <ion-list>  
 
   <ion-item no-lines class="itemclass">
-    <ion-input class="custom-input" placeholder="Username / Email" [(ngModel)]="email"  style="font-size: 18px;" type="email" required></ion-input>  
-    <ion-icon color="white" name="ios-contact-outline" item-left></ion-icon>
-      
+    <ion-input class="custom-input" placeholder="Email Address" [(ngModel)]="email"  style="font-size: 18px;" type="email" required></ion-input>  
+    <ion-icon color="white" name="ios-contact-outline" item-left></ion-icon>  
   </ion-item>
 
     <ion-item no-lines class="itemclass">
-        <ion-input class="custom-input" placeholder="Password" style="font-size: 18px;" type="password" required name="email" [(ngModel)]="password"> </ion-input>
+        <ion-input class="custom-input" placeholder="Password" style="font-size: 18px;" type="password" required [(ngModel)]="password"> </ion-input>
         <ion-icon color="white" name="ios-lock-outline" item-left></ion-icon>
     </ion-item>
 
-
+    <ion-item no-lines class="itemclass">
+      <ion-input class="custom-input" placeholder="Password" style="font-size: 18px;" type="password" required [(ngModel)]="confirmpassword"> </ion-input>
+      <ion-icon color="white" name="ios-lock-outline" item-left></ion-icon>
+    </ion-item>
 
   <br>
-
-  <div align="center" style="color: white; font-size: 20px">Forgot Password</div>
-  <br>
-  <br>
-  <div>
-    <button ion-button block style="border-radius: 20px;" color="redlike" (click)="signin()">SIGN IN</button>
+  <div style="margin-top: 20px">
+    <button ion-button block style="border-radius: 20px;" color="redlike" (click)="signin()">SIGN UP</button>
 </div>
+<br>
+
+<div align="center" style="color: white; font-size: 16px; opacity: 0.9; margin-top: 50dp">By signing up you agree to our <u style="color: #fe3300">Terms of use</u></div>
 <br>
 
 <div align="center" style="color: white; font-size: 20px; opacity: 0.9; margin-top: 50dp">-----------------------OR------------------------</div>
 <br>
-<div  align="center" class="knowrow">Login with your social networks</div>
+<div  align="center" class="knowrow">Join now with your social networks</div>
 
 <!--   
   <ion-item no-lines style="background: transparent;color: white">
